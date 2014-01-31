@@ -86,3 +86,39 @@ EXEC sp_addextendedproperty @name = N'MS_Description',
     @level1name = N'Users',
     @level2type = N'COLUMN',
     @level2name = N'Role'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'The unique id of the user.',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Users',
+    @level2type = N'COLUMN',
+    @level2name = N'Id'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'The total number of orders the user has either placed or serviced.',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Users',
+    @level2type = N'COLUMN',
+    @level2name = N'TotalOrders'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'The total amount of money that the user has either paid or serviced.',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Users',
+    @level2type = N'COLUMN',
+    @level2name = N'TotalPaid'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'The time of the last order was submited or serviced by a user.',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Users',
+    @level2type = N'COLUMN',
+    @level2name = N'LastOrder'
