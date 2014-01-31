@@ -11,7 +11,12 @@
     [RestrauntId] INT NOT NULL, 
     CONSTRAINT [FK_Orders_Users_Driver] FOREIGN KEY ([DriverId]) REFERENCES [Users]([Id]), 
     CONSTRAINT [FK_Orders_Users_Client] FOREIGN KEY ([ClientId]) REFERENCES [Users]([Id]), 
-    CONSTRAINT [FK_Orders_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id])
+    CONSTRAINT [FK_Orders_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id]), 
+    CONSTRAINT [CK_Orders_SubmitTime] CHECK ([PickupTime]=NULL OR ([SubmitTime]<[PickupTime]) AND ([DeliveryTime]=NULL OR [SubmitTime]<[DeliveryTime])),
+	CONSTRAINT [CK_Orders_PickupTime] CHECK ([PickupTime]>[SubmitTime] AND ([DeliveryTime]=NULL OR [PickupTime]<[DeliveryTime])),
+	CONSTRAINT [CK_Orders_DeliveryTime] CHECK ([DeliveryTime]>[SubmitTime] AND [DeliveryTime]>[PickupTime]),
+	CONSTRAINT [CK_Orders_OrderTotal] CHECK ([OrderTotal]>=0),
+	CONSTRAINT [CK_Orders_ItemsTotal] CHECK ([ItemsTotal]>=0)
 )
 
 GO
