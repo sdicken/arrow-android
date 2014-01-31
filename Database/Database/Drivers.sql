@@ -5,7 +5,7 @@
     [CurrentOrderId] INT NULL, 
     [LastOrderId] INT NULL, 
     [CurrentVehicle] TEXT NULL, 
-    [DisplayName] TEXT NULL, 
+    [DisplayName] TEXT NOT NULL, 
     [CurrentLocation] TEXT NULL, 
     [LastUpdate] TIMESTAMP NULL, 
     CONSTRAINT [FK_Drivers_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]), 
