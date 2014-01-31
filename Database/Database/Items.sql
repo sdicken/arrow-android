@@ -5,7 +5,8 @@
     [Name] TEXT NOT NULL, 
     [Price] MONEY NOT NULL, 
     [Description] TEXT NOT NULL, 
-    CONSTRAINT [FK_Items_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id])
+    CONSTRAINT [FK_Items_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id]),
+	CONSTRAINT [CK_Items_Price] CHECK ([Price]>0)
 )
 
 GO
