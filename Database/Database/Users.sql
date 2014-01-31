@@ -16,7 +16,8 @@
     CONSTRAINT [CK_Users_City] CHECK ([City]='Louisville'), 
     CONSTRAINT [CK_Users_Zip] CHECK ([Zip] in (40208)), 
     CONSTRAINT [CK_Users_TotalPaid] CHECK ([TotalPaid]>=0), 
-    CONSTRAINT [CK_Users_Role] CHECK ([Role] in ('client','driver','dispatcher','admin'))
+    CONSTRAINT [CK_Users_Role] CHECK ([Role] in ('client','driver','dispatcher','admin')),
+	CONSTRAINT [CK_Users_TotalOrders] CHECK ([TotalOrders]>=0)
 )
 
 GO
