@@ -8,7 +8,9 @@
     [DisplayName] TEXT NULL, 
     [CurrentLocation] TEXT NULL, 
     [LastUpdate] TIMESTAMP NULL, 
-    CONSTRAINT [FK_Drivers_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
+    CONSTRAINT [FK_Drivers_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id]), 
+    CONSTRAINT [FK_Drivers_Orders_Current] FOREIGN KEY ([CurrentOrderId]) REFERENCES [Orders]([Id]), 
+    CONSTRAINT [FK_Drivers_Orders_Last] FOREIGN KEY ([LastOrderId]) REFERENCES [Orders]([Id])
 )
 
 GO
