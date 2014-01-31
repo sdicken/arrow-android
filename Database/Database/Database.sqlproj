@@ -70,4 +70,7 @@
   <ItemGroup>
     <RefactorLog Include="Database.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Entity Diagram.vsdx" />
+  </ItemGroup>
 </Project>
