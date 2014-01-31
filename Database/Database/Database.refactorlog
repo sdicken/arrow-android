@@ -14,4 +14,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Street" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="830558a4-e9a0-493c-b7a2-53c977455326" ChangeDateTime="01/31/2014 00:57:28">
+    <Property Name="ElementName" Value="[dbo].[Drivers].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Drivers]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7d0f90d1-8146-46e7-91f4-d4d9d98aba59" ChangeDateTime="01/31/2014 00:58:59">
+    <Property Name="ElementName" Value="[dbo].[Drivers].[CurrentOrder]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Drivers]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CurrentOrderId" />
+  </Operation>
 </Operations>
