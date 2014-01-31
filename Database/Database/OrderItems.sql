@@ -7,7 +7,9 @@
     [TotalPrice] MONEY NOT NULL, 
     [Comments] NTEXT NULL, 
     CONSTRAINT [FK_OrderItems_Orders] FOREIGN KEY ([OrderId]) REFERENCES [Orders]([Id]), 
-    CONSTRAINT [FK_OrderItems_Items] FOREIGN KEY ([ItemId]) REFERENCES [Items]([Id])
+    CONSTRAINT [FK_OrderItems_Items] FOREIGN KEY ([ItemId]) REFERENCES [Items]([Id]),
+	CONSTRAINT [CK_OrderItems_Quantity] CHECK ([Quantity]>=0),
+	CONSTRAINT [CK_OrderItems_TotalPrice] CHECK ([TotalPrice]>=0)
 )
 
 GO
