@@ -9,6 +9,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Description = Unique Id for the Order
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{227C7745-3B9A-477C-A638-0DFD61616BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
