@@ -6,7 +6,7 @@
     [Email] NTEXT NULL, 
     [Street] NTEXT NULL, 
     [City] NTEXT NULL DEFAULT 'Louisville', 
-    [State] NTEXT NULL DEFAULT 'KY', 
+    [State] NCHAR(2) NULL DEFAULT 'KY', 
     [Zip] NUMERIC(5) NULL DEFAULT 40208, 
     [TotalOrders] INT NOT NULL DEFAULT 0, 
     [TotalPaid] MONEY NOT NULL DEFAULT 0.00, 
