@@ -11,7 +11,12 @@
     [TotalOrders] INT NOT NULL DEFAULT 0, 
     [TotalPaid] MONEY NOT NULL DEFAULT 0.00, 
     [LastOrder] TIMESTAMP NULL, 
-    [Role] NCHAR(10) NOT NULL DEFAULT 'client'
+    [Role] NCHAR(10) NOT NULL DEFAULT 'client', 
+    CONSTRAINT [CK_Users_State] CHECK ([State]='KY'), 
+    CONSTRAINT [CK_Users_City] CHECK ([City]='Louisville'), 
+    CONSTRAINT [CK_Users_Zip] CHECK ([Zip] in (40208)), 
+    CONSTRAINT [CK_Users_TotalPaid] CHECK ([TotalPaid]>=0), 
+    CONSTRAINT [CK_Users_Role] CHECK ([Role] in ('client','driver','dispatcher','admin'))
 )
 
 GO
