@@ -8,7 +8,10 @@
     [ClientId] INT NOT NULL, 
     [OrderTotal] MONEY NOT NULL, 
     [ItemsTotal] INT NOT NULL, 
-    [RestrauntId] INT NOT NULL
+    [RestrauntId] INT NOT NULL, 
+    CONSTRAINT [FK_Orders_Users_Driver] FOREIGN KEY ([DriverId]) REFERENCES [Users]([Id]), 
+    CONSTRAINT [FK_Orders_Users_Client] FOREIGN KEY ([ClientId]) REFERENCES [Users]([Id]), 
+    CONSTRAINT [FK_Orders_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id])
 )
 
 GO

@@ -28,4 +28,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CurrentOrderId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c42cc7b7-822c-40ea-988e-255734900b9b" ChangeDateTime="01/31/2014 01:23:07">
+    <Property Name="ElementName" Value="[dbo].[FK_Orders_Restraunt]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[Orders]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_Orders_Restraunts]" />
+  </Operation>
 </Operations>

@@ -4,7 +4,8 @@
     [DriverId] INT NOT NULL, 
     [Latitude] FLOAT NOT NULL, 
     [Longitude] FLOAT NOT NULL, 
-    [Timestamp] TIMESTAMP NOT NULL
+    [Timestamp] TIMESTAMP NOT NULL, 
+    CONSTRAINT [FK_GPSUpdates_Drivers] FOREIGN KEY ([DriverId]) REFERENCES [Drivers]([UserId])
 )
 
 GO

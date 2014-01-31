@@ -4,7 +4,8 @@
     [RestrauntId] INT NOT NULL, 
     [Name] TEXT NOT NULL, 
     [Price] MONEY NOT NULL, 
-    [Description] TEXT NOT NULL
+    [Description] TEXT NOT NULL, 
+    CONSTRAINT [FK_Items_Restraunts] FOREIGN KEY ([RestrauntId]) REFERENCES [Restraunts]([Id])
 )
 
 GO

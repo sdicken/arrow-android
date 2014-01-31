@@ -5,7 +5,9 @@
     [ItemId] INT NOT NULL, 
     [Quantity] INT NOT NULL, 
     [TotalPrice] MONEY NOT NULL, 
-    [Comments] NTEXT NULL
+    [Comments] NTEXT NULL, 
+    CONSTRAINT [FK_OrderItems_Orders] FOREIGN KEY ([OrderId]) REFERENCES [Orders]([Id]), 
+    CONSTRAINT [FK_OrderItems_Items] FOREIGN KEY ([ItemId]) REFERENCES [Items]([Id])
 )
 
 GO

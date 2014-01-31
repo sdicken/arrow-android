@@ -7,7 +7,8 @@
     [CurrentVehicle] TEXT NULL, 
     [DisplayName] TEXT NULL, 
     [CurrentLocation] TEXT NULL, 
-    [LastUpdate] TIMESTAMP NULL
+    [LastUpdate] TIMESTAMP NULL, 
+    CONSTRAINT [FK_Drivers_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])
 )
 
 GO
