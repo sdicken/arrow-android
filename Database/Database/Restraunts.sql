@@ -9,7 +9,10 @@
     [Phone] TEXT NULL, 
     [Fax] TEXT NULL, 
     [Url] TEXT NULL, 
-    [Email] TEXT NULL
+    [Email] TEXT NULL, 
+    CONSTRAINT [CK_Restraunts_State] CHECK ([State]='KY'), 
+    CONSTRAINT [CK_Restraunts_City] CHECK ([City]='Louisville'), 
+    CONSTRAINT [CK_Restraunts_Zip] CHECK ([Zip] in (40208))
 )
 
 GO
