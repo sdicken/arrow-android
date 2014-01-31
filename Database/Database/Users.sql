@@ -10,7 +10,8 @@
     [Zip] NUMERIC(5) NULL DEFAULT 40208, 
     [TotalOrders] INT NOT NULL DEFAULT 0, 
     [TotalPaid] MONEY NOT NULL DEFAULT 0.00, 
-    [LastOrder] TIMESTAMP NULL
+    [LastOrder] TIMESTAMP NULL, 
+    [Role] NCHAR(10) NOT NULL DEFAULT 'client'
 )
 
 GO
@@ -76,3 +77,12 @@ EXEC sp_addextendedproperty @name = N'MS_Description',
     @level1name = N'Users',
     @level2type = N'COLUMN',
     @level2name = N'Zip'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'The access role for the user. Values are ''client'', ''driver'', ''dispatcher'',''admin''',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Users',
+    @level2type = N'COLUMN',
+    @level2name = N'Role'
