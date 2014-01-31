@@ -35,4 +35,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_Orders_Restraunts]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="f3149d5c-073e-42c0-b2d9-3ab0d61a74de" ChangeDateTime="01/31/2014 02:21:49">
+    <Property Name="ElementName" Value="[dbo].[Zips].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Zips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Zip" />
+  </Operation>
 </Operations>
