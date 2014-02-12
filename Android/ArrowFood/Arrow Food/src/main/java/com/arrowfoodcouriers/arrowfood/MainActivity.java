@@ -8,16 +8,36 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
+import com.arrowfoodcouriers.arrowfood.Fragments.AboutFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.LegalFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
 
 
 public class MainActivity extends Activity {
+    private static final int HOME_NAV_DRAWER_POSITION = 0;
+    private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
+    private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
+    private static final int PROFILE_NAV_DRAWER_POSITION = 4;
+    private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 5;
+    private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 6;
+    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 8;
+    private static final int ABOUT_NAV_DRAWER_POSITION = 9;
+    private static final int LEGAL_NAV_DRAWER_POSITION = 10;
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -36,6 +56,7 @@ public class MainActivity extends Activity {
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(new DrawerListAdapter());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -95,6 +116,65 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void selectItem(int position) {
+        Fragment fragment;
+        switch (position) {
+            case HOME_NAV_DRAWER_POSITION: {
+                fragment = new PlaceholderFragment();
+                break;
+            }
+
+            case RESTAURANTS_NAV_DRAWER_POSITION: {
+                fragment = new RestaurantFragment();
+                break;
+            }
+
+            case FOOD_SEARCH_NAV_DRAWER_POSITION: {
+                fragment = new FoodSearchFragment();
+                break;
+            }
+
+            case PROFILE_NAV_DRAWER_POSITION: {
+                fragment = new ProfileFragment();
+                break;
+            }
+
+            case PREV_ORDERS_NAV_DRAWER_POSITION: {
+                fragment = new PreviousOrdersFragment();
+                break;
+            }
+
+            case FAVE_ORDERS_NAV_DRAWER_POSITION: {
+                fragment = new FavoriteOrdersFragment();
+                break;
+            }
+
+            case AREAS_MAP_NAV_DRAWER_POSITION: {
+                fragment = new AreasMapFragment();
+                break;
+            }
+
+            case ABOUT_NAV_DRAWER_POSITION: {
+                fragment = new AboutFragment();
+                break;
+            }
+
+            case LEGAL_NAV_DRAWER_POSITION: {
+                fragment = new LegalFragment();
+                break;
+            }
+
+            default: {
+                Log.d("DEBUG", "THE POSITION IS " + position);
+                fragment = new PlaceholderFragment();
+                break;
+            }
+        }
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        mDrawerLayout.closeDrawers();
+    }
+
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -106,6 +186,13 @@ public class MainActivity extends Activity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return  rootView;
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
         }
     }
 
