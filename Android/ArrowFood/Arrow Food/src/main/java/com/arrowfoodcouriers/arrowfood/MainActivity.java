@@ -10,6 +10,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,9 +60,12 @@ public class MainActivity extends Activity {
         mDrawerList.setAdapter(new DrawerListAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setCustomView(R.layout.action_bar);
         getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setDisplayShowCustomEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setLogo(R.drawable.ic_drawer);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -89,6 +94,13 @@ public class MainActivity extends Activity {
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
