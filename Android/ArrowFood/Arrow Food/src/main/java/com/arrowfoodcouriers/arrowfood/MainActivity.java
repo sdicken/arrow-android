@@ -190,7 +190,7 @@ public class MainActivity extends Activity {
         actionBar.setDisplayShowCustomEnabled(true);    // display custom view instead of title
         actionBar.setHomeButtonEnabled(true);
         actionBar.setLogo(R.drawable.ic_drawer);        // use navigation drawer indicator as logo
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public static class PlaceholderFragment extends Fragment {
