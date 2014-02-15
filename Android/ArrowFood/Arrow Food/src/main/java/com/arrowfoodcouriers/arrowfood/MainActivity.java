@@ -1,5 +1,6 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -60,12 +61,7 @@ public class MainActivity extends Activity {
         mDrawerList.setAdapter(new DrawerListAdapter());
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getActionBar().setCustomView(R.layout.action_bar);
-        getActionBar().setDisplayShowTitleEnabled(false);
-        getActionBar().setDisplayShowCustomEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setLogo(R.drawable.ic_drawer);
-        getActionBar().setDisplayHomeAsUpEnabled(false);
+        configureActionBar();
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -185,6 +181,16 @@ public class MainActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         mDrawerLayout.closeDrawers();
+    }
+
+    private void configureActionBar() {
+        final ActionBar actionBar = getActionBar();
+        actionBar.setCustomView(R.layout.action_bar);   // contains centered Arrow logo in white
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);    // display custom view instead of title
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setLogo(R.drawable.ic_drawer);        // use navigation drawer indicator as logo
+        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
     public static class PlaceholderFragment extends Fragment {

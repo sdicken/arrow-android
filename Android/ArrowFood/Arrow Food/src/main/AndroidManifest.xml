@@ -7,8 +7,8 @@
         android:allowBackup="true"
         android:icon="@drawable/arrow_logo_emblem_half"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
+        android:theme="@style/AppThemeWithoutActionBarTitle">
+    <activity
             android:name="com.arrowfoodcouriers.arrowfood.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
