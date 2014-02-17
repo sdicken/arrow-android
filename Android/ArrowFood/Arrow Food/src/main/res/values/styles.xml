@@ -3,6 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowTitleSize">0dp</item>
         <item name="android:actionBarStyle">@style/ArrowActionBar</item>
     </style>
 
@@ -12,6 +14,7 @@
 
     <style name="ActionBarWithoutTitle" parent="@style/ArrowActionBar">
         <item name="android:displayOptions">useLogo</item>
+        <item name="android:windowActionBar">false</item>
     </style>
 
     <style name="ArrowActionBar" parent="android:Widget.Holo.Light.ActionBar">
