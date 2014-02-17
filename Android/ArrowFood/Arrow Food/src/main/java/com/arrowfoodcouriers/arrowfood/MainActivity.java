@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
-                R.drawable.ic_drawer,
+                R.drawable.white_drawer,
                 R.string.drawer_opening,
                 R.string.drawer_closing
         ) {
@@ -193,7 +193,7 @@ public class MainActivity extends Activity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);    // display custom view instead of title
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setLogo(R.drawable.ic_drawer);        // use navigation drawer indicator as logo
+        actionBar.setLogo(R.drawable.white_drawer);        // use navigation drawer indicator as logo
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
