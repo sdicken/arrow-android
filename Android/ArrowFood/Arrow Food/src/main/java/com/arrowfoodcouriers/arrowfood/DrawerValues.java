@@ -14,7 +14,7 @@ public class DrawerValues {
             new DrawerListObject("Favorites", 6, R.drawable.ic_action_star),
             "ORDERING",
             new DrawerListObject("Restaurants", 1, R.drawable.ic_empty),
-            new DrawerListObject("Food by Type", 2, R.drawable.ic_empty),
+            new DrawerListObject("Search", 2, R.drawable.ic_action_search),
             "MORE",
             new DrawerListObject("Areas Served", 7, R.drawable.ic_empty),
             new DrawerListObject("About Us", 8, R.drawable.ic_action_about),
@@ -27,7 +27,7 @@ public class DrawerValues {
             new DrawerListObject("Login", 4, R.drawable.ic_account),
             "ORDERING",
             new DrawerListObject("Restaurants", 1, R.drawable.ic_empty),
-            new DrawerListObject("Food by Type", 2, R.drawable.ic_empty),
+            new DrawerListObject("Search", 2, R.drawable.ic_action_search),
             "MORE",
             new DrawerListObject("Areas Served", 7, R.drawable.ic_empty),
             new DrawerListObject("About Us", 8, R.drawable.ic_action_about)
