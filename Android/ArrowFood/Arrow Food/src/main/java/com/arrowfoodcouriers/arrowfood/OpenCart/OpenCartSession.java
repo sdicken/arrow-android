@@ -69,10 +69,12 @@ public class OpenCartSession {
     public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
-            String json = "{\"email\": \"" + email
-                    + "\", \"password\": \"" + password
-                    + "\"}";
-            DoRequest(url, json);
+            StringBuilder json = new StringBuilder("{\"email\": \"");
+            json.append(email);
+            json.append("\", \"password\": \"");
+            json.append(password);
+            json.append("\"}");
+            DoRequest(url, json.toString());
             _email = email;
             _authenticated = true;
             return true;
