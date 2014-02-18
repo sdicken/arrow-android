@@ -12,7 +12,7 @@ public class OpenCartSession {
     public final String LoginRoute = "index.php?route=account/login";
     private ThisitaCookieManager _cookieManager;
     private String _email;
-
+    private Boolean _authenticated;
 
     private String DoRequest(URL url, String body) throws IOException {
         // create the request
@@ -53,10 +53,15 @@ public class OpenCartSession {
     public OpenCartSession() {
         _cookieManager = new ThisitaCookieManager();
         _email = "";
+        _authenticated = false;
     }
 
     public String GetEmail() {
         return _email;
+    }
+
+    public Boolean IsAuthenticated() {
+        return _authenticated;
     }
 
     public Boolean Login(String email, String password) {
@@ -66,6 +71,8 @@ public class OpenCartSession {
                     + "\", \"password\": \"" + password
                     + "\"}";
             DoRequest(url, json);
+            _email = email;
+            _authenticated = true;
             return true;
         } catch (Exception ex) {
             return false;
