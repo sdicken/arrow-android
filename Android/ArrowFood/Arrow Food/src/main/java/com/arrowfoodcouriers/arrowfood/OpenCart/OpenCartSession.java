@@ -1,5 +1,9 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
+import android.util.Log;
+
+import com.arrowfoodcouriers.arrowfood.DoRequestTask;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class OpenCartSession {
-    public final String Server = "https://192.168.1.185/";
+    public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
     public final String RegisterRoute = "index.php?route=account/register";
 
@@ -74,11 +78,18 @@ public class OpenCartSession {
             json.append("\", \"password\": \"");
             json.append(password);
             json.append("\"}");
-            DoRequest(url, json.toString());
+//            DoRequest(url, json.toString());
+//            DoRequestTask task = new DoRequestTask(url, json.toString(), _cookieManager);
+            DoRequestTask task = new DoRequestTask();
+            task.execute(url, json.toString(), _cookieManager);
+//            String response1 = task.get();
             _email = email;
             _authenticated = true;
+            Log.d("Login", "Logged in");
+            Log.d("Cookie", _cookieManager.toString());
             return true;
         } catch (Exception ex) {
+            Log.e("Login", "Caught exception");
             return false;
         }
     }

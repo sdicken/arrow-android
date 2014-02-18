@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
-import com.arrowfoodcouriers.arrowfood.LoginClass;
+import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**
@@ -29,13 +29,16 @@ public class LoginDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        final OpenCartSession session = new OpenCartSession();
 
         builder.setView(inflater.inflate(R.layout.dialog_signin, null))
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         _loginClass.LoginUser("test", "test");
+//                        session.Login("e674501@drdrb.com","pass");
                         ListView listView = (ListView)getActivity().findViewById(R.id.left_drawer);
                         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
                     }
