@@ -1,9 +1,11 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
@@ -74,7 +76,11 @@ public class DrawerListAdapter extends BaseAdapter {
         if (type == DRAWER_LIST_SECTION) {
             ((TextView)view).setText((String) getItem(position));
         } else {
-            ((TextView) view).setText(((DrawerListObject) getItem(position)).title);
+            TextView textView = (TextView)view.findViewById(R.id.list_item_text);
+            ImageView imageView = (ImageView)view.findViewById(R.id.list_item_icon);
+            DrawerListObject drawerListObject = (DrawerListObject)getItem(position);
+            textView.setText(drawerListObject.title);
+            imageView.setImageResource(drawerListObject.image);
         }
 
         return view;

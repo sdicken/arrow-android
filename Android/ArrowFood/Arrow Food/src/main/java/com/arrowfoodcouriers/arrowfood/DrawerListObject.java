@@ -6,9 +6,11 @@ package com.arrowfoodcouriers.arrowfood;
 public class DrawerListObject {
     public String title;
     public int position;
+    public int image;
 
-    DrawerListObject(String title, int position) {
+    DrawerListObject(String title, int position, int image) {
         this.title = title;
         this.position = position;
+        this.image = image;
     }
 }

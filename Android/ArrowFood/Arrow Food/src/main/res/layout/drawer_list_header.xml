@@ -10,4 +10,5 @@
     android:height="20dp"
     android:padding="10dp"
     android:textSize="12dp"
-    android:textColor="@android:color/white"/>
+    android:textColor="@android:color/white"
+    android:background="@color/ArrowGray"/>
