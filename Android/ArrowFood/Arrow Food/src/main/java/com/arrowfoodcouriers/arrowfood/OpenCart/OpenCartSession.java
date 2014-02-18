@@ -59,15 +59,16 @@ public class OpenCartSession {
         return _email;
     }
 
-    public void Login(String email, String password) {
+    public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
             String json = "{\"email\": \"" + email
                     + "\", \"password\": \"" + password
                     + "\"}";
-            String response = DoRequest(url, json);
+            DoRequest(url, json);
+            return true;
         } catch (Exception ex) {
-
+            return false;
         }
     }
 }
