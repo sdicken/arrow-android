@@ -10,6 +10,8 @@ import java.net.URLConnection;
 public class OpenCartSession {
     public final String Server = "https://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
+    public final String RegisterRoute = "index.php?route=account/register";
+
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
@@ -72,6 +74,21 @@ public class OpenCartSession {
                     + "\"}";
             DoRequest(url, json);
             _email = email;
+            _authenticated = true;
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public Boolean Register(OpenCartRegistration registration) {
+        if (!_authenticated || !registration.IsValid()) {
+            return false;
+        }
+        try {
+            URL url = new URL(Server + RegisterRoute);
+            DoRequest(url, registration.GetJson());
+            _email = registration.Email;
             _authenticated = true;
             return true;
         } catch (Exception ex) {
