@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class RESTCall extends AsyncTask<Object, Integer, String> {
+public class POSTCall extends AsyncTask<Object, Integer, String> {
     @Override
     protected String doInBackground(Object... objects) {
         URL url = (URL) objects[0];

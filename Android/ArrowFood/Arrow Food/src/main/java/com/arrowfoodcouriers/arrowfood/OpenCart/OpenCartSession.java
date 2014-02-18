@@ -10,20 +10,20 @@ public class OpenCartSession {
     public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
     public final String RegisterRoute = "index.php?route=account/register";
+    public final String LogoutRoute = "index.php?route=account/logout";
 
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
 
     private String DoRequest(URL url, String body) throws IOException, ExecutionException, InterruptedException {
-        RESTCall request = new RESTCall();
+        POSTCall request = new POSTCall();
         request.execute(url, body, _cookieManager);
         return request.get();
     }
 
     public OpenCartSession() {
         _cookieManager = new ThisitaCookieManager();
-        _email = "";
         _authenticated = false;
     }
 
@@ -67,6 +67,19 @@ public class OpenCartSession {
             return true;
         } catch (Exception ex) {
             return false;
+        }
+    }
+
+    public void Logout() {
+        if (!_authenticated) return;
+
+        try {
+            URL url = new URL(Server + LogoutRoute);
+            DoRequest(url, "");
+            _email = null;
+            _authenticated = false;
+        } catch (Exception ex) {
+            Log.e("Logout", "Caught exception!");
         }
     }
 }
