@@ -10,7 +10,8 @@ public class OpenCartSession {
     public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
     public final String RegisterRoute = "index.php?route=account/register";
-    public final String LogoutRoute = "index.php?route=account/logout";
+    public final String LogoutRoute = "index.php?route=account/logout"; // TODO: Check me!
+    public final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
     private ThisitaCookieManager _cookieManager;
     private String _email;
@@ -80,6 +81,19 @@ public class OpenCartSession {
             _authenticated = false;
         } catch (Exception ex) {
             Log.e("Logout", "Caught exception!");
+        }
+    }
+
+    public Boolean Order(OpenCartOrder order) {
+        if (!_authenticated || !order.IsValid()) {
+            return false;
+        }
+        try {
+            URL url = new URL(Server + OrderRoute);
+            DoRequest(url, order.GetJson());
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 }
