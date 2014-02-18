@@ -1,8 +1,6 @@
-package com.arrowfoodcouriers.arrowfood;
+package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.os.AsyncTask;
-
-import com.arrowfoodcouriers.arrowfood.OpenCart.ThisitaCookieManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,11 +9,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Sam on 2/18/14.
- */
-public class DoRequestTask extends AsyncTask<Object, Integer, String> {
-
+public class RESTCall extends AsyncTask<Object, Integer, String> {
     @Override
     protected String doInBackground(Object... objects) {
         URL url = (URL) objects[0];
@@ -26,9 +20,7 @@ public class DoRequestTask extends AsyncTask<Object, Integer, String> {
             // create the request
             URLConnection request = url.openConnection();
             // set cookies
-            synchronized (cookieManager) {
-                cookieManager.setCookies(request);
-            }
+            cookieManager.setCookies(request);
             // set POST method
             request.setDoOutput(true);
             request.setAllowUserInteraction(false);
@@ -53,11 +45,11 @@ public class DoRequestTask extends AsyncTask<Object, Integer, String> {
             if (response.length() > 0) {
                 response = response.substring(0, response.length() - 1);
             }
-            synchronized (cookieManager) {
-                cookieManager.storeCookies(request);
-            }
+
+            cookieManager.storeCookies(request);
+
         } catch (IOException ex) {
-            return "Error in DoRequestTask";
+            return "Error in RESTCall execution";
         }
         return response;
     }
