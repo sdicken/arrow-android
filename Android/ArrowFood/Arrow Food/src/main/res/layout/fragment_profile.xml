@@ -17,7 +17,7 @@
         android:textOff="Customer"
         android:id="@+id/switch1"
         android:layout_gravity="right|top"
-        android:checked="false" />
+        android:checked="false"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
         android:text="@string/profile_title"
         android:layout_gravity="right|top" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="phone"
@@ -34,7 +34,39 @@
         android:layout_gravity="left|center_vertical"
         android:text="Phone Number" />
 
-    <ExpandableListView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Password"
+        android:id="@+id/new_password"
+        android:translationY="-80px"
+        android:layout_gravity="bottom|left" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:translationY="-80px"
+        android:ems="10"
+        android:id="@+id/edit_password"
+        android:layout_gravity="right|bottom" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Phone"
+        android:id="@+id/new_phone"
+        android:layout_gravity="bottom|left" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/edit_phone"
+        android:layout_gravity="right|bottom" />
+
+
+    <!--ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="198dp"
         android:id="@+id/expandableListView"
@@ -43,7 +75,7 @@
         <EditText
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
-    </ExpandableListView>
+    </ExpandableListView>-->
 
 
 </FrameLayout>
