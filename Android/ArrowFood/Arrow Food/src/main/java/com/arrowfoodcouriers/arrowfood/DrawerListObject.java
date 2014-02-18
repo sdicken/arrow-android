@@ -5,8 +5,10 @@ package com.arrowfoodcouriers.arrowfood;
  */
 public class DrawerListObject {
     public String title;
+    public int position;
 
-    DrawerListObject(String title) {
+    DrawerListObject(String title, int position) {
         this.title = title;
+        this.position = position;
     }
 }

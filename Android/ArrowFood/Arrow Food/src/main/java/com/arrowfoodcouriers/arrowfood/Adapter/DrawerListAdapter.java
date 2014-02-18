@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
 import com.arrowfoodcouriers.arrowfood.DrawerValues;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 
@@ -20,14 +21,22 @@ public class DrawerListAdapter extends BaseAdapter {
     private static final int DRAWER_LIST_SECTION = 1;
     private static final int DRAWER_LIST_ITEM = 0;
 
+    private ILoginClass mLoginClass;
+    private DrawerValues mDrawerValues;
+
+    public DrawerListAdapter(ILoginClass loginClass) {
+        this.mLoginClass = loginClass;
+        mDrawerValues = new DrawerValues(loginClass);
+    }
+
     @Override
     public int getCount() {
-        return DrawerValues.DRAWER_VALUES.length;
+        return mDrawerValues.getDrawerValues().length;
     }
 
     @Override
     public Object getItem(int position) {
-        return DrawerValues.DRAWER_VALUES[position];
+        return mDrawerValues.getDrawerValues()[position];
     }
 
     @Override
@@ -42,7 +51,7 @@ public class DrawerListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (DrawerValues.DRAWER_VALUES[position] instanceof  String) ?
+        return (mDrawerValues.getDrawerValues()[position] instanceof  String) ?
                 DRAWER_LIST_SECTION : DRAWER_LIST_ITEM;
     }
 

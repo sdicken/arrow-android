@@ -2,6 +2,7 @@ package com.arrowfoodcouriers.arrowfood;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
@@ -26,6 +28,7 @@ import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LegalFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
@@ -35,12 +38,13 @@ public class MainActivity extends Activity {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
     private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
-    private static final int PROFILE_NAV_DRAWER_POSITION = 4;
+    private static final int PROFILE_NAV_DRAWER_POSITION = 3;
+    private static final int LOGIN_NAV_DRAWER_POSITION = 4;
     private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 5;
     private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 6;
-    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 8;
-    private static final int ABOUT_NAV_DRAWER_POSITION = 9;
-    private static final int LEGAL_NAV_DRAWER_POSITION = 10;
+    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 7;
+    private static final int ABOUT_NAV_DRAWER_POSITION = 8;
+    private static final int SIGN_OUT_NAV_DRAWER_POSITION = 9;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -48,6 +52,8 @@ public class MainActivity extends Activity {
 
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
+
+    private LoginClass mLoginClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +63,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         getActionBar().show();
 
+        mLoginClass = new LoginClass();
+
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(new DrawerListAdapter());
+        mDrawerList.setAdapter(new DrawerListAdapter(mLoginClass));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         configureActionBar();
@@ -171,8 +179,18 @@ public class MainActivity extends Activity {
                 break;
             }
 
-            case LEGAL_NAV_DRAWER_POSITION: {
-                fragment = new LegalFragment();
+            case SIGN_OUT_NAV_DRAWER_POSITION: {
+                fragment = new PlaceholderFragment();
+                mLoginClass.LogoutUser();
+                ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
+                break;
+            }
+
+            case LOGIN_NAV_DRAWER_POSITION: {
+                DialogFragment loginFragment = new LoginDialogFragment(mLoginClass);
+                loginFragment.show(getFragmentManager(), "login");
+                ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
+                fragment = new PlaceholderFragment();
                 break;
             }
 
@@ -212,9 +230,14 @@ public class MainActivity extends Activity {
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        private ListView listView = (ListView)findViewById(R.id.left_drawer);
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            DrawerListObject selectedFromList =
+                    (DrawerListObject)listView.getItemAtPosition(position);
+
+            selectItem(selectedFromList.position);
         }
     }
 

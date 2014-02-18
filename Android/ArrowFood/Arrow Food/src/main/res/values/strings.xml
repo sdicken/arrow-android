@@ -16,5 +16,8 @@
     <string name="areas_served_title">Areas Served</string>
     <string name="about_title">About Us</string>
     <string name="legal_title">Legal Information</string>
+    <string name="dialog_title">Login</string>
+    <string name="dialog_sign_in">Sign in</string>
+    <string name="dialog_cancel">Cancel</string>
 
 </resources>
