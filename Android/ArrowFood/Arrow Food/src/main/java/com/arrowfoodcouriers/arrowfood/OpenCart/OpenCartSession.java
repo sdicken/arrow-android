@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 public class OpenCartSession {
+    public final Boolean DEBUG = true;
+
     public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
     public final String RegisterRoute = "index.php?route=account/register";
@@ -85,9 +87,9 @@ public class OpenCartSession {
         try {
             URL url = new URL(Server + LoginRoute);
             String json = "{\"email\": \"";
-            json += email;
+            json += DEBUG ? "test@test.test" : email;
             json += "\", \"password\": \"";
-            json += password;
+            json += DEBUG ? "test" : password;
             json += "\"}";
             DoPOST(url, json);
             _email = email;
