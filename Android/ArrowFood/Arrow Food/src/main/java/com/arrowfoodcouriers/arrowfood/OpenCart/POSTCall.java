@@ -8,12 +8,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 public class POSTCall extends AsyncTask<Object, Integer, String> {
+
+    private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
+    private final String _lineEnd = "\r\n";
+    private final String _doubleHyphen = "--";
+
     @Override
     protected String doInBackground(Object... objects) {
         URL url = (URL) objects[0];
@@ -27,6 +31,7 @@ public class POSTCall extends AsyncTask<Object, Integer, String> {
             cookieManager.setCookies(request);
             // set POST method
             request.setRequestMethod("POST");
+            request.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + _boundary);
             request.setDoOutput(true);
             request.setDoInput(true);
 
@@ -38,11 +43,15 @@ public class POSTCall extends AsyncTask<Object, Integer, String> {
             String content = "";
             for (int i = 0; keyIter.hasNext(); ++i) {
                 Object key = keyIter.next();
-                if (i != 0) {
-                    content += "&";
-                }
-                content += key + "=" + URLEncoder.encode(data.get(key), "UTF-8");
+
+                content += _doubleHyphen + _boundary + _lineEnd
+                        + "Content-Disposition: form-data; name=\""
+                        + key + "\"" + _lineEnd;
+                content += _lineEnd;
+                content += data.get(key);
+                content += _lineEnd;
             }
+            content += _doubleHyphen + _boundary + _doubleHyphen;
             dos.writeBytes(content);
             dos.flush();
             dos.close();

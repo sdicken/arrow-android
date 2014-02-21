@@ -63,6 +63,11 @@ public class OpenCartSession {
     public OpenCartSession() {
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
+        try {
+            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
+        } catch (Exception ex) {
+            Log.d("EXCEPTION:", ex.toString());
+        }
     }
 
     public String GetEmail() {

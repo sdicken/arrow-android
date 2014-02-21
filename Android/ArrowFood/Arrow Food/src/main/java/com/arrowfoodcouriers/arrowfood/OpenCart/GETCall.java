@@ -5,9 +5,8 @@ import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 public class GETCall extends AsyncTask<Object, Integer, String> {
     @Override
@@ -17,11 +16,9 @@ public class GETCall extends AsyncTask<Object, Integer, String> {
         String response = "";
         try {
             // create the request
-            URLConnection request = url.openConnection();
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
             // set cookies
             cookieManager.setCookies(request);
-
-            request.connect();
 
             // read the response
             BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
