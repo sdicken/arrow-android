@@ -4,6 +4,8 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class OpenCartSession {
@@ -24,9 +26,9 @@ public class OpenCartSession {
     private String _lastName;
     private String _telephone;
 
-    private String DoPOST(URL url, String body) throws IOException, ExecutionException, InterruptedException {
+    private String DoPOST(URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
         POSTCall request = new POSTCall();
-        request.execute(url, body, _cookieManager);
+        request.execute(url, data, _cookieManager);
         return request.get();
     }
 
@@ -86,12 +88,12 @@ public class OpenCartSession {
     public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
-            String json = "{\"email\": \"";
-            json += DEBUG ? "test@test.test" : email;
-            json += "\", \"password\": \"";
-            json += DEBUG ? "test" : password;
-            json += "\"}";
-            DoPOST(url, json);
+            String em = DEBUG ? "test@test.test" : email;
+            String pa = DEBUG ? "test" : password;
+            Map<String, String> data = new HashMap<String, String>();
+            data.put("email", em);
+            data.put("password", pa);
+            DoPOST(url, data);
             _email = email;
             _authenticated = true;
             Log.d("Login", "Logged in");
@@ -109,7 +111,8 @@ public class OpenCartSession {
         }
         try {
             URL url = new URL(Server + RegisterRoute);
-            DoPOST(url, registration.GetJson());
+            // TODO: Fix
+            //DoPOST(url, registration.GetJson());
             _email = registration.Email;
             _authenticated = true;
             return true;
@@ -123,7 +126,7 @@ public class OpenCartSession {
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(url, "");
+            DoPOST(url, new HashMap<String, String>());
             _email = null;
             _authenticated = false;
         } catch (Exception ex) {
@@ -137,7 +140,8 @@ public class OpenCartSession {
         }
         try {
             URL url = new URL(Server + OrderRoute);
-            DoPOST(url, order.GetJson());
+            // TODO: Fix
+            //DoPOST(url, order.GetJson());
             return true;
         } catch (Exception ex) {
             return false;
