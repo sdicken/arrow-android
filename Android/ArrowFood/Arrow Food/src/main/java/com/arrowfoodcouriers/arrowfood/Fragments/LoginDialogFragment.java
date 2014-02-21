@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -24,7 +25,9 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
 
     public ILoginClass _loginClass;
     private ProgressBar _progressBar;
-    private Dialog alertDialog = null;
+    private Dialog _alertDialog = null;
+    private EditText _usernameField;
+    private EditText _passwordField;
 
     public LoginDialogFragment(ILoginClass loginClass) {
         this._loginClass = loginClass;
@@ -37,36 +40,42 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_signin, null);
         final OpenCartSession session = new OpenCartSession(this);
+        _usernameField = (EditText) dialogView.findViewById(R.id.username);
+        _passwordField = (EditText) dialogView.findViewById(R.id.password);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.login_activity_circle);
 
-        alertDialog = builder.setView(dialogView)
+        _alertDialog = builder.setView(dialogView)
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {} // disable default behavior of close on positiveButton
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                    } // disable default behavior of close on positiveButton
                 }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int which) {}
-        }).create();
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                    }
+                }).create();
 
         // Prevents automatic dismissal of dialog window on positive button click
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        _alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                Button positiveButton = ((AlertDialog)alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        session.Login("e674501@drdrb.com", "pass");
+                        String username = _usernameField.getText().toString();
+                        String password = _passwordField.getText().toString();
+                        session.Login(username, password);
                         ListView listView = (ListView) getActivity().findViewById(R.id.left_drawer);
                         ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
                     }
                 });
-                Button negativeButton = ((AlertDialog)alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
             }
         });
 
-        return alertDialog;
+        return _alertDialog;
     }
 
     @Override
@@ -79,7 +88,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         _progressBar.setVisibility(View.GONE);
         if(result)
         {
-            alertDialog.dismiss();
+            _alertDialog.dismiss();
         }
         else
         {
