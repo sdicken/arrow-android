@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class OpenCartSession implements RESTCallback{
-    public final Boolean DEBUG = true;
+    public final Boolean DEBUG = false;
 
     public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
@@ -191,7 +191,7 @@ public class OpenCartSession implements RESTCallback{
             }
             case LOGIN:
             {
-                _authenticated = true;
+                _authenticated = false;
                 _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
                 break;
             }

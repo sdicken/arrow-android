@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
@@ -54,6 +55,10 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                     }
+                })
+                .setNeutralButton(R.string.dialog_forgot_password, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {}
                 }).create();
 
         // Prevents automatic dismissal of dialog window on positive button click
@@ -72,6 +77,13 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     }
                 });
                 Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // put forgot password code here when implemented
+                    }
+                });
             }
         });
 
@@ -93,6 +105,8 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         else
         {
             // TODO: persist dialog, shake animation, display help text
+            TextView retryText = (TextView) _alertDialog.findViewById(R.id.login_auth_retry);
+            retryText.setVisibility(View.VISIBLE);
         }
     }
 }
