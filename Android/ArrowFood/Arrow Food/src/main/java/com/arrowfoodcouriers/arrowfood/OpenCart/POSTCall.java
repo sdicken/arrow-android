@@ -43,7 +43,6 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
         ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[2];
         String response = "";
         try {
-            Thread.sleep(3000L);
             // create the request
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             // set cookies
@@ -93,8 +92,6 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
 
         } catch (IOException ex) {
             return "Error in RESTCall execution";
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         return response;
     }
