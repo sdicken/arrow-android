@@ -30,6 +30,13 @@ public class OpenCartSession implements RESTCallback{
     private String _lastName;
     private String _telephone;
 
+    // POST without dialog callback
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this);
+        request.execute(url, data, _cookieManager);
+    }
+
+    // POST with dialog callback
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, LoginDialogCallback loginDialogCallback) throws IOException, ExecutionException, InterruptedException {
         POSTCall request = new POSTCall(task, this, loginDialogCallback);
         request.execute(url, data, _cookieManager);
@@ -40,6 +47,7 @@ public class OpenCartSession implements RESTCallback{
         request.execute(url, _cookieManager);
     }
 
+    // line numbers for parsing method
     private final Integer FirstNameLine = 156;
     private final Integer LastNameLine = 161;
     private final Integer TelephoneLine = 171;

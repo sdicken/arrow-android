@@ -8,11 +8,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Android-based threading abstraction class used for GETs.
+ */
 public class GETCall extends AsyncTask<Object, Integer, String>
 {
     private OpenCartTask _task;
     private RESTCallback _RESTCallback;
 
+    /**
+     *
+     * @param task The task the POST is being executed for.
+     * @param restCallback The listener waiting for task completion callback.
+     */
     public GETCall(OpenCartTask task, RESTCallback restCallback)
     {
         _task = task;

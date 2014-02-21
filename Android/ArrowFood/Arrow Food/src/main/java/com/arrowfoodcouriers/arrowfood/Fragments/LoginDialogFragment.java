@@ -43,12 +43,13 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {}
+                    public void onClick(DialogInterface dialogInterface, int which) {} // disable default behavior of close on positiveButton
                 }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {}
         }).create();
 
+        // Prevents automatic dismissal of dialog window on positive button click
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {

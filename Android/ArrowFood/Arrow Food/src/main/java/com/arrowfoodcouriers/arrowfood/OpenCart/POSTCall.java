@@ -1,7 +1,6 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.os.AsyncTask;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,16 +14,37 @@ import java.util.Set;
 
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 
+/**
+ * Android-based threading abstraction class used for POSTs.
+ */
 public class POSTCall extends AsyncTask<Object, Integer, String>
 {
     private OpenCartTask _task;
     private RESTCallback _RESTCallback;
     private LoginDialogCallback _loginDialogCallback;
 
-    public POSTCall(OpenCartTask task, RESTCallback listener, LoginDialogCallback loginDialogCallback)
+    /**
+     * Constructor for POSTs without a dialog listener.
+     * @param task The task the POST is being executed for.
+     * @param restCallback The listener waiting for task completion callback.
+     */
+    public POSTCall(OpenCartTask task, RESTCallback restCallback)
     {
         _task = task;
-        _RESTCallback = listener;
+        _RESTCallback = restCallback;
+        _loginDialogCallback = null;
+    }
+
+    /**
+     * Constructor for POSTs with a dialog listener.
+     * @param task The task the POST is being executed for.
+     * @param restCallback The listener waiting for task completion callback.
+     * @param loginDialogCallback The listener waiting to update dialog in UI.
+     */
+    public POSTCall(OpenCartTask task, RESTCallback restCallback, LoginDialogCallback loginDialogCallback)
+    {
+        _task = task;
+        _RESTCallback = restCallback;
         _loginDialogCallback = loginDialogCallback;
     }
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
@@ -33,7 +53,10 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
 
     @Override
     protected void onPreExecute() {
-        _loginDialogCallback.onTaskStart();
+        if(_loginDialogCallback != null)
+        {
+            _loginDialogCallback.onTaskStart(); // won't always be a dialog listener
+        }
     }
 
     @Override
