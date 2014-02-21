@@ -37,8 +37,8 @@ public class LoginDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        _loginClass.LoginUser("test", "test");
-//                        session.Login("e674501@drdrb.com","pass");
+//                        _loginClass.LoginUser("test", "test");
+                        session.Login("e674501@drdrb.com","pass");
                         ListView listView = (ListView)getActivity().findViewById(R.id.left_drawer);
                         ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
                     }

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class OpenCartSession {
+public class OpenCartSession implements RESTCallback{
     public final Boolean DEBUG = true;
 
     public final String Server = "http://192.168.1.185/";
@@ -26,8 +26,8 @@ public class OpenCartSession {
     private String _lastName;
     private String _telephone;
 
-    private String DoPOST(URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall();
+    private String DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this);
         request.execute(url, data, _cookieManager);
         return request.get();
     }
@@ -88,16 +88,16 @@ public class OpenCartSession {
     public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
-            String em = DEBUG ? "test@test.test" : email;
-            String pa = DEBUG ? "test" : password;
+            String em = DEBUG ? "e674501@drdrb.com" : email;
+            String pa = DEBUG ? "pass" : password;
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-            DoPOST(url, data);
+            DoPOST(OpenCartTask.LOGIN, url, data);
             _email = email;
-            _authenticated = true;
-            Log.d("Login", "Logged in");
-            Log.d("Cookie", _cookieManager.toString());
+//            _authenticated = true;
+//            Log.d("Login", "Logged in");
+//            Log.d("Cookie", _cookieManager.toString());
             return true;
         } catch (Exception ex) {
             Log.e("Login", "Caught exception");
@@ -114,7 +114,7 @@ public class OpenCartSession {
             // TODO: Fix
             //DoPOST(url, registration.GetJson());
             _email = registration.Email;
-            _authenticated = true;
+//            _authenticated = true;
             return true;
         } catch (Exception ex) {
             return false;
@@ -126,9 +126,9 @@ public class OpenCartSession {
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(url, new HashMap<String, String>());
+            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>());
             _email = null;
-            _authenticated = false;
+//            _authenticated = false;
         } catch (Exception ex) {
             Log.e("Logout()", "Caught exception!");
         }
@@ -154,9 +154,44 @@ public class OpenCartSession {
         try {
             URL url = new URL(Server + EditAccountRoute);
             String response = DoGET(url);
-            ParseEditHTML(response);
+//            ParseEditHTML(response);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
         }
+    }
+
+    @Override
+    public void onTaskCompleted(OpenCartTask task, String response) {
+        switch(task)
+        {
+            case ORDER:
+            {
+                // nothing to do
+                break;
+            }
+            case LOGOUT:
+            {
+                _authenticated = false;
+                break;
+            }
+            case REGISTER:
+            {
+                _authenticated = true;
+                break;
+            }
+            case LOGIN:
+            {
+                _authenticated = true;
+                Log.d("Login", "Logged in");
+                Log.d("Cookie", _cookieManager.toString());
+                break;
+            }
+            case USER_DATA_LOADED:
+            {
+                ParseEditHTML(response);
+                break;
+            }
+        }
+        Log.d("Response", response);
     }
 }

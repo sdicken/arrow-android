@@ -13,7 +13,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class POSTCall extends AsyncTask<Object, Integer, String> {
+public class POSTCall extends AsyncTask<Object, Integer, String>
+{
+    private OpenCartTask _task;
+    private RESTCallback _listener;
+
+    public POSTCall(OpenCartTask task, RESTCallback listener)
+    {
+        _task = task;
+        _listener = listener;
+    }
+
     @Override
     protected String doInBackground(Object... objects) {
         URL url = (URL) objects[0];
@@ -67,5 +77,10 @@ public class POSTCall extends AsyncTask<Object, Integer, String> {
             return "Error in RESTCall execution";
         }
         return response;
+    }
+
+    @Override
+    protected void onPostExecute(String response) {
+        _listener.onTaskCompleted(_task, response);
     }
 }
