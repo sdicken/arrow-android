@@ -2,7 +2,6 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,19 +12,20 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import com.arrowfoodcouriers.arrowfood.R;
+
+import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 
 public class POSTCall extends AsyncTask<Object, Integer, String>
 {
     private OpenCartTask _task;
-    private RESTCallback _listener;
-    private ProgressBar _progressBar;
+    private RESTCallback _RESTCallback;
+    private LoginDialogCallback _loginDialogCallback;
 
-    public POSTCall(OpenCartTask task, RESTCallback listener, View view)
+    public POSTCall(OpenCartTask task, RESTCallback listener, LoginDialogCallback loginDialogCallback)
     {
         _task = task;
-        _listener = listener;
-        _progressBar = (ProgressBar) view.findViewById(R.id.login_activity_circle);
+        _RESTCallback = listener;
+        _loginDialogCallback = loginDialogCallback;
     }
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
@@ -33,7 +33,7 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
 
     @Override
     protected void onPreExecute() {
-        _progressBar.setVisibility(View.VISIBLE);
+        _loginDialogCallback.onTaskStart();
     }
 
     @Override
@@ -101,7 +101,6 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
 
     @Override
     protected void onPostExecute(String response) {
-        _progressBar.setVisibility(View.GONE);
-        _listener.onTaskCompleted(_task, response);
+        _RESTCallback.onTaskCompleted(_task, response);
     }
 }

@@ -3,6 +3,8 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 import android.util.Log;
 import android.view.View;
 
+import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -22,14 +24,14 @@ public class OpenCartSession implements RESTCallback{
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
-    private View _view;
+    private LoginDialogCallback _loginDialogCallback;
 
     private String _firstName;
     private String _lastName;
     private String _telephone;
 
-    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, View view) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this, _view);
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, LoginDialogCallback loginDialogCallback) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this, loginDialogCallback);
         request.execute(url, data, _cookieManager);
 //        return request.get();
     }
@@ -62,10 +64,10 @@ public class OpenCartSession implements RESTCallback{
         _telephone = phone;
     }
 
-    public OpenCartSession(View view) {
+    public OpenCartSession(LoginDialogCallback loginDialogCallback) {
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
-        _view = view;
+        _loginDialogCallback = loginDialogCallback;
         try {
 //            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
             DoGET(new URL(Server));
@@ -102,7 +104,7 @@ public class OpenCartSession implements RESTCallback{
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-            DoPOST(OpenCartTask.LOGIN, url, data, _view);
+            DoPOST(OpenCartTask.LOGIN, url, data, _loginDialogCallback);
             _email = email;
 //            _authenticated = true;
 //            Log.d("Login", "Logged in");
@@ -135,7 +137,7 @@ public class OpenCartSession implements RESTCallback{
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>(), _view);
+            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>(), _loginDialogCallback);
             _email = null;
 //            _authenticated = false;
         } catch (Exception ex) {
@@ -192,8 +194,9 @@ public class OpenCartSession implements RESTCallback{
             case LOGIN:
             {
                 _authenticated = true;
-                Log.d("Login", "Logged in");
-                Log.d("Cookie", _cookieManager.toString());
+                _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
+//                Log.d("Login", "Logged in");
+//                Log.d("Cookie", _cookieManager.toString());
                 break;
             }
             case USER_DATA_LOADED:

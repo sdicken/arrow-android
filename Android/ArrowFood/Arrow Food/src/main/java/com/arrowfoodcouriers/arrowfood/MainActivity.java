@@ -58,7 +58,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);  // prevent delay in loading ActionBar
         getActionBar().hide();
         setContentView(R.layout.activity_main);
         getActionBar().show();
