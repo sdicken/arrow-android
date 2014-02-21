@@ -1,6 +1,8 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,20 +13,28 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import com.arrowfoodcouriers.arrowfood.R;
 
 public class POSTCall extends AsyncTask<Object, Integer, String>
 {
     private OpenCartTask _task;
     private RESTCallback _listener;
+    private ProgressBar _progressBar;
 
-    public POSTCall(OpenCartTask task, RESTCallback listener)
+    public POSTCall(OpenCartTask task, RESTCallback listener, View view)
     {
         _task = task;
         _listener = listener;
+        _progressBar = (ProgressBar) view.findViewById(R.id.login_activity_circle);
     }
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
     private final String _doubleHyphen = "--";
+
+    @Override
+    protected void onPreExecute() {
+        _progressBar.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -33,6 +43,7 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
         ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[2];
         String response = "";
         try {
+            Thread.sleep(3000L);
             // create the request
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             // set cookies
@@ -82,12 +93,15 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
 
         } catch (IOException ex) {
             return "Error in RESTCall execution";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return response;
     }
 
     @Override
     protected void onPostExecute(String response) {
+        _progressBar.setVisibility(View.GONE);
         _listener.onTaskCompleted(_task, response);
     }
 }

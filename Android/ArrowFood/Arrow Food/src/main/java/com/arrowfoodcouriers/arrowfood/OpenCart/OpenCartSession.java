@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.util.Log;
+import android.view.View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,13 +22,14 @@ public class OpenCartSession implements RESTCallback{
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
+    private View _view;
 
     private String _firstName;
     private String _lastName;
     private String _telephone;
 
-    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this);
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, View view) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this, _view);
         request.execute(url, data, _cookieManager);
 //        return request.get();
     }
@@ -60,9 +62,10 @@ public class OpenCartSession implements RESTCallback{
         _telephone = phone;
     }
 
-    public OpenCartSession() {
+    public OpenCartSession(View view) {
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
+        _view = view;
         try {
 //            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
             DoGET(new URL(Server));
@@ -99,7 +102,7 @@ public class OpenCartSession implements RESTCallback{
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-            DoPOST(OpenCartTask.LOGIN, url, data);
+            DoPOST(OpenCartTask.LOGIN, url, data, _view);
             _email = email;
 //            _authenticated = true;
 //            Log.d("Login", "Logged in");
@@ -132,7 +135,7 @@ public class OpenCartSession implements RESTCallback{
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>());
+            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>(), _view);
             _email = null;
 //            _authenticated = false;
         } catch (Exception ex) {
@@ -199,6 +202,6 @@ public class OpenCartSession implements RESTCallback{
                 break;
             }
         }
-        Log.d("Response", response);
+//        Log.d("Response", response);
     }
 }

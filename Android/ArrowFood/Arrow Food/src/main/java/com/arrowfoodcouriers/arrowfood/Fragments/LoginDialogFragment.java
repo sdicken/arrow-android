@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -29,9 +30,10 @@ public class LoginDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final OpenCartSession session = new OpenCartSession();
+        final View dialogView = inflater.inflate(R.layout.dialog_signin, null);
+        final OpenCartSession session = new OpenCartSession(dialogView);
 
-        builder.setView(inflater.inflate(R.layout.dialog_signin, null))
+        builder.setView(dialogView)
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
                     @Override
