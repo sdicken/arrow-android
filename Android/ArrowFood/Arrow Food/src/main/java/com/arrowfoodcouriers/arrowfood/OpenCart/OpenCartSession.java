@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class OpenCartSession implements RESTCallback{
-    public final Boolean DEBUG = false;
+    public final Boolean DEBUG = true;
 
     public final String Server = "http://192.168.1.185/";
     public final String LoginRoute = "index.php?route=account/login";
@@ -138,7 +138,7 @@ public class OpenCartSession implements RESTCallback{
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>(), _loginDialogCallback);
+            DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>());
             _email = null;
         } catch (Exception ex) {
             Log.e("Logout()", "Caught exception!");
@@ -191,7 +191,7 @@ public class OpenCartSession implements RESTCallback{
             }
             case LOGIN:
             {
-                _authenticated = false;
+                _authenticated = true;
                 _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
                 break;
             }
