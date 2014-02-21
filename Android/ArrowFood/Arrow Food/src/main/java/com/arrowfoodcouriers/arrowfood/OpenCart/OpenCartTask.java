@@ -5,5 +5,5 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
  */
 public enum OpenCartTask
 {
-    LOGIN, LOGOUT, ORDER, USER_DATA_LOADED, REGISTER;
+    LOGIN, LOGOUT, ORDER, USER_DATA_LOADED, REGISTER, CONSTRUCTOR;
 }

@@ -35,8 +35,8 @@ public class OpenCartSession implements RESTCallback{
         request.execute(url, data, _cookieManager);
     }
 
-    private void DoGET(URL url) throws IOException, ExecutionException, InterruptedException {
-        GETCall request = new GETCall();
+    private void DoGET(OpenCartTask task, URL url) throws IOException, ExecutionException, InterruptedException {
+        GETCall request = new GETCall(task, this);
         request.execute(url, _cookieManager);
     }
 
@@ -67,7 +67,7 @@ public class OpenCartSession implements RESTCallback{
         _authenticated = false;
         _loginDialogCallback = loginDialogCallback;
         try {
-            DoGET(new URL(Server));
+            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server));
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
@@ -156,7 +156,7 @@ public class OpenCartSession implements RESTCallback{
 
         try {
             URL url = new URL(Server + EditAccountRoute);
-            DoGET(url);
+            DoGET(OpenCartTask.USER_DATA_LOADED, url);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
         }
@@ -190,6 +190,11 @@ public class OpenCartSession implements RESTCallback{
             case USER_DATA_LOADED:
             {
                 ParseEditHTML(response);
+                break;
+            }
+            case CONSTRUCTOR:
+            {
+                // no action necessary
                 break;
             }
         }
