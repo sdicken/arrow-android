@@ -33,13 +33,11 @@ public class OpenCartSession implements RESTCallback{
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, LoginDialogCallback loginDialogCallback) throws IOException, ExecutionException, InterruptedException {
         POSTCall request = new POSTCall(task, this, loginDialogCallback);
         request.execute(url, data, _cookieManager);
-//        return request.get();
     }
 
     private void DoGET(URL url) throws IOException, ExecutionException, InterruptedException {
         GETCall request = new GETCall();
         request.execute(url, _cookieManager);
-//        return request.get();
     }
 
     private final Integer FirstNameLine = 156;
@@ -69,7 +67,6 @@ public class OpenCartSession implements RESTCallback{
         _authenticated = false;
         _loginDialogCallback = loginDialogCallback;
         try {
-//            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
             DoGET(new URL(Server));
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
@@ -106,9 +103,6 @@ public class OpenCartSession implements RESTCallback{
             data.put("password", pa);
             DoPOST(OpenCartTask.LOGIN, url, data, _loginDialogCallback);
             _email = email;
-//            _authenticated = true;
-//            Log.d("Login", "Logged in");
-//            Log.d("Cookie", _cookieManager.toString());
             return true;
         } catch (Exception ex) {
             Log.e("Login", "Caught exception");
@@ -125,7 +119,6 @@ public class OpenCartSession implements RESTCallback{
             // TODO: Fix
             //DoPOST(url, registration.GetJson());
             _email = registration.Email;
-//            _authenticated = true;
             return true;
         } catch (Exception ex) {
             return false;
@@ -139,7 +132,6 @@ public class OpenCartSession implements RESTCallback{
             URL url = new URL(Server + LogoutRoute);
             DoPOST(OpenCartTask.LOGOUT, url, new HashMap<String, String>(), _loginDialogCallback);
             _email = null;
-//            _authenticated = false;
         } catch (Exception ex) {
             Log.e("Logout()", "Caught exception!");
         }
@@ -165,8 +157,6 @@ public class OpenCartSession implements RESTCallback{
         try {
             URL url = new URL(Server + EditAccountRoute);
             DoGET(url);
-//            String response = DoGET(url);
-//            ParseEditHTML(response);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
         }
@@ -195,8 +185,6 @@ public class OpenCartSession implements RESTCallback{
             {
                 _authenticated = true;
                 _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
-//                Log.d("Login", "Logged in");
-//                Log.d("Cookie", _cookieManager.toString());
                 break;
             }
             case USER_DATA_LOADED:
@@ -205,6 +193,5 @@ public class OpenCartSession implements RESTCallback{
                 break;
             }
         }
-//        Log.d("Response", response);
     }
 }

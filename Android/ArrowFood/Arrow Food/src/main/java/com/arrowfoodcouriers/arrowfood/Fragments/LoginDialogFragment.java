@@ -43,17 +43,10 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-//                        _loginClass.LoginUser("test", "test");
-//                        session.Login("e674501@drdrb.com", "pass");
-//                        ListView listView = (ListView) getActivity().findViewById(R.id.left_drawer);
-//                        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
-                    }
+                    public void onClick(DialogInterface dialogInterface, int which) {}
                 }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int which) {
-
-            }
+            public void onClick(DialogInterface dialogInterface, int which) {}
         }).create();
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -89,7 +82,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         }
         else
         {
-            // persist dialog, shake animation, display help text
+            // TODO: persist dialog, shake animation, display help text
         }
     }
 }
