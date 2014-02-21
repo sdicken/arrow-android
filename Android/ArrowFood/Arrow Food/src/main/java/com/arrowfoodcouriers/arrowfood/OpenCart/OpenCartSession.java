@@ -26,16 +26,16 @@ public class OpenCartSession implements RESTCallback{
     private String _lastName;
     private String _telephone;
 
-    private String DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
         POSTCall request = new POSTCall(task, this);
         request.execute(url, data, _cookieManager);
-        return request.get();
+//        return request.get();
     }
 
-    private String DoGET(URL url) throws IOException, ExecutionException, InterruptedException {
+    private void DoGET(URL url) throws IOException, ExecutionException, InterruptedException {
         GETCall request = new GETCall();
         request.execute(url, _cookieManager);
-        return request.get();
+//        return request.get();
     }
 
     private final Integer FirstNameLine = 156;
@@ -64,7 +64,8 @@ public class OpenCartSession implements RESTCallback{
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
         try {
-            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
+//            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
+            DoGET(new URL(Server));
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
@@ -158,7 +159,8 @@ public class OpenCartSession implements RESTCallback{
 
         try {
             URL url = new URL(Server + EditAccountRoute);
-            String response = DoGET(url);
+            DoGET(url);
+//            String response = DoGET(url);
 //            ParseEditHTML(response);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
