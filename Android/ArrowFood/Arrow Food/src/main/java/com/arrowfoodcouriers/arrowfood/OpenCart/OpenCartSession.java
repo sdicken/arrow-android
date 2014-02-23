@@ -2,13 +2,17 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.util.Log;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.NavigationDrawerCallback;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class OpenCartSession {
+public class OpenCartSession implements RESTCallback, IOpenCartSession{
     public final Boolean DEBUG = true;
 
     public final String Server = "http://192.168.1.185/";
@@ -24,30 +28,32 @@ public class OpenCartSession {
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
+    private LoginDialogCallback _loginDialogCallback;
+    private NavigationDrawerCallback _navigationDrawerCallback;
 
     private String _firstName;
     private String _lastName;
     private String _telephone;
 
-    private String DoPOST(URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall();
+    // POST without urlEncode
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this);
         request.execute(url, data, _cookieManager);
-        return request.get();
     }
 
-    private String DoPOST(URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall();
+    // POST with urlEncode
+    private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall(task, this);
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
-        return request.get();
     }
 
-    private String DoGET(URL url) throws IOException, ExecutionException, InterruptedException {
-        GETCall request = new GETCall();
+    private void DoGET(OpenCartTask task, URL url) throws IOException, ExecutionException, InterruptedException {
+        GETCall request = new GETCall(task, this);
         request.execute(url, _cookieManager);
-        return request.get();
     }
 
+    // line numbers for parsing method
     private final Integer FirstNameLine = 156;
     private final Integer LastNameLine = 161;
     private final Integer TelephoneLine = 171;
@@ -74,10 +80,20 @@ public class OpenCartSession {
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
         try {
-            Log.d("Getting index so PHP knows who we are", DoGET(new URL(Server)));
+            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server));
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
+    }
+
+    public void AttachLoginDialogCallback(LoginDialogCallback loginDialogCallback)
+    {
+        _loginDialogCallback = loginDialogCallback;
+    }
+
+    public void AttachNavigationDrawerCallback(NavigationDrawerCallback navigationDrawerCallback)
+    {
+        _navigationDrawerCallback = navigationDrawerCallback;
     }
 
     public String GetEmail() {
@@ -103,16 +119,13 @@ public class OpenCartSession {
     public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
-            String em = DEBUG ? "test@test.test" : email;
-            String pa = DEBUG ? "test" : password;
+            String em = DEBUG ? "e674501@drdrb.com" : email;
+            String pa = DEBUG ? "pass" : password;
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-            DoPOST(url, data);
+            DoPOST(OpenCartTask.LOGIN, url, data);
             _email = email;
-            _authenticated = true;
-            Log.d("Login", "Logged in");
-            Log.d("Cookie", _cookieManager.toString());
             return true;
         } catch (Exception ex) {
             Log.e("Login", "Caught exception");
@@ -126,9 +139,8 @@ public class OpenCartSession {
         }
         try {
             URL url = new URL(Server + RegisterRoute);
-            DoPOST(url, registration.GetData());
+            DoPOST(OpenCartTask.REGISTER, url, registration.GetData());
             _email = registration.Email;
-            _authenticated = true;
             return true;
         } catch (Exception ex) {
             return false;
@@ -140,9 +152,8 @@ public class OpenCartSession {
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoGET(url);
+            DoGET(OpenCartTask.LOGOUT, url);
             _email = null;
-            _authenticated = false;
         } catch (Exception ex) {
             Log.e("Logout()", "Caught exception!");
         }
@@ -167,7 +178,7 @@ public class OpenCartSession {
             URL url = new URL(Server + AddItemRoute);
             // Needs to do a URLEncoded POST
             // option[134]=kljsfjkfd&option[234]=lkjfi3&quatity=2&product_id=42
-            String response = DoPOST(url, item.GetData(), true);
+            DoPOST(OpenCartTask.ADD_TO_CART, url, item.GetData(), true);
             return true;
         } catch (Exception ex) {
             return false;
@@ -179,8 +190,7 @@ public class OpenCartSession {
 
         try {
             URL url = new URL(Server + EditAccountRoute);
-            String response = DoGET(url);
-            ParseEditHTML(response);
+            DoGET(OpenCartTask.USER_DATA_LOADED, url);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
         }
@@ -192,7 +202,7 @@ public class OpenCartSession {
             Map<String, String> data = new HashMap<String, String>();
             data.put("coupon", coupon);
             data.put("next", "coupon");
-            String response = DoPOST(url, data);
+            DoPOST(OpenCartTask.APPLY_COUPON, url, data);
             return true;
         } catch (Exception ex) {
             return false;
@@ -205,10 +215,62 @@ public class OpenCartSession {
             Map<String, String> data = new HashMap<String, String>();
             data.put("voucher", voucher);
             data.put("next", "voucher");
-            String response = DoPOST(url, data);
+            DoPOST(OpenCartTask.APPLY_VOUCHER, url, data);
             return true;
         } catch (Exception ex) {
             return false;
+        }
+    }
+
+    @Override
+    public void onTaskCompleted(OpenCartTask task, String response) {
+        switch(task)
+        {
+            case ORDER:
+            {
+                // nothing to do
+                break;
+            }
+            case LOGOUT:
+            {
+                _authenticated = false;
+                _navigationDrawerCallback.onNavigationDrawerUpdated();
+                break;
+            }
+            case REGISTER:
+            {
+                _authenticated = true;
+                break;
+            }
+            case LOGIN:
+            {
+                _authenticated = true;
+                _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
+                _navigationDrawerCallback.onNavigationDrawerUpdated();
+                break;
+            }
+            case USER_DATA_LOADED:
+            {
+                ParseEditHTML(response);
+                break;
+            }
+            case CONSTRUCTOR:
+            {
+                // no action necessary
+                break;
+            }
+            case ADD_TO_CART:
+            {
+                break;
+            }
+            case APPLY_VOUCHER:
+            {
+                break;
+            }
+            case APPLY_COUPON:
+            {
+                break;
+            }
         }
     }
 }

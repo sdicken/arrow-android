@@ -1,6 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,7 @@ import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
 import com.arrowfoodcouriers.arrowfood.DrawerValues;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
-import com.arrowfoodcouriers.arrowfood.MainActivity;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**
@@ -23,12 +21,12 @@ public class DrawerListAdapter extends BaseAdapter {
     private static final int DRAWER_LIST_SECTION = 1;
     private static final int DRAWER_LIST_ITEM = 0;
 
-    private ILoginClass mLoginClass;
+    private IOpenCartSession _session;
     private DrawerValues mDrawerValues;
 
-    public DrawerListAdapter(ILoginClass loginClass) {
-        this.mLoginClass = loginClass;
-        mDrawerValues = new DrawerValues(loginClass);
+    public DrawerListAdapter(IOpenCartSession session) {
+        this._session = session;
+        mDrawerValues = new DrawerValues(session);
     }
 
     @Override

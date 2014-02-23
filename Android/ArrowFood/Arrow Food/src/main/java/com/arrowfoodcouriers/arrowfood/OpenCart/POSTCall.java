@@ -13,13 +13,54 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class POSTCall extends AsyncTask<Object, Integer, String> {
+import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 
+/**
+ * Android-based threading abstraction class used for POSTs.
+ */
+public class POSTCall extends AsyncTask<Object, Integer, String>
+{
+    private OpenCartTask _task;
+    private RESTCallback _RESTCallback;
+    private LoginDialogCallback _loginDialogCallback;
+
+    /**
+     * Constructor for POSTs without a dialog listener.
+     * @param task The task the POST is being executed for.
+     * @param restCallback The listener waiting for task completion callback.
+     */
+    public POSTCall(OpenCartTask task, RESTCallback restCallback)
+    {
+        _task = task;
+        _RESTCallback = restCallback;
+        _loginDialogCallback = null;
+    }
+
+    /**
+     * Constructor for POSTs with a dialog listener.
+     * @param task The task the POST is being executed for.
+     * @param restCallback The listener waiting for task completion callback.
+     * @param loginDialogCallback The listener waiting to update dialog in UI.
+     */
+    public POSTCall(OpenCartTask task, RESTCallback restCallback, LoginDialogCallback loginDialogCallback)
+    {
+        _task = task;
+        _RESTCallback = restCallback;
+        _loginDialogCallback = loginDialogCallback;
+    }
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
     private final String _doubleHyphen = "--";
 
     public Boolean urlEncodeData = false;
+
+    @Override
+    protected void onPreExecute() {
+        if(_loginDialogCallback != null)
+        {
+            _loginDialogCallback.onTaskStart(); // won't always be a dialog listener
+        }
+    }
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -48,6 +89,7 @@ public class POSTCall extends AsyncTask<Object, Integer, String> {
             Set keys = data.keySet();
             Iterator keyIter = keys.iterator();
             String content = "";
+
             if (urlEncodeData) {
                 for (int i = 0; keyIter.hasNext(); ++i) {
                     Object key = keyIter.next();
@@ -98,5 +140,10 @@ public class POSTCall extends AsyncTask<Object, Integer, String> {
             return "Error in RESTCall execution";
         }
         return response;
+    }
+
+    @Override
+    protected void onPostExecute(String response) {
+        _RESTCallback.onTaskCompleted(_task, response);
     }
 }
