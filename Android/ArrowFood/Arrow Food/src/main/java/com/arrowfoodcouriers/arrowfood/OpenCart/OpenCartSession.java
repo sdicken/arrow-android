@@ -37,13 +37,13 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
 
     // POST without urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this);
+        POSTCall request = new POSTCall(task, this, _loginDialogCallback);
         request.execute(url, data, _cookieManager);
     }
 
     // POST with urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this);
+        POSTCall request = new POSTCall(task, this, _loginDialogCallback);
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
     }
