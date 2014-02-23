@@ -194,7 +194,6 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
             {
                 _authenticated = false;
                 _navigationDrawerCallback.onNavigationDrawerUpdated();
-                Log.d("Logout", "Logged out");
                 break;
             }
             case REGISTER:

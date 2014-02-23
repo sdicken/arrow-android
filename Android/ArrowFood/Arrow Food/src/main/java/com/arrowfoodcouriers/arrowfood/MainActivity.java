@@ -183,7 +183,6 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
 
             case SIGN_OUT_NAV_DRAWER_POSITION: {
                 fragment = new PlaceholderFragment();
-                Log.d("MainActivity", "Sign out command issued");
                 _session.Logout();
                 break;
             }
