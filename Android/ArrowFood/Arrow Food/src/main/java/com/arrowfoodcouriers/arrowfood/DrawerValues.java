@@ -1,6 +1,6 @@
 package com.arrowfoodcouriers.arrowfood;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 
 /**
  * Created by Ryan on 2/6/14.
@@ -33,14 +33,14 @@ public class DrawerValues {
             new DrawerListObject("About Us", 8, R.drawable.ic_action_about)
     };
 
-    private ILoginClass _loginClass;
+    private IOpenCartSession _session;
 
-    public DrawerValues(ILoginClass loginClass)
+    public DrawerValues(IOpenCartSession session)
     {
-        this._loginClass = loginClass;
+        this._session = session;
     }
 
     public Object[] getDrawerValues() {
-        return (_loginClass.IsUserLoggedIn()) ? DRAWER_VALUES_LOGGED_IN : DRAWER_VALUES_LOGGED_OUT;
+        return (_session.IsAuthenticated()) ? DRAWER_VALUES_LOGGED_IN : DRAWER_VALUES_LOGGED_OUT;
     }
 }
