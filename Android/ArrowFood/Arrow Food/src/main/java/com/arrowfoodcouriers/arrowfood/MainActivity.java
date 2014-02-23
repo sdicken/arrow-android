@@ -46,6 +46,8 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
     private static final int ABOUT_NAV_DRAWER_POSITION = 8;
     private static final int SIGN_OUT_NAV_DRAWER_POSITION = 9;
 
+    private static final String BUNDLE_TAG_SESSION = "session";
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -64,8 +66,22 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
         setContentView(R.layout.activity_main);
         getActionBar().show();
 
-        _session = new OpenCartSession();
-        _session.AttachNavigationDrawerCallback(this);
+        if(savedInstanceState != null)
+        {
+            _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION);
+            _session.AttachNavigationDrawerCallback(this);
+        }
+        else
+        {
+            _session = new OpenCartSession();
+            _session.AttachNavigationDrawerCallback(this);
+
+            // Create fragment here
+            Fragment fragment = new PlaceholderFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        }
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -96,14 +112,6 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        if (savedInstanceState == null) {
-            // Create fragment here
-            Fragment fragment = new PlaceholderFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
-        }
     }
 
     @Override
@@ -124,6 +132,14 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
         return super.onOptionsItemSelected(item);
     }
 
+    // this gets called when user leaves app running and app gets killed because system needs memory
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_TAG_SESSION, _session);
+    }
+
+    // this is currently not being called
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -131,10 +147,12 @@ public class MainActivity extends Activity implements NavigationDrawerCallback{
         mDrawerToggle.syncState();
     }
 
+    // this gets called when the user changes device orientation or changes screen size
+    // enabled via android:configChanges in AndroidManifest.xml
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggle
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 

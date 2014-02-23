@@ -1,5 +1,8 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -16,7 +19,7 @@ import java.util.StringTokenizer;
  * <p/>
  * Derived from http://www.hccp.org/java-net-cookie-how-to.html
  */
-public class ThisitaCookieManager {
+public class ThisitaCookieManager implements Parcelable{
 
     private Map store;
 
@@ -35,6 +38,13 @@ public class ThisitaCookieManager {
 
     public ThisitaCookieManager() {
         store = new HashMap();
+        dateFormat = new SimpleDateFormat(DATE_FORMAT);
+    }
+
+    private ThisitaCookieManager(Parcel in)
+    {
+        store = new HashMap();
+        in.readMap(store, getClass().getClassLoader());
         dateFormat = new SimpleDateFormat(DATE_FORMAT);
     }
 
@@ -159,5 +169,28 @@ public class ThisitaCookieManager {
 
     public String toString() {
         return store.toString();
+    }
+
+    public static final Creator<ThisitaCookieManager> CREATOR = new Creator<ThisitaCookieManager>()
+    {
+        public ThisitaCookieManager createFromParcel(Parcel in)
+        {
+            return new ThisitaCookieManager(in);
+        }
+
+        @Override
+        public ThisitaCookieManager[] newArray(int size) {
+            return new ThisitaCookieManager[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeMap(store);
     }
 }

@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
@@ -12,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class OpenCartSession implements RESTCallback, IOpenCartSession{
+public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelable{
     public final Boolean DEBUG = true;
 
     public final String Server = "http://192.168.1.185/";
@@ -84,6 +86,12 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
+    }
+
+    private OpenCartSession(Parcel in)
+    {
+        _authenticated = in.readByte() != 0;    // true if byte != 0 (no readBoolean method)
+        _cookieManager = in.readParcelable(getClass().getClassLoader());
     }
 
     public void AttachLoginDialogCallback(LoginDialogCallback loginDialogCallback)
@@ -272,5 +280,32 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
                 break;
             }
         }
+    }
+
+    public static final Creator<OpenCartSession> CREATOR = new Creator<OpenCartSession>()
+    {
+        public OpenCartSession createFromParcel(Parcel in)
+        {
+            return new OpenCartSession(in);
+        }
+
+        @Override
+        public OpenCartSession[] newArray(int size) {
+            return new OpenCartSession[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags)
+    {
+        out.writeByte((byte) (_authenticated ? 1 : 0)); // if _authenticated true, byte == 1 (no writeBoolean method)
+        out.writeParcelable(_cookieManager, 0);
+        // Android reads/writes into internal map using reflection
+        // source: https://stackoverflow.com/questions/4853952/android-parcelable-writetoparcel-and-parcelable-creator-createfromparcel-are-ne
     }
 }
