@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.arrowfoodcouriers.arrowfood.R;
@@ -24,14 +25,14 @@ import com.arrowfoodcouriers.arrowfood.R;
  */
 public class LoginDialogFragment extends DialogFragment implements LoginDialogCallback {
 
-    public ILoginClass _loginClass;
+    private IOpenCartSession _session;
     private ProgressBar _progressBar;
     private Dialog _alertDialog = null;
     private EditText _usernameField;
     private EditText _passwordField;
 
-    public LoginDialogFragment(ILoginClass loginClass) {
-        this._loginClass = loginClass;
+    public LoginDialogFragment(IOpenCartSession session) {
+        this._session = session;
     }
 
     @Override
@@ -39,8 +40,9 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.dialog_signin, null);
-        final OpenCartSession session = new OpenCartSession(this);
+        View dialogView = inflater.inflate(R.layout.dialog_signin, null);
+        //final OpenCartSession session = new OpenCartSession(this);
+        _session.AttachLoginDialogCallback(this);
         _usernameField = (EditText) dialogView.findViewById(R.id.username);
         _passwordField = (EditText) dialogView.findViewById(R.id.password);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.login_activity_circle);
@@ -71,9 +73,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     public void onClick(View view) {
                         String username = _usernameField.getText().toString();
                         String password = _passwordField.getText().toString();
-                        session.Login(username, password);
-                        ListView listView = (ListView) getActivity().findViewById(R.id.left_drawer);
-                        ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+                        _session.Login(username, password);
                     }
                 });
                 Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -81,7 +81,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                 neutralButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // put forgot password code here when implemented
+                        // TODO: put forgot password code here (when implemented)
                     }
                 });
             }
@@ -96,11 +96,13 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
     }
 
     @Override
-    public void onTaskCompleted(Boolean result) {
+    public void onTaskCompleted(Boolean authenticationSuccessful) {
         _progressBar.setVisibility(View.GONE);
-        if(result)
+        if(authenticationSuccessful)
         {
             _alertDialog.dismiss();
+            ListView listView = (ListView) getActivity().findViewById(R.id.left_drawer);
+            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
         else
         {

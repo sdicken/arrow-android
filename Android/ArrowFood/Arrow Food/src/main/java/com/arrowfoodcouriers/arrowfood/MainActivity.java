@@ -27,11 +27,11 @@ import com.arrowfoodcouriers.arrowfood.Fragments.AboutFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
-import com.arrowfoodcouriers.arrowfood.Fragments.LegalFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
+import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 
 public class MainActivity extends Activity {
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-    private LoginClass mLoginClass;
+    private OpenCartSession _session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +64,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         getActionBar().show();
 
-        mLoginClass = new LoginClass();
+        _session = new OpenCartSession();
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(new DrawerListAdapter(mLoginClass));
+        mDrawerList.setAdapter(new DrawerListAdapter(_session));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         configureActionBar();
@@ -182,13 +182,13 @@ public class MainActivity extends Activity {
 
             case SIGN_OUT_NAV_DRAWER_POSITION: {
                 fragment = new PlaceholderFragment();
-                mLoginClass.LogoutUser();
+                _session.Logout();
                 ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
                 break;
             }
 
             case LOGIN_NAV_DRAWER_POSITION: {
-                DialogFragment loginFragment = new LoginDialogFragment(mLoginClass);
+                DialogFragment loginFragment = new LoginDialogFragment(_session);
                 loginFragment.show(getFragmentManager(), "login");
                 ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
                 fragment = new PlaceholderFragment();

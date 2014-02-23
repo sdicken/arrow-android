@@ -3,6 +3,8 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 import android.util.Log;
 import android.view.View;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class OpenCartSession implements RESTCallback{
+public class OpenCartSession implements RESTCallback, IOpenCartSession{
     public final Boolean DEBUG = true;
 
     public final String Server = "http://192.168.1.185/";
@@ -70,15 +72,19 @@ public class OpenCartSession implements RESTCallback{
         _telephone = phone;
     }
 
-    public OpenCartSession(LoginDialogCallback loginDialogCallback) {
+    public OpenCartSession() {
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
-        _loginDialogCallback = loginDialogCallback;
         try {
             DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server));
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
+    }
+
+    public void AttachLoginDialogCallback(LoginDialogCallback loginDialogCallback)
+    {
+        _loginDialogCallback = loginDialogCallback;
     }
 
     public String GetEmail() {
