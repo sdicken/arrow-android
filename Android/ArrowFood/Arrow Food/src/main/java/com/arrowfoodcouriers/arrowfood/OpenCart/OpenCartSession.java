@@ -130,7 +130,7 @@ public class OpenCartSession {
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoPOST(url, new HashMap<String, String>());
+            DoGET(url);
             _email = null;
             _authenticated = false;
         } catch (Exception ex) {
