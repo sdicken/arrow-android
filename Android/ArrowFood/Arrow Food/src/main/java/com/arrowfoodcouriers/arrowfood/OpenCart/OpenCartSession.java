@@ -116,8 +116,7 @@ public class OpenCartSession {
         }
         try {
             URL url = new URL(Server + RegisterRoute);
-            // TODO: Fix
-            //DoPOST(url, registration.GetJson());
+            DoPOST(url, registration.GetData());
             _email = registration.Email;
             _authenticated = true;
             return true;
