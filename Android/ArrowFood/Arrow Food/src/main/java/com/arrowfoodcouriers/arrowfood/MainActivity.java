@@ -34,7 +34,7 @@ import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements NavigationDrawerCallback{
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
     private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
         getActionBar().show();
 
         _session = new OpenCartSession();
+        _session.AttachNavigationDrawerCallback(this);
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -182,15 +183,14 @@ public class MainActivity extends Activity {
 
             case SIGN_OUT_NAV_DRAWER_POSITION: {
                 fragment = new PlaceholderFragment();
+                Log.d("MainActivity", "Sign out command issued");
                 _session.Logout();
-                ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
                 break;
             }
 
             case LOGIN_NAV_DRAWER_POSITION: {
                 DialogFragment loginFragment = new LoginDialogFragment(_session);
                 loginFragment.show(getFragmentManager(), "login");
-                ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
                 fragment = new PlaceholderFragment();
                 break;
             }
@@ -215,6 +215,12 @@ public class MainActivity extends Activity {
         actionBar.setLogo(R.drawable.white_drawer2);        // use navigation drawer indicator as logo
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public void onNavigationDrawerUpdated() {
+        ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
+    }
+
 
     public static class PlaceholderFragment extends Fragment {
 

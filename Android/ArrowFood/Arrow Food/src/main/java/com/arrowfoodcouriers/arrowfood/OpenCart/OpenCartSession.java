@@ -1,11 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.util.Log;
-import android.view.View;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.NavigationDrawerCallback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +26,7 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
     private String _email;
     private Boolean _authenticated;
     private LoginDialogCallback _loginDialogCallback;
+    private NavigationDrawerCallback _navigationDrawerCallback;
 
     private String _firstName;
     private String _lastName;
@@ -85,6 +85,11 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
     public void AttachLoginDialogCallback(LoginDialogCallback loginDialogCallback)
     {
         _loginDialogCallback = loginDialogCallback;
+    }
+
+    public void AttachNavigationDrawerCallback(NavigationDrawerCallback navigationDrawerCallback)
+    {
+        _navigationDrawerCallback = navigationDrawerCallback;
     }
 
     public String GetEmail() {
@@ -188,6 +193,8 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
             case LOGOUT:
             {
                 _authenticated = false;
+                _navigationDrawerCallback.onNavigationDrawerUpdated();
+                Log.d("Logout", "Logged out");
                 break;
             }
             case REGISTER:
@@ -199,6 +206,7 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession{
             {
                 _authenticated = true;
                 _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
+                _navigationDrawerCallback.onNavigationDrawerUpdated();
                 break;
             }
             case USER_DATA_LOADED:

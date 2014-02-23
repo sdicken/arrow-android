@@ -101,8 +101,6 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         if(authenticationSuccessful)
         {
             _alertDialog.dismiss();
-            ListView listView = (ListView) getActivity().findViewById(R.id.left_drawer);
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
         else
         {
