@@ -171,6 +171,7 @@ public class ThisitaCookieManager implements Parcelable{
         return store.toString();
     }
 
+    // needed when app killed in background because system needs more memory
     public static final Creator<ThisitaCookieManager> CREATOR = new Creator<ThisitaCookieManager>()
     {
         public ThisitaCookieManager createFromParcel(Parcel in)

@@ -282,6 +282,7 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
         }
     }
 
+    // needed when app killed in background because system needs memory
     public static final Creator<OpenCartSession> CREATOR = new Creator<OpenCartSession>()
     {
         public OpenCartSession createFromParcel(Parcel in)
