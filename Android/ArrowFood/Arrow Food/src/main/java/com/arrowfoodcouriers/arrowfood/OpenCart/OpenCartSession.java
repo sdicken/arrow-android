@@ -15,7 +15,8 @@ public class OpenCartSession {
     public final String LoginRoute = "index.php?route=account/login";
     public final String RegisterRoute = "index.php?route=account/register";
     public final String EditAccountRoute = "index.php?route=account/edit";
-    public final String LogoutRoute = "index.php?route=account/logout"; // TODO: Check me!
+    public final String AddItemRoute = "index.php?route=checkout/cart/add";
+    public final String LogoutRoute = "index.php?route=account/logout";
     public final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
     private ThisitaCookieManager _cookieManager;
@@ -28,6 +29,13 @@ public class OpenCartSession {
 
     private String DoPOST(URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
         POSTCall request = new POSTCall();
+        request.execute(url, data, _cookieManager);
+        return request.get();
+    }
+
+    private String DoPOST(URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
+        POSTCall request = new POSTCall();
+        request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
         return request.get();
     }
@@ -146,6 +154,18 @@ public class OpenCartSession {
             URL url = new URL(Server + OrderRoute);
             // TODO: Fix
             //DoPOST(url, order.GetJson());
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public Boolean AddToCart(OpenCartItem item) {
+        try {
+            URL url = new URL(Server + AddItemRoute);
+            // Needs to do a URLEncoded POST
+            // option[134]=kljsfjkfd&option[234]=lkjfi3&quatity=2&product_id=42
+            String response = DoPOST(url, item.GetData(), true);
             return true;
         } catch (Exception ex) {
             return false;
