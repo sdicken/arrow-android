@@ -198,4 +198,17 @@ public class OpenCartSession {
             return false;
         }
     }
+
+    public Boolean ApplyVoucher(String voucher) {
+        try {
+            URL url = new URL(Server + CheckoutRoute);
+            Map<String, String> data = new HashMap<String, String>();
+            data.put("voucher", voucher);
+            data.put("next", "voucher");
+            String response = DoPOST(url, data);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }
