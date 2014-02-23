@@ -17,6 +17,7 @@ public class OpenCartSession {
     public final String EditAccountRoute = "index.php?route=account/edit";
     public final String AddItemRoute = "index.php?route=checkout/cart/add";
     public final String LogoutRoute = "index.php?route=account/logout";
+    public final String CheckoutRoute = "index.php?route=checkout/cart";
     public final String CountryRoute = "index.php?route=checkout/cart/country";
     public final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
@@ -182,6 +183,19 @@ public class OpenCartSession {
             ParseEditHTML(response);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
+        }
+    }
+
+    public Boolean ApplyCoupon(String coupon) {
+        try {
+            URL url = new URL(Server + CheckoutRoute);
+            Map<String, String> data = new HashMap<String, String>();
+            data.put("coupon", coupon);
+            data.put("next", "coupon");
+            String response = DoPOST(url, data);
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 }
