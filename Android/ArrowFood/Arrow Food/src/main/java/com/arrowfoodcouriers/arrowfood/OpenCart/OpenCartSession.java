@@ -17,6 +17,7 @@ public class OpenCartSession {
     public final String EditAccountRoute = "index.php?route=account/edit";
     public final String AddItemRoute = "index.php?route=checkout/cart/add";
     public final String LogoutRoute = "index.php?route=account/logout";
+    public final String CountryRoute = "index.php?route=checkout/cart/country";
     public final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
     private ThisitaCookieManager _cookieManager;
