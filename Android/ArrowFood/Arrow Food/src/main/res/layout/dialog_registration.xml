@@ -217,29 +217,38 @@
             android:layout_marginBottom="16dp"
             android:hint="@string/dialog_register_confirm_password" />
 
-        <EditText
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/register_newsletter"
+            android:text="@string/dialog_register_newsletter"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/dialog_register_newsletter" />
+            android:layout_marginBottom="16dp" />
 
-        <EditText
-            android:layout_width="fill_parent"
+        <RadioGroup
+            android:id="@+id/register_newsletter"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/register_newsletter_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/dialog_register_newsletter_subscribe_yes"/>
+            <RadioButton
+                android:id="@+id/register_newsletter_no"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/dialog_register_newsletter_subscribe_no"/>
+            </RadioGroup>
+
+        <CheckBox
             android:id="@+id/register_privacy_policy"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/dialog_register_privacy_policy_agree" />
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/dialog_register_privacy_policy_agree"/>
     </LinearLayout>
     </ScrollView>
 </FrameLayout>

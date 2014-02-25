@@ -41,6 +41,8 @@
     <string name="dialog_register_password">Password</string>
     <string name="dialog_register_confirm_password">Confirm password</string>
     <string name="dialog_register_newsletter">Subscribe to newsletter</string>
+    <string name="dialog_register_newsletter_subscribe_yes">Yes</string>
+    <string name="dialog_register_newsletter_subscribe_no">No</string>
     <string name="dialog_register_privacy_policy_agree">I have read and agree to the privacy policy</string>
 
 </resources>

@@ -142,7 +142,7 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
     }
 
     public Boolean Register(OpenCartRegistration registration) {
-        if (!_authenticated || !registration.IsValid()) {
+        if (_authenticated || !registration.IsValid()) {
             return false;
         }
         try {
@@ -247,7 +247,7 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
             }
             case REGISTER:
             {
-                _authenticated = true;
+//                _authenticated = true;
                 break;
             }
             case LOGIN:

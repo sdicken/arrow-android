@@ -80,7 +80,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     public void onClick(View view) {
                         // TODO: put registration code here
                         _alertDialog.dismiss();
-                        DialogFragment fragment = new RegistrationDialogFragment();
+                        DialogFragment fragment = new RegistrationDialogFragment(_session);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragment.show(fragmentManager, "register");
 //                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
