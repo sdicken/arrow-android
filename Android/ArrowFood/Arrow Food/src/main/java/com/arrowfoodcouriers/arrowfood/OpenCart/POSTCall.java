@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 
 /**
  * Android-based threading abstraction class used for POSTs.

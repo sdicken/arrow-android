@@ -25,6 +25,7 @@
     <string name="dialog_hint_email">Email address</string>
     <string name="dialog_hint_password">Password</string>
     <string name="dialog_login_retry_text">Login failed. Re-enter your credentials or press Forgot password.</string>
+    <string name="dialog_registration_retry_text">Registration failed.</string>
     <string name="dialog_register_first_name">First name</string>
     <string name="dialog_register_last_name">Last name</string>
     <string name="dialog_register_email">Email</string>

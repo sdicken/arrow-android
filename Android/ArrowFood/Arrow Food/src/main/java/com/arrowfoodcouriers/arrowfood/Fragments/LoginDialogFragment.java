@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
-import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**

@@ -1,6 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Interfaces;
 
-import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 
 /**

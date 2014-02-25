@@ -5,8 +5,8 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
-import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
-import com.arrowfoodcouriers.arrowfood.NavigationDrawerCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
 
 import java.io.IOException;
 import java.net.URL;

@@ -31,10 +31,11 @@ import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
+import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 
-public class MainActivity extends Activity implements NavigationDrawerCallback{
+public class MainActivity extends Activity implements NavigationDrawerCallback {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
     private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;

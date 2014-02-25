@@ -21,8 +21,8 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/login_auth_retry"
-            android:text="@string/dialog_login_retry_text"
+            android:id="@+id/registration_retry"
+            android:text="@string/dialog_registration_retry_text"
             android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

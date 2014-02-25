@@ -12,15 +12,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.RegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**
  * Created by Sam on 2/25/14.
  */
-public class RegistrationDialogFragment extends DialogFragment
+public class RegistrationDialogFragment extends DialogFragment implements RegistrationDialogCallback
 {
     private IOpenCartSession _session;
     private Dialog _alertDialog = null;
@@ -149,5 +151,27 @@ public class RegistrationDialogFragment extends DialogFragment
         });
 
         return _alertDialog;
+    }
+
+    @Override
+    public void onTaskStart()
+    {
+        _progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTaskCompleted(Boolean registrationSuccessful)
+    {
+        _progressBar.setVisibility(View.GONE);
+        if(registrationSuccessful)
+        {
+            _alertDialog.dismiss();
+        }
+        else
+        {
+            // TODO: persist dialog, shake animation, display help text
+            TextView retryText = (TextView) _alertDialog.findViewById(R.id.registration_retry);
+            retryText.setVisibility(View.VISIBLE);
+        }
     }
 }
