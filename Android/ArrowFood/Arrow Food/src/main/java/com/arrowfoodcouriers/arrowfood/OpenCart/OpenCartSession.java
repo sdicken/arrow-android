@@ -17,15 +17,15 @@ import java.util.concurrent.ExecutionException;
 public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelable{
     public final Boolean DEBUG = true;
 
-    public final String Server = "http://192.168.1.185/";
-    public final String LoginRoute = "index.php?route=account/login";
-    public final String RegisterRoute = "index.php?route=account/register";
-    public final String EditAccountRoute = "index.php?route=account/edit";
-    public final String AddItemRoute = "index.php?route=checkout/cart/add";
-    public final String LogoutRoute = "index.php?route=account/logout";
-    public final String CheckoutRoute = "index.php?route=checkout/cart";
-    public final String CountryRoute = "index.php?route=checkout/cart/country";
-    public final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
+    public static final String Server = "http://192.168.1.185/";
+    public static final String LoginRoute = "index.php?route=account/login";
+    public static final String RegisterRoute = "index.php?route=account/register";
+    public static final String EditAccountRoute = "index.php?route=account/edit";
+    public static final String AddItemRoute = "index.php?route=checkout/cart/add";
+    public static final String LogoutRoute = "index.php?route=account/logout";
+    public static final String CheckoutRoute = "index.php?route=checkout/cart";
+    public static final String CountryRoute = "index.php?route=checkout/cart/country";
+    public static final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
     private ThisitaCookieManager _cookieManager;
     private String _email;

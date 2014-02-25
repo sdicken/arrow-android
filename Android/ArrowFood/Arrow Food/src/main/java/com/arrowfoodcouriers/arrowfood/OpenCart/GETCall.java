@@ -13,6 +13,7 @@ import java.net.URL;
  */
 public class GETCall extends AsyncTask<Object, Integer, String>
 {
+    public String accept = null;
     private OpenCartTask _task;
     private RESTCallback _RESTCallback;
 
@@ -37,6 +38,8 @@ public class GETCall extends AsyncTask<Object, Integer, String>
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             // set cookies
             cookieManager.setCookies(request);
+            // Set accept header
+            if (accept != null) request.setRequestProperty("Accept", accept);
 
             // read the response
             BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
