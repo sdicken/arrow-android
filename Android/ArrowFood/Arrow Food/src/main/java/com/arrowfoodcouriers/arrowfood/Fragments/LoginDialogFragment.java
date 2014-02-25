@@ -3,8 +3,10 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -77,6 +79,11 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     @Override
                     public void onClick(View view) {
                         // TODO: put registration code here
+                        _alertDialog.dismiss();
+                        DialogFragment fragment = new RegistrationDialogFragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragment.show(fragmentManager, "register");
+//                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     }
                 });
                 Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);

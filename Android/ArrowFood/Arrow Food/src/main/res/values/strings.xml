@@ -18,10 +18,29 @@
     <string name="legal_title">Legal Information</string>
     <string name="dialog_title">Login</string>
     <string name="dialog_sign_in">Sign in</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="dialog_register">Register</string>
+    <string name="dialog_register_title">Register</string>
     <string name="dialog_forgot_password">Forgot password</string>
     <string name="dialog_hint_email">Email address</string>
     <string name="dialog_hint_password">Password</string>
-    <string name="login_retry_text">Login failed. Re-enter your credentials or press Forgot password.</string>
+    <string name="dialog_login_retry_text">Login failed. Re-enter your credentials or press Forgot password.</string>
+    <string name="dialog_register_first_name">First name</string>
+    <string name="dialog_register_last_name">Last name</string>
+    <string name="dialog_register_email">Email</string>
+    <string name="dialog_register_telephone">Telephone</string>
+    <string name="dialog_register_fax">Fax</string>
+    <string name="dialog_register_company">Company</string>
+    <string name="dialog_register_companyid">Company ID</string>
+    <string name="dialog_register_address1">Address 1</string>
+    <string name="dialog_register_address2">Address 2</string>
+    <string name="dialog_register_city">City</string>
+    <string name="dialog_register_postal_code">Postal code</string>
+    <string name="dialog_register_country">Country</string>
+    <string name="dialog_register_state">Region / state</string>
+    <string name="dialog_register_password">Password</string>
+    <string name="dialog_register_confirm_password">Confirm password</string>
+    <string name="dialog_register_newsletter">Subscribe to newsletter</string>
+    <string name="dialog_register_privacy_policy_agree">I have read and agree to the privacy policy</string>
 
 </resources>
