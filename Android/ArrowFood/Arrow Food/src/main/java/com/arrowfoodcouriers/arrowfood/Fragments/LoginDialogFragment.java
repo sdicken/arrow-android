@@ -7,17 +7,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginClass;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.LoginDialogCallback;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**
@@ -53,7 +49,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                     } // disable default behavior of close on positiveButton
-                }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.dialog_register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                     }
@@ -77,6 +73,12 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                     }
                 });
                 Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: put registration code here
+                    }
+                });
                 Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralButton.setOnClickListener(new View.OnClickListener() {
                     @Override

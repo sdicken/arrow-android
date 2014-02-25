@@ -18,7 +18,7 @@
     <string name="legal_title">Legal Information</string>
     <string name="dialog_title">Login</string>
     <string name="dialog_sign_in">Sign in</string>
-    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_register">Register</string>
     <string name="dialog_forgot_password">Forgot password</string>
     <string name="dialog_hint_email">Email address</string>
     <string name="dialog_hint_password">Password</string>
