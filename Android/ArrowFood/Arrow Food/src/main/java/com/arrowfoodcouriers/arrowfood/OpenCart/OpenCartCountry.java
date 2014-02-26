@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
-public class OpenCartCountry {
+public class OpenCartCountry implements RESTCallback{
     public String CountryId;
     public String Name;
     public String ISOCode2;
@@ -40,14 +40,28 @@ public class OpenCartCountry {
     }
 
     public OpenCartCountry(String countryId, ThisitaCookieManager cookieManager)
-            throws MalformedURLException, ExecutionException, InterruptedException, JSONException {
+            throws MalformedURLException, ExecutionException, InterruptedException {
         CountryId = countryId;
         Zones = new ArrayList<OpenCartZone>();
-        GETCall request = new GETCall(null, null);
+        GETCall request = new GETCall(OpenCartTask.COUNTRY, this);
         request.accept = "application/json, text/javascript, */*; q=0.01";
         URL url = new URL(OpenCartSession.Server + OpenCartSession.CountryRoute + "&country=" + CountryId);
         request.execute(url, cookieManager);
-        String json = request.get();
-        parseJson(json);
+    }
+
+    @Override
+    public void onTaskCompleted(OpenCartTask task, String response) {
+        switch(task)
+        {
+            case COUNTRY:
+            {
+                try {
+                    parseJson(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 }
