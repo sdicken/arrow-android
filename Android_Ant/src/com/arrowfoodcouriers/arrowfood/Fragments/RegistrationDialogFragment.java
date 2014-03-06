@@ -1,5 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
+import java.net.MalformedURLException;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -15,16 +20,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.RegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartCountry;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
-import com.arrowfoodcouriers.arrowfood.R;
-
-import org.json.JSONException;
-
-import java.net.MalformedURLException;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Sam on 2/25/14.
@@ -85,22 +85,22 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
         _alertDialog = builder.setView(dialogView)
                 .setTitle(R.string.dialog_register_title)
                 .setPositiveButton(R.string.dialog_register, new DialogInterface.OnClickListener() {
-                    @Override
+                    
                     public void onClick(DialogInterface dialogInterface, int which) {
                     } // disable default behavior of close on positiveButton
                 }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    @Override
+                    
                     public void onClick(DialogInterface dialogInterface, int which) {
                     }
                 }).create();
 
         // Prevents automatic dismissal of dialog window on positive button click
         _alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
+            
             public void onShow(DialogInterface dialogInterface) {
                 Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                    
                     public void onClick(View view) {
                         // TODO: put registration code here
                         OpenCartRegistration register = new OpenCartRegistration();
@@ -172,13 +172,11 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
         return _alertDialog;
     }
 
-    @Override
     public void onTaskStart()
     {
         _progressBar.setVisibility(View.VISIBLE);
     }
 
-    @Override
     public void onTaskCompleted(Boolean registrationSuccessful)
     {
         _progressBar.setVisibility(View.GONE);

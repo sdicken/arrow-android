@@ -235,7 +235,6 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
         }
     }
 
-    @Override
     public void onTaskCompleted(OpenCartTask task, String response) {
         switch(task)
         {
@@ -295,18 +294,15 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
             return new OpenCartSession(in);
         }
 
-        @Override
         public OpenCartSession[] newArray(int size) {
             return new OpenCartSession[size];
         }
     };
 
-    @Override
     public int describeContents() {
         return 0;
     }
-
-    @Override
+    
     public void writeToParcel(Parcel out, int flags)
     {
         out.writeByte((byte) (_authenticated ? 1 : 0)); // if _authenticated true, byte == 1 (no writeBoolean method)

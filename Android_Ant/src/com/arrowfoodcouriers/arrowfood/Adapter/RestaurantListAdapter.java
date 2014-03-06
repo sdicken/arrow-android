@@ -7,10 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.RestaurantListObject;
-
-import java.util.Objects;
+import com.arrowfoodcouriers.arrowfood.R;
 
 /**
  * Created by Ryan on 2/18/14.

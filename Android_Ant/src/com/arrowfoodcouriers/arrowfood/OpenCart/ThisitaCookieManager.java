@@ -179,18 +179,15 @@ public class ThisitaCookieManager implements Parcelable{
             return new ThisitaCookieManager(in);
         }
 
-        @Override
         public ThisitaCookieManager[] newArray(int size) {
             return new ThisitaCookieManager[size];
         }
     };
 
-    @Override
     public int describeContents() {
         return 0;
     }
 
-    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeMap(store);
     }

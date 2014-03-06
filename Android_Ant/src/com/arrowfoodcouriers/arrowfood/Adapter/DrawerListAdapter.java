@@ -28,18 +28,15 @@ public class DrawerListAdapter extends BaseAdapter {
         this._session = session;
         mDrawerValues = new DrawerValues(session);
     }
-
-    @Override
+    
     public int getCount() {
         return mDrawerValues.getDrawerValues().length;
     }
 
-    @Override
     public Object getItem(int position) {
         return mDrawerValues.getDrawerValues()[position];
     }
 
-    @Override
     public long getItemId(int position) {
         return position;
     }
@@ -59,8 +56,7 @@ public class DrawerListAdapter extends BaseAdapter {
     public boolean isEnabled(int position) {
         return getItemViewType(position) != DRAWER_LIST_SECTION;
     }
-
-    @Override
+    
     public View getView(int position, View view, ViewGroup parent) {
 
         final int type = getItemViewType(position);

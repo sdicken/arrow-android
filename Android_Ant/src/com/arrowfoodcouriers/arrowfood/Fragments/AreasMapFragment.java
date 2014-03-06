@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.arrowfoodcouriers.arrowfood.R;
 
-
 public class AreasMapFragment extends Fragment {
 
     @Override

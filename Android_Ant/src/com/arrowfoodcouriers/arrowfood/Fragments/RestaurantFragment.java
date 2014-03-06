@@ -1,19 +1,13 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import android.app.Fragment;
 import android.app.ListFragment;
-import android.app.LoaderManager;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
 
-import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 
 public class RestaurantFragment extends ListFragment {
 
