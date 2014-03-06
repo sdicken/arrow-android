@@ -16,8 +16,8 @@ public class OpenCartItem {
 
     public Map<String, String> GetData() {
         Map<String, String> data = new HashMap<String, String>();
-        Set keys = Options.keySet();
-        Iterator keyIter = keys.iterator();
+        Set<String> keys = Options.keySet();
+        Iterator<String> keyIter = keys.iterator();
         for (int i = 0; keyIter.hasNext(); ++i) {
             Object key = keyIter.next();
             data.put("option[" + key + "]", Options.get(key));

@@ -26,7 +26,7 @@ public class DrawerListAdapter extends BaseAdapter {
 
     public DrawerListAdapter(IOpenCartSession session) {
         this._session = session;
-        mDrawerValues = new DrawerValues(session);
+        mDrawerValues = new DrawerValues(_session);
     }
     
     public int getCount() {

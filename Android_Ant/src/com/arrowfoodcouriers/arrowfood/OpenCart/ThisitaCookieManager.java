@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -21,7 +22,7 @@ import java.util.StringTokenizer;
  */
 public class ThisitaCookieManager implements Parcelable{
 
-    private Map store;
+    private Map<String, Map> store;
 
     public static final String SET_COOKIE = "Set-Cookie";
     public static final String COOKIE_VALUE_DELIMITER = ";";
@@ -37,15 +38,15 @@ public class ThisitaCookieManager implements Parcelable{
     private DateFormat dateFormat;
 
     public ThisitaCookieManager() {
-        store = new HashMap();
-        dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        store = new HashMap<String, Map>();
+        dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
 
     private ThisitaCookieManager(Parcel in)
     {
-        store = new HashMap();
+        store = new HashMap<String, Map>();
         in.readMap(store, getClass().getClassLoader());
-        dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
 
     public void storeCookies(URLConnection conn) throws IOException {
@@ -54,15 +55,15 @@ public class ThisitaCookieManager implements Parcelable{
         String domain = getDomainFromHost(conn.getURL().getHost());
 
 
-        Map domainStore; // this is where we will store cookies for this domain
+        Map<String, Map<String, String>> domainStore; // this is where we will store cookies for this domain
 
         // now let's check the store to see if we have an entry for this domain
         if (store.containsKey(domain)) {
             // we do, so lets retrieve it from the store
-            domainStore = (Map) store.get(domain);
+            domainStore = (Map<String, Map<String, String>>) store.get(domain);
         } else {
             // we don't, so let's create it and put it in the store
-            domainStore = new HashMap();
+            domainStore = new HashMap<String, Map<String, String>>();
             store.put(domain, domainStore);
         }
 
@@ -72,7 +73,7 @@ public class ThisitaCookieManager implements Parcelable{
         String headerName;
         for (int i = 1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
             if (headerName.equalsIgnoreCase(SET_COOKIE)) {
-                Map cookie = new HashMap();
+                Map<String, String> cookie = new HashMap<String, String>();
                 StringTokenizer st = new StringTokenizer(conn.getHeaderField(i), COOKIE_VALUE_DELIMITER);
 
                 // the specification dictates that the first name/value pair
@@ -89,7 +90,7 @@ public class ThisitaCookieManager implements Parcelable{
 
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken();
-                    cookie.put(token.substring(0, token.indexOf(NAME_VALUE_SEPARATOR)).toLowerCase(),
+                    cookie.put(token.substring(0, token.indexOf(NAME_VALUE_SEPARATOR)).toLowerCase(Locale.US),
                             token.substring(token.indexOf(NAME_VALUE_SEPARATOR) + 1, token.length()));
                 }
             }
@@ -114,14 +115,14 @@ public class ThisitaCookieManager implements Parcelable{
         String domain = getDomainFromHost(url.getHost());
         String path = url.getPath();
 
-        Map domainStore = (Map) store.get(domain);
+        Map<?, ?> domainStore = (Map<?, ?>) store.get(domain);
         if (domainStore == null) return;
         StringBuilder cookieStringBuffer = new StringBuilder();
 
-        Iterator cookieNames = domainStore.keySet().iterator();
+        Iterator<?> cookieNames = domainStore.keySet().iterator();
         while (cookieNames.hasNext()) {
             String cookieName = (String) cookieNames.next();
-            Map cookie = (Map) domainStore.get(cookieName);
+            Map<?, ?> cookie = (Map<?, ?>) domainStore.get(cookieName);
             // check cookie to ensure path matches  and cookie is not expired
             // if all is cool, add cookie to header string
             if (comparePaths((String) cookie.get(PATH), path) && isNotExpired((String) cookie.get(EXPIRES))) {
