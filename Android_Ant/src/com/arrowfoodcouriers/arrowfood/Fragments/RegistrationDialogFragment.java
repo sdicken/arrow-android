@@ -1,10 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import java.net.MalformedURLException;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -17,13 +12,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.RegistrationDialogCallback;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartCountry;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 
 /**
