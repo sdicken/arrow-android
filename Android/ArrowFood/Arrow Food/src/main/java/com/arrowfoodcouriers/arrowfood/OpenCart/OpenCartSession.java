@@ -120,6 +120,11 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
         return _telephone;
     }
 
+    public ThisitaCookieManager GetCookieManager()
+    {
+        return _cookieManager;
+    }
+
     public Boolean IsAuthenticated() {
         return _authenticated;
     }
