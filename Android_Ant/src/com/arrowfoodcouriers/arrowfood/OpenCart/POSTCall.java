@@ -86,8 +86,8 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
             // Write data to POST
             DataOutputStream dos = new DataOutputStream(request.getOutputStream());
 
-            Set keys = data.keySet();
-            Iterator keyIter = keys.iterator();
+            Set<String> keys = data.keySet();
+            Iterator<String> keyIter = keys.iterator();
             String content = "";
 
             if (urlEncodeData) {

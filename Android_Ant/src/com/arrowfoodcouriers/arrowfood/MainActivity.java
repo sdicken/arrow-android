@@ -234,7 +234,6 @@ public class MainActivity extends Activity implements NavigationDrawerCallback {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
     public void onNavigationDrawerUpdated() {
         ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
@@ -257,7 +256,6 @@ public class MainActivity extends Activity implements NavigationDrawerCallback {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         private ListView listView = (ListView)findViewById(R.id.left_drawer);
 
-        @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             DrawerListObject selectedFromList =
                     (DrawerListObject)listView.getItemAtPosition(position);

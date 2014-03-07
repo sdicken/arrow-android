@@ -13,9 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
-import com.arrowfoodcouriers.arrowfood.R;
 
 /**
  * Created by Ryan on 2/17/14.
@@ -47,26 +47,26 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         _alertDialog = builder.setView(dialogView)
                 .setTitle(R.string.dialog_title)
                 .setPositiveButton(R.string.dialog_sign_in, new DialogInterface.OnClickListener() {
-                    @Override
+                    
                     public void onClick(DialogInterface dialogInterface, int which) {
                     } // disable default behavior of close on positiveButton
                 }).setNegativeButton(R.string.dialog_register, new DialogInterface.OnClickListener() {
-                    @Override
+                    
                     public void onClick(DialogInterface dialogInterface, int which) {
                     }
                 })
                 .setNeutralButton(R.string.dialog_forgot_password, new DialogInterface.OnClickListener() {
-                    @Override
+                    
                     public void onClick(DialogInterface dialogInterface, int which) {}
                 }).create();
 
         // Prevents automatic dismissal of dialog window on positive button click
         _alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
+            
             public void onShow(DialogInterface dialogInterface) {
                 Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                   
                     public void onClick(View view) {
                         String username = _usernameField.getText().toString();
                         String password = _passwordField.getText().toString();
@@ -75,7 +75,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                 });
                 Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
                 negativeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                    
                     public void onClick(View view) {
                         // TODO: put registration code here
                         _alertDialog.dismiss();
@@ -87,7 +87,7 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                 });
                 Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
+                    
                     public void onClick(View view) {
                         // TODO: put forgot password code here (when implemented)
                     }
@@ -98,12 +98,10 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         return _alertDialog;
     }
 
-    @Override
     public void onTaskStart() {
         _progressBar.setVisibility(View.VISIBLE);
     }
 
-    @Override
     public void onTaskCompleted(Boolean authenticationSuccessful) {
         _progressBar.setVisibility(View.GONE);
         if(authenticationSuccessful)
