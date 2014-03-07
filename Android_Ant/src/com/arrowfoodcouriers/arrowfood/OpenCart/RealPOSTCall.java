@@ -1,7 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
-import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,58 +11,23 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IPOSTCall;
 
 /**
  * Android-based threading abstraction class used for POSTs.
  */
-public class POSTCall extends AsyncTask<Object, Integer, String>
+public class RealPOSTCall implements IPOSTCall
 {
-    private OpenCartTask _task;
-    private RESTCallback _RESTCallback;
-    private LoginDialogCallback _loginDialogCallback;
-
-    /**
-     * Constructor for POSTs without a dialog listener.
-     * @param task The task the POST is being executed for.
-     * @param restCallback The listener waiting for task completion callback.
-     */
-    public POSTCall(OpenCartTask task, RESTCallback restCallback)
-    {
-        _task = task;
-        _RESTCallback = restCallback;
-        _loginDialogCallback = null;
-    }
-
-    /**
-     * Constructor for POSTs with a dialog listener.
-     * @param task The task the POST is being executed for.
-     * @param restCallback The listener waiting for task completion callback.
-     * @param loginDialogCallback The listener waiting to update dialog in UI.
-     */
-    public POSTCall(OpenCartTask task, RESTCallback restCallback, LoginDialogCallback loginDialogCallback)
-    {
-        _task = task;
-        _RESTCallback = restCallback;
-        _loginDialogCallback = loginDialogCallback;
-    }
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
     private final String _doubleHyphen = "--";
 
     public Boolean urlEncodeData = false;
-
-    @Override
-    protected void onPreExecute() {
-        if(_loginDialogCallback != null)
-        {
-            _loginDialogCallback.onTaskStart(); // won't always be a dialog listener
-        }
-    }
-
-    @Override
-    protected String doInBackground(Object... objects) {
-        URL url = (URL) objects[0];
+    
+    @SuppressWarnings("unchecked")
+	public String POSTToServer(Object... objects)
+    {
+    	URL url = (URL) objects[0];
         Map<String, String> data = (Map<String, String>) objects[1];
         ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[2];
         String response = "";
@@ -140,10 +103,5 @@ public class POSTCall extends AsyncTask<Object, Integer, String>
             return "Error in RESTCall execution";
         }
         return response;
-    }
-
-    @Override
-    protected void onPostExecute(String response) {
-        _RESTCallback.onTaskCompleted(_task, response);
     }
 }

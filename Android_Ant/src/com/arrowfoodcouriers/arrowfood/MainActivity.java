@@ -223,6 +223,11 @@ public class MainActivity extends Activity implements NavigationDrawerCallback {
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         mDrawerLayout.closeDrawers();
     }
+    
+    public OpenCartSession getOpenCartSession()
+    {
+    	return _session;
+    }
 
     private void configureActionBar() {
         final ActionBar actionBar = getActionBar();

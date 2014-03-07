@@ -39,13 +39,13 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
 
     // POST without urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this, _loginDialogCallback);
+        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockPOSTCall() : new RealPOSTCall());
         request.execute(url, data, _cookieManager);
     }
 
     // POST with urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTCall request = new POSTCall(task, this, _loginDialogCallback);
+        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockPOSTCall() : new RealPOSTCall());
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
     }
@@ -132,8 +132,8 @@ public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelab
     public Boolean Login(String email, String password) {
         try {
             URL url = new URL(Server + LoginRoute);
-            String em = DEBUG ? "e674501@drdrb.com" : email;
-            String pa = DEBUG ? "pass" : password;
+            String em = DEBUG ? "test@test.test" : email;
+            String pa = DEBUG ? "test" : password;
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
