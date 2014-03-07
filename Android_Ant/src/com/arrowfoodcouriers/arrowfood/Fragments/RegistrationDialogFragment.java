@@ -45,7 +45,7 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
     private EditText _address2Field;
     private EditText _cityField;
     private EditText _postalCodeField;
-    private Spinner _countryField;
+    private EditText _countryField;
     private EditText _stateField;
     private EditText _passwordField;
     private EditText _confirmPasswordField;
@@ -75,7 +75,7 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
         _address2Field = (EditText) dialogView.findViewById(R.id.register_address2);
         _cityField = (EditText) dialogView.findViewById(R.id.register_city);
         _postalCodeField = (EditText) dialogView.findViewById(R.id.register_postal_code);
-        _countryField = (Spinner) dialogView.findViewById(R.id.register_country);
+        _countryField = (EditText) dialogView.findViewById(R.id.register_country);
         _stateField = (EditText) dialogView.findViewById(R.id.register_state);
         _passwordField = (EditText) dialogView.findViewById(R.id.register_password);
         _confirmPasswordField = (EditText) dialogView.findViewById(R.id.register_confirm_password);
@@ -115,19 +115,7 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
                         String address2 = _address2Field.getText().toString();
                         String city = _cityField.getText().toString();
                         String postalCode = _postalCodeField.getText().toString();
-//                        String country = _countryField.getText().toString();
-                        try {
-                            OpenCartCountry countries = new OpenCartCountry("223", _session.GetCookieManager());
-//                            countries.Zones
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        String country = _countryField.getText().toString();
                         String state = _stateField.getText().toString();
                         String password = _passwordField.getText().toString();
                         String confirmPassword = _confirmPasswordField.getText().toString();
