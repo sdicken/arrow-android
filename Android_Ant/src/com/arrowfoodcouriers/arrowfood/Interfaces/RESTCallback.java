@@ -1,4 +1,6 @@
-package com.arrowfoodcouriers.arrowfood.OpenCart;
+package com.arrowfoodcouriers.arrowfood.Interfaces;
+
+import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartTask;
 
 /**
  * Created by Sam on 2/20/14.

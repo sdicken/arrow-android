@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
+
 /**
  * Android-based threading abstraction class used for GETs.
  */

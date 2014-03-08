@@ -7,6 +7,7 @@ import android.util.Log;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
 
 import java.io.IOException;
 import java.net.URL;

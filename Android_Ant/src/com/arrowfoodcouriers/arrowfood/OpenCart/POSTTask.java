@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IPOSTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
 
 public class POSTTask extends AsyncTask<Object, Integer, String>{
 
