@@ -15,7 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.RegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 
@@ -24,7 +24,7 @@ import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
  */
 public class RegistrationDialogFragment extends DialogFragment implements RegistrationDialogCallback
 {
-    private IOpenCartSession _session;
+    private ISession _session;
     private Dialog _alertDialog = null;
     private ProgressBar _progressBar;
     private EditText _firstNameField;
@@ -45,7 +45,7 @@ public class RegistrationDialogFragment extends DialogFragment implements Regist
     private RadioGroup _newsletterField;
     private CheckBox _privacyPolicyField;
 
-    RegistrationDialogFragment(IOpenCartSession session)
+    RegistrationDialogFragment(ISession session)
     {
         _session = session;
     }

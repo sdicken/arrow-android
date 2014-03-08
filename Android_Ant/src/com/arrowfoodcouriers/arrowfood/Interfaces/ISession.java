@@ -6,7 +6,7 @@ import com.arrowfoodcouriers.arrowfood.OpenCart.ThisitaCookieManager;
 /**
  * Created by Sam on 2/22/14.
  */
-public interface IOpenCartSession
+public interface ISession
 {
     Boolean IsAuthenticated();
     Boolean Login(String username, String password);

@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class OpenCartSession implements RESTCallback, IOpenCartSession, Parcelable{
+public class OpenCartSession implements RESTCallback, ISession, Parcelable{
     public final Boolean DEBUG = true;
 
     public static final String Server = "http://192.168.1.185/";

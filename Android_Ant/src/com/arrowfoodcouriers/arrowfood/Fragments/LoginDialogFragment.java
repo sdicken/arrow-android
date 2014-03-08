@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 
 /**
@@ -22,13 +22,13 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
  */
 public class LoginDialogFragment extends DialogFragment implements LoginDialogCallback {
 
-    private IOpenCartSession _session;
+    private ISession _session;
     private ProgressBar _progressBar;
     private Dialog _alertDialog = null;
     private EditText _usernameField;
     private EditText _passwordField;
 
-    public LoginDialogFragment(IOpenCartSession session) {
+    public LoginDialogFragment(ISession session) {
         this._session = session;
     }
 

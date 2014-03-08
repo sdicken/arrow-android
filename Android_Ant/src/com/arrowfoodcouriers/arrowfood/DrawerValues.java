@@ -1,6 +1,6 @@
 package com.arrowfoodcouriers.arrowfood;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 
 /**
  * Created by Ryan on 2/6/14.
@@ -33,9 +33,9 @@ public class DrawerValues {
             new DrawerListObject("About Us", 8, R.drawable.ic_action_about)
     };
 
-    private IOpenCartSession _session;
+    private ISession _session;
 
-    public DrawerValues(IOpenCartSession session)
+    public DrawerValues(ISession session)
     {
         this._session = session;
     }

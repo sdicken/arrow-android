@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
 import com.arrowfoodcouriers.arrowfood.DrawerValues;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IOpenCartSession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.R;
 
 /**
@@ -21,10 +21,10 @@ public class DrawerListAdapter extends BaseAdapter {
     private static final int DRAWER_LIST_SECTION = 1;
     private static final int DRAWER_LIST_ITEM = 0;
 
-    private IOpenCartSession _session;
+    private ISession _session;
     private DrawerValues mDrawerValues;
 
-    public DrawerListAdapter(IOpenCartSession session) {
+    public DrawerListAdapter(ISession session) {
         this._session = session;
         mDrawerValues = new DrawerValues(_session);
     }
