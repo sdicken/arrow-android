@@ -51,9 +51,9 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
         request.execute(url, data, _cookieManager);
     }
 
-    private void DoGET(OpenCartTask task, URL url) throws IOException, ExecutionException, InterruptedException {
+    private void DoGET(OpenCartTask task, URL url, String accept) throws IOException, ExecutionException, InterruptedException {
         GETTask request = new GETTask(task, this, DEBUG ? new MockRESTCall() : new RealGETCall());
-        request.execute(url, _cookieManager);
+        request.execute(url, _cookieManager, accept);
     }
 
     // line numbers for parsing method
@@ -83,7 +83,7 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
         _cookieManager = new ThisitaCookieManager();
         _authenticated = false;
         try {
-            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server));
+            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server), null);
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
@@ -166,7 +166,7 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
 
         try {
             URL url = new URL(Server + LogoutRoute);
-            DoGET(OpenCartTask.LOGOUT, url);
+            DoGET(OpenCartTask.LOGOUT, url, null);
             _email = null;
         } catch (Exception ex) {
             Log.e("Logout()", "Caught exception!");
@@ -204,7 +204,7 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
 
         try {
             URL url = new URL(Server + EditAccountRoute);
-            DoGET(OpenCartTask.USER_DATA_LOADED, url);
+            DoGET(OpenCartTask.USER_DATA_LOADED, url, null);
         } catch (Exception ex) {
             Log.e("LoadUserData()", "Caught exception!");
         }
