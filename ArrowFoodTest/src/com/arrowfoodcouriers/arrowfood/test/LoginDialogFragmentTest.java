@@ -2,7 +2,6 @@ package com.arrowfoodcouriers.arrowfood.test;
 
 import static org.junit.Assert.assertTrue;
 import mocks.MockLoginCallback;
-import mocks.MockNavigationDrawerCallback;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,12 +13,11 @@ import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 @RunWith(RobolectricTestRunner.class)
-public class MainActivityTest 
+public class LoginDialogFragmentTest 
 {
-	MainActivity _activity;
-	OpenCartSession _session;
-	MockLoginCallback _loginCallback;
-	MockNavigationDrawerCallback _navDrawerCallback;
+	private MainActivity _activity;
+	private OpenCartSession _session;
+	private MockLoginCallback _loginCallback;
 	
 	@Before
 	public void setUp()
@@ -27,16 +25,21 @@ public class MainActivityTest
 		_activity = Robolectric.buildActivity(MainActivity.class).create().get();
 		_session = _activity.getOpenCartSession();
 		_loginCallback = new MockLoginCallback();
-		_navDrawerCallback = new MockNavigationDrawerCallback();
 		_session.AttachLoginDialogCallback(_loginCallback);
-		_session.AttachNavigationDrawerCallback(_navDrawerCallback);
 		_activity.setOpenCartSession(_session);
 	}
 	
 	@Test
-	public void navigationDrawerValues_ChangeAfterLogin()
+	public void submitLogin_authFailure()
 	{
-		_navDrawerCallback.onNavigationDrawerUpdated();
-		assertTrue(_navDrawerCallback.updateWasCalled);
+		_loginCallback.onFailure();
+		assertTrue(_loginCallback.failureWasCalled);
+	}
+	
+	@Test
+	public void submitLogin_authSuccess()
+	{
+		_loginCallback.onSuccess();
+		assertTrue(_loginCallback.successWasCalled);
 	}
 }

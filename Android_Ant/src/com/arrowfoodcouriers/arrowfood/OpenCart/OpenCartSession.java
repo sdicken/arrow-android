@@ -258,8 +258,13 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
             case LOGIN:
             {
                 _authenticated = true;
-                _loginDialogCallback.onTaskCompleted(_authenticated); // TODO: actually determine if login succeeded/failed
-                _navigationDrawerCallback.onNavigationDrawerUpdated();
+                _loginDialogCallback.onTaskCompleted(); // TODO: actually determine if login succeeded/failed
+                if(_authenticated) 
+                { 
+                	_loginDialogCallback.onSuccess(); 
+                	_navigationDrawerCallback.onNavigationDrawerUpdated();
+                }
+                else { _loginDialogCallback.onFailure(); }
                 break;
             }
             case USER_DATA_LOADED:

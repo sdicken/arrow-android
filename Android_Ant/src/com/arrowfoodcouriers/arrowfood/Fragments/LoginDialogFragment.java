@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 
@@ -27,21 +28,17 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
     private Dialog _alertDialog = null;
     private EditText _usernameField;
     private EditText _passwordField;
-
-    public LoginDialogFragment(ISession session) {
-        this._session = session;
-    }
-
+    
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_signin, null);
-        //final OpenCartSession session = new OpenCartSession(this);
+        _session = ((MainActivity)getActivity()).getOpenCartSession();
         _session.AttachLoginDialogCallback(this);
-        _usernameField = (EditText) dialogView.findViewById(R.id.username);
-        _passwordField = (EditText) dialogView.findViewById(R.id.password);
+        _usernameField = (EditText) dialogView.findViewById(R.id.login_username);
+        _passwordField = (EditText) dialogView.findViewById(R.id.login_password);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.login_activity_circle);
 
         _alertDialog = builder.setView(dialogView)
@@ -82,7 +79,6 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
                         DialogFragment fragment = new RegistrationDialogFragment(_session);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragment.show(fragmentManager, "register");
-//                        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                     }
                 });
                 Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
@@ -98,21 +94,26 @@ public class LoginDialogFragment extends DialogFragment implements LoginDialogCa
         return _alertDialog;
     }
 
-    public void onTaskStart() {
+    public void onTaskStart() 
+    {
         _progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void onTaskCompleted(Boolean authenticationSuccessful) {
+    public void onTaskCompleted() 
+    {
         _progressBar.setVisibility(View.GONE);
-        if(authenticationSuccessful)
-        {
-            _alertDialog.dismiss();
-        }
-        else
-        {
-            // TODO: persist dialog, shake animation, display help text
-            TextView retryText = (TextView) _alertDialog.findViewById(R.id.login_auth_retry);
-            retryText.setVisibility(View.VISIBLE);
-        }
     }
+
+	public void onSuccess() 
+	{
+		_alertDialog.dismiss();
+		
+	}
+
+	public void onFailure() 
+	{
+		// TODO: persist dialog, shake animation, display help text
+        TextView retryText = (TextView) _alertDialog.findViewById(R.id.login_auth_retry);
+        retryText.setVisibility(View.VISIBLE);
+	}
 }

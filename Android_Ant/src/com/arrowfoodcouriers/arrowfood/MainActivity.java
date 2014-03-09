@@ -207,7 +207,7 @@ public class MainActivity extends Activity implements NavigationDrawerCallback {
             }
 
             case LOGIN_NAV_DRAWER_POSITION: {
-                DialogFragment loginFragment = new LoginDialogFragment(_session);
+                DialogFragment loginFragment = new LoginDialogFragment();
                 loginFragment.show(getFragmentManager(), "login");
                 fragment = new PlaceholderFragment();
                 break;
@@ -227,6 +227,11 @@ public class MainActivity extends Activity implements NavigationDrawerCallback {
     public OpenCartSession getOpenCartSession()
     {
     	return _session;
+    }
+    
+    public void setOpenCartSession(OpenCartSession session)
+    {
+    	_session = session;
     }
 
     private void configureActionBar() {

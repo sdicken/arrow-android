@@ -6,5 +6,7 @@ package com.arrowfoodcouriers.arrowfood.Interfaces;
 public interface LoginDialogCallback
 {
     void onTaskStart();
-    void onTaskCompleted(Boolean result);
+    void onTaskCompleted();
+    void onSuccess();
+    void onFailure();
 }
