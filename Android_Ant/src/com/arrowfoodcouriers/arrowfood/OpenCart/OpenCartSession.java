@@ -1,5 +1,11 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -9,14 +15,8 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 public class OpenCartSession implements RESTCallback, ISession, Parcelable{
-    public final Boolean DEBUG = true;
+    public final static Boolean DEBUG = true;
 
     public static final String Server = "http://192.168.1.185/";
     public static final String LoginRoute = "index.php?route=account/login";
@@ -40,19 +40,19 @@ public class OpenCartSession implements RESTCallback, ISession, Parcelable{
 
     // POST without urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockPOSTCall() : new RealPOSTCall());
+        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockRESTCall() : new RealPOSTCall());
         request.execute(url, data, _cookieManager);
     }
 
     // POST with urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockPOSTCall() : new RealPOSTCall());
+        POSTTask request = new POSTTask(task, this, _loginDialogCallback, DEBUG ? new MockRESTCall() : new RealPOSTCall());
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
     }
 
     private void DoGET(OpenCartTask task, URL url) throws IOException, ExecutionException, InterruptedException {
-        GETCall request = new GETCall(task, this);
+        GETTask request = new GETTask(task, this, DEBUG ? new MockRESTCall() : new RealGETCall());
         request.execute(url, _cookieManager);
     }
 

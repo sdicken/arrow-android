@@ -1,40 +1,21 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
-import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 
-/**
- * Android-based threading abstraction class used for GETs.
- */
-public class GETCall extends AsyncTask<Object, Integer, String>
+public class RealGETCall implements IRESTCall 
 {
-    public String accept = null;
-    private OpenCartTask _task;
-    private RESTCallback _RESTCallback;
-
-    /**
-     *
-     * @param task The task the POST is being executed for.
-     * @param restCallback The listener waiting for task completion callback.
-     */
-    public GETCall(OpenCartTask task, RESTCallback restCallback)
-    {
-        _task = task;
-        _RESTCallback = restCallback;
-    }
-
-    @Override
-    protected String doInBackground(Object... objects) {
-        URL url = (URL) objects[0];
+	public String makeRequestToServer(Object... objects) 
+	{
+		URL url = (URL) objects[0];
         ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[1];
         String response = "";
+        String accept = (String) objects[2];
         try {
             // create the request
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
@@ -63,10 +44,6 @@ public class GETCall extends AsyncTask<Object, Integer, String>
             return "Error in RESTCall execution";
         }
         return response;
-    }
+	}
 
-    @Override
-    protected void onPostExecute(String response) {
-        _RESTCallback.onTaskCompleted(_task, response);
-    }
 }

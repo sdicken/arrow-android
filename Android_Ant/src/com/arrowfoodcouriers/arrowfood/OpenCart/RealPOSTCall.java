@@ -11,12 +11,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.IPOSTCall;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 
 /**
  * Android-based threading abstraction class used for POSTs.
  */
-public class RealPOSTCall implements IPOSTCall
+public class RealPOSTCall implements IRESTCall
 {
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
@@ -25,7 +25,7 @@ public class RealPOSTCall implements IPOSTCall
     public Boolean urlEncodeData = false;
     
     @SuppressWarnings("unchecked")
-	public String POSTToServer(Object... objects)
+	public String makeRequestToServer(Object... objects)
     {
     	URL url = (URL) objects[0];
         Map<String, String> data = (Map<String, String>) objects[1];

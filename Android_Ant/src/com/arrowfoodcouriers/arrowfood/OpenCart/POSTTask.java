@@ -2,7 +2,7 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 import android.os.AsyncTask;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.IPOSTCall;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
 
@@ -11,16 +11,16 @@ public class POSTTask extends AsyncTask<Object, Integer, String>{
 	private OpenCartTask _task;
     private RESTCallback _RESTCallback;
     private LoginDialogCallback _loginDialogCallback;
-    private IPOSTCall _postCall;
+    private IRESTCall _restCall;
 
     /**
      * Constructor for POSTs without a dialog listener.
      * @param task The task the POST is being executed for.
      * @param restCallback The listener waiting for task completion callback.
      */
-    public POSTTask(OpenCartTask task, RESTCallback restCallback, IPOSTCall postCall)
+    public POSTTask(OpenCartTask task, RESTCallback restCallback, IRESTCall restCall)
     {
-        this(task, restCallback, null, postCall);
+        this(task, restCallback, null, restCall);
     }
 
     /**
@@ -29,12 +29,12 @@ public class POSTTask extends AsyncTask<Object, Integer, String>{
      * @param restCallback The listener waiting for task completion callback.
      * @param loginDialogCallback The listener waiting to update dialog in UI.
      */
-    public POSTTask(OpenCartTask task, RESTCallback restCallback, LoginDialogCallback loginDialogCallback, IPOSTCall postCall)
+    public POSTTask(OpenCartTask task, RESTCallback restCallback, LoginDialogCallback loginDialogCallback, IRESTCall postCall)
     {
         _task = task;
         _RESTCallback = restCallback;
         _loginDialogCallback = loginDialogCallback;
-        _postCall = postCall;
+        _restCall = postCall;
     }
 
     public Boolean urlEncodeData = false;
@@ -49,7 +49,7 @@ public class POSTTask extends AsyncTask<Object, Integer, String>{
 
 	@Override
     protected String doInBackground(Object... objects) {
-        return _postCall.POSTToServer(objects);
+        return _restCall.makeRequestToServer(objects);
     }
 
     @Override
