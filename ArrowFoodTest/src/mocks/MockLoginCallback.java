@@ -1,8 +1,8 @@
 package mocks;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 
-public class MockLoginCallback implements LoginDialogCallback 
+public class MockLoginCallback implements ILoginDialogCallback 
 {
 	public Boolean startWasCalled;
 	public Boolean completeWasCalled;

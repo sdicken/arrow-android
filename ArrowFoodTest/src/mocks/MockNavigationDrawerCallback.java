@@ -1,8 +1,8 @@
 package mocks;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.NavigationDrawerCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 
-public class MockNavigationDrawerCallback implements NavigationDrawerCallback 
+public class MockNavigationDrawerCallback implements INavigationDrawerCallback 
 {
 	public Boolean updateWasCalled;
 	@Override

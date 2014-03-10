@@ -17,7 +17,7 @@ public class NavigationDrawerCallbackTest
 	}
 	
 	@Test
-	public void navigationDrawerValues_ChangeAfterLogin()
+	public void navigationDrawerShouldUpdate()
 	{
 		_navDrawerCallback.onNavigationDrawerUpdated();
 		assertTrue(_navDrawerCallback.updateWasCalled);

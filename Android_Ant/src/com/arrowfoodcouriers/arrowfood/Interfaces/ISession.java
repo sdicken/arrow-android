@@ -10,7 +10,7 @@ public interface ISession
 {
     Boolean IsAuthenticated();
     Boolean Login(String username, String password);
-    void AttachLoginDialogCallback(LoginDialogCallback loginDialogCallback);
+    void AttachLoginDialogCallback(ILoginDialogCallback loginDialogCallback);
     Boolean Register(OpenCartRegistration registration);
     ThisitaCookieManager GetCookieManager();
 }

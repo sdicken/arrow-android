@@ -9,7 +9,6 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
  */
 public class MockRESTCall implements IRESTCall 
 {
-	
 	private static final String MOCK_RESPONSE = "";
 
 	public String makeRequestToServer(Object... objects) 

@@ -28,6 +28,13 @@
 	<groupId>junit</groupId>
 	<artifactId>junit</artifactId>
 	<version>4.11</version>
-</dependency>
+	</dependency>
+	<!-- Awaitility asynchronous test framework @ http://code.google.com/p/awaitility/ -->
+	<dependency>
+      <groupId>com.jayway.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>1.5.0</version>
+      <scope>test</scope>
+	</dependency>
   </dependencies>
 </project>

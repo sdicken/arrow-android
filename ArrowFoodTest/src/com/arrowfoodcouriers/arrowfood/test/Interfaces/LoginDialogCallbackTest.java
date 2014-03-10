@@ -17,14 +17,14 @@ public class LoginDialogCallbackTest
 	}
 	
 	@Test
-	public void submitLogin_authFailure()
+	public void loginCallbackShouldFail()
 	{
 		_loginCallback.onFailure();
 		assertTrue(_loginCallback.failureWasCalled);
 	}
 	
 	@Test
-	public void submitLogin_authSuccess()
+	public void loginCallbackShouldSucceed()
 	{
 		_loginCallback.onSuccess();
 		assertTrue(_loginCallback.successWasCalled);

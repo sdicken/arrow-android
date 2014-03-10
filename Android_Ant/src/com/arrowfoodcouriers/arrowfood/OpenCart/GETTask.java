@@ -3,7 +3,7 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 import android.os.AsyncTask;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
-import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 
 /**
  * Android-based threading abstraction class used for GETs.
@@ -11,7 +11,7 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.RESTCallback;
 public class GETTask extends AsyncTask<Object, Integer, String>
 {
     private OpenCartTask _task;
-    private RESTCallback _RESTCallback;
+    private IRESTCallback _RESTCallback;
     private IRESTCall _restCall;
 
     /**
@@ -19,7 +19,7 @@ public class GETTask extends AsyncTask<Object, Integer, String>
      * @param task The task the POST is being executed for.
      * @param restCallback The listener waiting for task completion callback.
      */
-    public GETTask(OpenCartTask task, RESTCallback restCallback, IRESTCall restCall)
+    public GETTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall restCall)
     {
         _task = task;
         _RESTCallback = restCallback;

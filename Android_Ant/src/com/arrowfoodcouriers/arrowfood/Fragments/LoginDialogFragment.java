@@ -16,12 +16,12 @@ import android.widget.TextView;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.Interfaces.LoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 
 /**
  * Created by Ryan on 2/17/14.
  */
-public class LoginDialogFragment extends DialogFragment implements LoginDialogCallback {
+public class LoginDialogFragment extends DialogFragment implements ILoginDialogCallback {
 
     private ISession _session;
     private ProgressBar _progressBar;
