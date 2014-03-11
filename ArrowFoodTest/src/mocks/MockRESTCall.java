@@ -1,4 +1,4 @@
-package com.arrowfoodcouriers.arrowfood.OpenCart;
+package mocks;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 

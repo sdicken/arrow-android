@@ -10,13 +10,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 
 public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
-    public final static Boolean DEBUG = true;
+    public final Boolean DEBUG = true;
 
     public static final String Server = "http://192.168.1.185/";
     public static final String LoginRoute = "index.php?route=account/login";
@@ -34,6 +35,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     private ILoginDialogCallback _loginDialogCallback;
     private INavigationDrawerCallback _navigationDrawerCallback;
     private IRESTCallback _restCallback;
+    private IRESTCall _postCall;
+    private IRESTCall _getCall;
 
     private String _firstName;
     private String _lastName;
@@ -41,19 +44,19 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
 
     // POST without urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, DEBUG ? new MockRESTCall() : new RealPOSTCall());
+        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, new RealPOSTCall());
         request.execute(url, data, _cookieManager);
     }
 
     // POST with urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, DEBUG ? new MockRESTCall() : new RealPOSTCall());
+        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, new RealPOSTCall());
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
     }
 
     private void DoGET(OpenCartTask task, URL url, String accept) throws IOException, ExecutionException, InterruptedException {
-        GETTask request = new GETTask(task, _restCallback, DEBUG ? new MockRESTCall() : new RealGETCall());
+        GETTask request = new GETTask(task, _restCallback, new RealGETCall());
         request.execute(url, _cookieManager, accept);
     }
 
@@ -83,7 +86,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     public OpenCartSession() {
     	_cookieManager = new ThisitaCookieManager();
         _authenticated = false;
-       initializeSession(this);
+       initializeSession(this, new RealPOSTCall(), new RealGETCall());
     }
     
     /**
@@ -92,20 +95,26 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
      * Performs first GET using this class's callback, then a second using
      * custom (mocked) callback
      * @param restCallback
+     * @param postCall
+     * @param getCall
      */
-    public OpenCartSession(IRESTCallback restCallback) {
+    public OpenCartSession(IRESTCallback restCallback, IRESTCall postCall, IRESTCall getCall) {
     	this();
-        initializeSession(restCallback);
+        initializeSession(restCallback, postCall, getCall);
     }
     
     /**
      *  A GET call on init for good measure. This is to make sure 
      *  that PHP has a session token and it gets init'd the way OpenCart expects
      * @param restCallback
+     * @param postCall
+     * @param getCall
      */
-    private void initializeSession(IRESTCallback restCallback)
+    private void initializeSession(IRESTCallback restCallback, IRESTCall postCall, IRESTCall getCall)
     {
     	AttachRESTCallback(restCallback);
+    	AttachPOSTCall(postCall);    	
+    	AttachGETCall(getCall);
         try {
             DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server), null);
         } catch (Exception ex) {
@@ -132,6 +141,16 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     public void AttachRESTCallback(IRESTCallback restCallback)
     {
     	_restCallback = restCallback;
+    }
+    
+    public void AttachPOSTCall(IRESTCall restCall)
+    {
+    	_postCall = restCall;
+    }
+    
+    public void AttachGETCall(IRESTCall restCall)
+    {
+    	_getCall = restCall;
     }
 
     public String GetEmail() {

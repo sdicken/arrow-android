@@ -39,14 +39,14 @@ public class OpenCartCountry {
         }
     }
 
-    public OpenCartCountry(String countryId, ThisitaCookieManager cookieManager)
+    public OpenCartCountry(String countryId, OpenCartSession session)
             throws MalformedURLException, ExecutionException, InterruptedException, JSONException {
         CountryId = countryId;
         Zones = new ArrayList<OpenCartZone>();
-        GETTask request = new GETTask(null, null, OpenCartSession.DEBUG ? new MockRESTCall() : new RealGETCall());
+        GETTask request = new GETTask(OpenCartTask.COUNTRY, session, new RealGETCall());
         String accept = "application/json, text/javascript, */*; q=0.01";
         URL url = new URL(OpenCartSession.Server + OpenCartSession.CountryRoute + "&country=" + CountryId);
-        request.execute(url, cookieManager, accept);
+        request.execute(url, session.GetCookieManager(), accept);
         String json = request.get();
         parseJson(json);
     }
