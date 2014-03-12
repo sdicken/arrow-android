@@ -7,5 +7,5 @@ import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartTask;
  */
 public interface IRESTCallback
 {
-    void onTaskCompleted(OpenCartTask task, String response);
+    void onTaskCompleted(OpenCartTask task, ISession session, String response);
 }

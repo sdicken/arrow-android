@@ -1,13 +1,14 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.inject.InjectView;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
+import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
 import com.arrowfoodcouriers.arrowfood.Fragments.AboutFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
@@ -30,12 +32,19 @@ import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
+import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
+import com.google.inject.Inject;
 
-
-public class MainActivity extends Activity implements INavigationDrawerCallback {
+	
+public class MainActivity extends RoboFragmentActivity implements INavigationDrawerCallback
+{
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
     private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
@@ -49,16 +58,31 @@ public class MainActivity extends Activity implements INavigationDrawerCallback 
 
     private static final String BUNDLE_TAG_SESSION = "session";
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @InjectView(R.id.left_drawer) ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-    private OpenCartSession _session;
+//    @Inject LoginDialogFragment loginFragment;
+//    @Inject OpenCartSession _session;
+    @Inject private SessionFactory _sessionFactory;
+    private ILoginDialogCallback _loginDialogCallback;
+    private IRegistrationDialogCallback _registrationDialogCallback;
+    private ISession _session;
+    
+    public MainActivity()
+    {
+    	
+    }
 
-    @Override
+    public MainActivity(Parcel in) 
+    {
+		_session = in.readParcelable(getClass().getClassLoader());
+	}
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -70,23 +94,26 @@ public class MainActivity extends Activity implements INavigationDrawerCallback 
         if(savedInstanceState != null)
         {
             _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION);
-            _session.AttachNavigationDrawerCallback(this);
+//            _session.AttachNavigationDrawerCallback(this);
         }
         else
         {
-            _session = new OpenCartSession();
-            _session.AttachNavigationDrawerCallback(this);
+        	_registrationDialogCallback = new RegistrationDialogFragment();
+        	_loginDialogCallback = new LoginDialogFragment(_registrationDialogCallback);
+        	_session = _sessionFactory.create(new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), this, _loginDialogCallback, _registrationDialogCallback);
+//            _session = new OpenCartSession();
+//            _session.AttachNavigationDrawerCallback(this);
 
             // Create fragment here
             Fragment fragment = new PlaceholderFragment();
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         }
 
         mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(new DrawerListAdapter(_session));
@@ -207,8 +234,9 @@ public class MainActivity extends Activity implements INavigationDrawerCallback 
             }
 
             case LOGIN_NAV_DRAWER_POSITION: {
-                DialogFragment loginFragment = new LoginDialogFragment();
-                loginFragment.show(getFragmentManager(), "login");
+//                DialogFragment loginFragment = new LoginDialogFragment();
+            	((LoginDialogFragment)_loginDialogCallback).show(getSupportFragmentManager(), "login");
+//                loginFragment.show(getSupportFragmentManager(), "login");
                 fragment = new PlaceholderFragment();
                 break;
             }
@@ -219,19 +247,14 @@ public class MainActivity extends Activity implements INavigationDrawerCallback 
                 break;
             }
         }
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         mDrawerLayout.closeDrawers();
     }
     
-    public OpenCartSession getOpenCartSession()
+    public ISession getOpenCartSession()
     {
     	return _session;
-    }
-    
-    public void setOpenCartSession(OpenCartSession session)
-    {
-    	_session = session;
     }
 
     private void configureActionBar() {

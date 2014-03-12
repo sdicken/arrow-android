@@ -10,13 +10,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
+import com.arrowfoodcouriers.arrowfood.RoboGuice.GETCall;
+import com.arrowfoodcouriers.arrowfood.RoboGuice.POSTCall;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
-public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
+public class OpenCartSession implements IRESTCallback, ISession, Parcelable
+{
     public final Boolean DEBUG = true;
 
     public static final String Server = "http://192.168.1.185/";
@@ -32,11 +39,12 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     private ThisitaCookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
-    private ILoginDialogCallback _loginDialogCallback;
-    private INavigationDrawerCallback _navigationDrawerCallback;
-    private IRESTCallback _restCallback;
-    private IRESTCall _postCall;
-    private IRESTCall _getCall;
+    private final ILoginDialogCallback _loginDialogCallback;
+    private final IRegistrationDialogCallback _registrationDialogCallback;
+    private final INavigationDrawerCallback _navigationDrawerCallback;
+    private final IRESTCallback _restCallback;
+    private final IRESTCall _postCall;
+    private final IRESTCall _getCall;
 
     private String _firstName;
     private String _lastName;
@@ -44,19 +52,19 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
 
     // POST without urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, new RealPOSTCall());
+        POSTTask request = new POSTTask(task, _restCallback, _postCall, this);
         request.execute(url, data, _cookieManager);
     }
 
     // POST with urlEncode
     private void DoPOST(OpenCartTask task, URL url, Map<String, String> data, Boolean urlEncode) throws IOException, ExecutionException, InterruptedException {
-        POSTTask request = new POSTTask(task, _restCallback, _loginDialogCallback, new RealPOSTCall());
+        POSTTask request = new POSTTask(task, _restCallback, _postCall, this);
         request.urlEncodeData = urlEncode;
         request.execute(url, data, _cookieManager);
     }
 
     private void DoGET(OpenCartTask task, URL url, String accept) throws IOException, ExecutionException, InterruptedException {
-        GETTask request = new GETTask(task, _restCallback, new RealGETCall());
+        GETTask request = new GETTask(task, _restCallback, _getCall, this);
         request.execute(url, _cookieManager, accept);
     }
 
@@ -66,7 +74,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     private final Integer TelephoneLine = 171;
     private final Integer FormControlEndCharOffset = 4;
 
-    private void ParseEditHTML(String html) {
+    public void ParseEditHTML(String html) 
+    {
         String firstName, lastName, phone;
         String[] lines = html.split("\n");
 
@@ -83,12 +92,11 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
         _telephone = phone;
     }
 
-    public OpenCartSession() {
-    	_cookieManager = new ThisitaCookieManager();
-        _authenticated = false;
-       initializeSession(this, new RealPOSTCall(), new RealGETCall());
-    }
-    
+//    public OpenCartSession() {
+//    	_cookieManager = new ThisitaCookieManager();
+//        _authenticated = false;
+//       initializeSession(this, new RealPOSTCall(), new RealGETCall());
+//    }
     /**
      * For unit testing purposes only. Needed to trigger a GET scenario and 
      * all GET methods required authentication, so used constructor's GET
@@ -98,8 +106,23 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
      * @param postCall
      * @param getCall
      */
-    public OpenCartSession(IRESTCallback restCallback, IRESTCall postCall, IRESTCall getCall) {
-    	this();
+    @Inject
+    public OpenCartSession(
+    		IRESTCallback restCallback, 
+    		@POSTCall IRESTCall postCall, 
+    		@GETCall IRESTCall getCall, 
+    		INavigationDrawerCallback navigationDrawerCallback, 
+    		ILoginDialogCallback loginDialogCallback, 
+    		IRegistrationDialogCallback registrationDialogCallback) 
+    {
+    	_cookieManager = new ThisitaCookieManager();
+        _authenticated = false;
+    	_restCallback = restCallback;
+    	_postCall = postCall;
+    	_getCall = getCall;
+    	_navigationDrawerCallback = navigationDrawerCallback;
+    	_loginDialogCallback = loginDialogCallback;
+    	_registrationDialogCallback = registrationDialogCallback;
         initializeSession(restCallback, postCall, getCall);
     }
     
@@ -112,9 +135,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
      */
     private void initializeSession(IRESTCallback restCallback, IRESTCall postCall, IRESTCall getCall)
     {
-    	AttachRESTCallback(restCallback);
-    	AttachPOSTCall(postCall);    	
-    	AttachGETCall(getCall);
+    	
+    	
         try {
             DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server), null);
         } catch (Exception ex) {
@@ -126,31 +148,12 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
     {
         _authenticated = in.readByte() != 0;    // true if byte != 0 (no readBoolean method)
         _cookieManager = in.readParcelable(getClass().getClassLoader());
-    }
-
-    public void AttachLoginDialogCallback(ILoginDialogCallback loginDialogCallback)
-    {
-        _loginDialogCallback = loginDialogCallback;
-    }
-
-    public void AttachNavigationDrawerCallback(INavigationDrawerCallback navigationDrawerCallback)
-    {
-        _navigationDrawerCallback = navigationDrawerCallback;
-    }
-    
-    public void AttachRESTCallback(IRESTCallback restCallback)
-    {
-    	_restCallback = restCallback;
-    }
-    
-    public void AttachPOSTCall(IRESTCall restCall)
-    {
-    	_postCall = restCall;
-    }
-    
-    public void AttachGETCall(IRESTCall restCall)
-    {
-    	_getCall = restCall;
+        _restCallback = in.readParcelable(getClass().getClassLoader());
+        _postCall = in.readParcelable(getClass().getClassLoader());
+        _getCall = in.readParcelable(getClass().getClassLoader());
+        _navigationDrawerCallback = in.readParcelable(getClass().getClassLoader());
+        _loginDialogCallback = in.readParcelable(getClass().getClassLoader());
+        _registrationDialogCallback = in.readParcelable(getClass().getClassLoader());
     }
 
     public String GetEmail() {
@@ -174,9 +177,20 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
         return _cookieManager;
     }
 
-    public Boolean IsAuthenticated() {
+    public Boolean IsAuthenticated() 
+    {
         return _authenticated;
     }
+    
+	public void deauthenticate() 
+	{
+		_authenticated = false;
+	}
+
+	public void authenticate() 
+	{
+		_authenticated = true;		
+	}
 
     public Boolean Login(String email, String password) {
         try {
@@ -186,7 +200,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-            DoPOST(OpenCartTask.LOGIN, url, data);
+//            DoPOST(OpenCartTask.LOGIN, url, data);
+            new LoginPOSTTask(_restCallback, _postCall, _loginDialogCallback, this).execute(url, data, _cookieManager);
             _email = email;
             return true;
         } catch (Exception ex) {
@@ -201,7 +216,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
         }
         try {
             URL url = new URL(Server + RegisterRoute);
-            DoPOST(OpenCartTask.REGISTER, url, registration.GetData());
+//            DoPOST(OpenCartTask.REGISTER, url, registration.GetData());
+            new RegistrationPOSTTask(_restCallback, _postCall, _registrationDialogCallback, this).execute(url, registration.GetData(), _cookieManager);
             _email = registration.Email;
             return true;
         } catch (Exception ex) {
@@ -284,7 +300,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
         }
     }
     
-    public void onTaskCompleted(OpenCartTask task, String response) {
+    public void onTaskCompleted(OpenCartTask task, ISession session, String response) {
         switch(task)
         {
             case ORDER:
@@ -301,6 +317,13 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
             case REGISTER:
             {
 //                _authenticated = true;
+            	_registrationDialogCallback.onTaskCompleted();
+            	if(_authenticated)
+            	{
+            		_registrationDialogCallback.onSuccess();
+            		_navigationDrawerCallback.onNavigationDrawerUpdated();
+            	}
+            	else { _registrationDialogCallback.onFailure(); }
                 break;
             }
             case LOGIN:
@@ -337,6 +360,12 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable{
             {
                 break;
             }
+            case COUNTRY:
+			{
+				break;
+			}
+		default:
+			break;
         }
     }
 

@@ -10,6 +10,11 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 
 public class RealGETCall implements IRESTCall 
 {
+	public RealGETCall()
+	{
+		
+	}
+	
 	public String makeRequestToServer(Object... objects) 
 	{
 		URL url = (URL) objects[0];
@@ -45,5 +50,4 @@ public class RealGETCall implements IRESTCall
         }
         return response;
 	}
-
 }

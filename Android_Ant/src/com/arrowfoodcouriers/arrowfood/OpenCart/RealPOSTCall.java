@@ -18,6 +18,11 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
  */
 public class RealPOSTCall implements IRESTCall
 {
+	public RealPOSTCall()
+	{
+		
+	}
+	
     private final String _boundary = "----------f8n51w2QSEEMSYCsvNTHISftihLEGITodgfJ'";
     private final String _lineEnd = "\r\n";
     private final String _doubleHyphen = "--";
