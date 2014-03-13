@@ -1,9 +1,9 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
-import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
@@ -25,7 +25,7 @@ public class RealSessionFactory implements SessionFactory
 		this._postCallProvider = postCallProvider;
 	}
 	
-	public ISession create(RESTCallback restCallback,
+	public ISession create(IRESTCallback restCallback,
 			INavigationDrawerCallback navigationDrawerCallback,
 			ILoginDialogCallback loginDialogCallback,
 			IRegistrationDialogCallback registrationDialogCallback) 

@@ -3,6 +3,7 @@ package com.arrowfoodcouriers.arrowfood.Interfaces;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartItem;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 import com.arrowfoodcouriers.arrowfood.OpenCart.ThisitaCookieManager;
 
@@ -22,4 +23,5 @@ public interface ISession extends Parcelable
 	void deauthenticate();
 	void ParseEditHTML(String response);
 	void authenticate();
+	Boolean AddToCart(OpenCartItem openCartItem);
 }
