@@ -120,6 +120,33 @@ class ControllerApiCustomer extends Controller {
         $this->response->setOutput(json_encode($json));
     }
     
+	public function _login() {
+		
+		$json = array('success' => true, 'result' => array());
+		
+		# -- TODO: write login code --------------------
+		
+		$this->response->setOutput(json_encode($json));
+	}
+	
+	public function _register() {
+		
+		$json = array('success' => true, 'result' => array());
+		
+		# -- TODO: write registration code -------------
+		
+		$this->response->setOutput(json_encode($json));
+	}
+	
+	public function _logout() {
+		
+		$json = array('success' => true, 'result' => array());
+		
+		# -- TODO: write logout code -------------------
+		
+		$this->response->setOutput(json_encode($json));
+	}
+	
     function __call( $methodName, $arguments ) {
         //call_user_func(array($this, str_replace('.', '_', $methodName)), $arguments);
         call_user_func(array($this, "_$methodName"), $arguments);
