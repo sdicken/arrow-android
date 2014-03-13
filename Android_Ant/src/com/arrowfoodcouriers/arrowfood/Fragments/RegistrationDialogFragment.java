@@ -50,7 +50,7 @@ public class RegistrationDialogFragment extends RoboDialogFragment implements IR
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        ISession session = ((MainActivity)getActivity()).getOpenCartSession();
+        ISession session = ((MainActivity)getActivity()).getSession();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_registration, null);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.registration_activity_circle);

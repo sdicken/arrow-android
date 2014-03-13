@@ -1,8 +1,6 @@
 package com.arrowfoodcouriers.arrowfood.Callbacks;
 
 import roboguice.inject.InjectView;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 

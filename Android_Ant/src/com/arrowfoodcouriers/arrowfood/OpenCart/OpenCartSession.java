@@ -19,8 +19,6 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.RoboGuice.GETCall;
 import com.arrowfoodcouriers.arrowfood.RoboGuice.POSTCall;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 public class OpenCartSession implements IRESTCallback, ISession, Parcelable
 {
@@ -92,25 +90,20 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         _telephone = phone;
     }
 
-//    public OpenCartSession() {
-//    	_cookieManager = new ThisitaCookieManager();
-//        _authenticated = false;
-//       initializeSession(this, new RealPOSTCall(), new RealGETCall());
-//    }
     /**
-     * For unit testing purposes only. Needed to trigger a GET scenario and 
-     * all GET methods required authentication, so used constructor's GET
-     * Performs first GET using this class's callback, then a second using
-     * custom (mocked) callback
-     * @param restCallback
-     * @param postCall
-     * @param getCall
+     * Dependency injected constructor, managed by RoboGuice. See RoboGuice package to change dependency injections.
+     * @param restCallback A callback for after GET/POST requests finish
+     * @param postCall A class containing business logic to be executed when POSTing to server
+     * @param getCall A class containing business logic to be executed when GETing from server
+     * @param navigationDrawerCallback A callback that updates {@link com.arrowfoodcouriers.arrowfood.MainActivity}'s NavigationDrawer
+     * @param loginDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment}
+     * @param registrationDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment}
      */
-    @Inject
+    @Inject									// injects for each item in this constructor, but those not commented get overwritten in MainActivity from the SessionFactory
     public OpenCartSession(
     		IRESTCallback restCallback, 
-    		@POSTCall IRESTCall postCall, 
-    		@GETCall IRESTCall getCall, 
+    		@POSTCall IRESTCall postCall,	// injected by RoboGuice, see RoboGuice package for module details
+    		@GETCall IRESTCall getCall,		// injected by RoboGuice, see RoboGuice package for module details
     		INavigationDrawerCallback navigationDrawerCallback, 
     		ILoginDialogCallback loginDialogCallback, 
     		IRegistrationDialogCallback registrationDialogCallback) 
@@ -123,22 +116,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     	_navigationDrawerCallback = navigationDrawerCallback;
     	_loginDialogCallback = loginDialogCallback;
     	_registrationDialogCallback = registrationDialogCallback;
-        initializeSession(restCallback, postCall, getCall);
-    }
-    
-    /**
-     *  A GET call on init for good measure. This is to make sure 
-     *  that PHP has a session token and it gets init'd the way OpenCart expects
-     * @param restCallback
-     * @param postCall
-     * @param getCall
-     */
-    private void initializeSession(IRESTCallback restCallback, IRESTCall postCall, IRESTCall getCall)
-    {
-    	
-    	
-        try {
-            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server), null);
+    	try {
+            DoGET(OpenCartTask.CONSTRUCTOR, new URL(Server), null);	// do a GET request to make sure PHP session id OK before doing anything else
         } catch (Exception ex) {
             Log.d("EXCEPTION:", ex.toString());
         }
@@ -156,19 +135,23 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         _registrationDialogCallback = in.readParcelable(getClass().getClassLoader());
     }
 
-    public String GetEmail() {
+    public String GetEmail() 
+    {
         return _email;
     }
 
-    public String GetFirstName() {
+    public String GetFirstName() 
+    {
         return _firstName;
     }
 
-    public String GetLastName() {
+    public String GetLastName() 
+    {
         return _lastName;
     }
 
-    public String GetTelephone() {
+    public String GetTelephone() 
+    {
         return _telephone;
     }
 
@@ -192,7 +175,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
 		_authenticated = true;		
 	}
 
-    public Boolean Login(String email, String password) {
+    public Boolean Login(String email, String password) 
+    {
         try {
             URL url = new URL(Server + LoginRoute);
             String em = DEBUG ? "test@test.test" : email;
@@ -200,7 +184,6 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
             Map<String, String> data = new HashMap<String, String>();
             data.put("email", em);
             data.put("password", pa);
-//            DoPOST(OpenCartTask.LOGIN, url, data);
             new LoginPOSTTask(_restCallback, _postCall, _loginDialogCallback, this).execute(url, data, _cookieManager);
             _email = email;
             return true;
@@ -210,13 +193,14 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public Boolean Register(OpenCartRegistration registration) {
-        if (_authenticated || !registration.IsValid()) {
+    public Boolean Register(OpenCartRegistration registration) 
+    {
+        if (_authenticated || !registration.IsValid()) 
+        {
             return false;
         }
         try {
             URL url = new URL(Server + RegisterRoute);
-//            DoPOST(OpenCartTask.REGISTER, url, registration.GetData());
             new RegistrationPOSTTask(_restCallback, _postCall, _registrationDialogCallback, this).execute(url, registration.GetData(), _cookieManager);
             _email = registration.Email;
             return true;
@@ -225,7 +209,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public void Logout() {
+    public void Logout() 
+    {
         if (!_authenticated) return;
 
         try {
@@ -237,7 +222,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public Boolean Order(OpenCartOrder order) {
+    public Boolean Order(OpenCartOrder order) 
+    {
         if (!_authenticated || !order.IsValid()) {
             return false;
         }
@@ -251,7 +237,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public Boolean AddToCart(OpenCartItem item) {
+    public Boolean AddToCart(OpenCartItem item)
+    {
         try {
             URL url = new URL(Server + AddItemRoute);
             // Needs to do a URLEncoded POST
@@ -263,7 +250,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public void LoadUserData() {
+    public void LoadUserData() 
+    {
         if (!_authenticated) return;
 
         try {
@@ -274,7 +262,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public Boolean ApplyCoupon(String coupon) {
+    public Boolean ApplyCoupon(String coupon) 
+    {
         try {
             URL url = new URL(Server + CheckoutRoute);
             Map<String, String> data = new HashMap<String, String>();
@@ -287,7 +276,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
 
-    public Boolean ApplyVoucher(String voucher) {
+    public Boolean ApplyVoucher(String voucher) 
+    {
         try {
             URL url = new URL(Server + CheckoutRoute);
             Map<String, String> data = new HashMap<String, String>();
@@ -300,7 +290,8 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
     
-    public void onTaskCompleted(OpenCartTask task, ISession session, String response) {
+    public void onTaskCompleted(OpenCartTask task, ISession session, String response) 
+    {
         switch(task)
         {
             case ORDER:
@@ -377,12 +368,14 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
             return new OpenCartSession(in);
         }
 
-        public OpenCartSession[] newArray(int size) {
+        public OpenCartSession[] newArray(int size) 
+        {
             return new OpenCartSession[size];
         }
     };
 
-    public int describeContents() {
+    public int describeContents() 
+    {
         return 0;
     }
     

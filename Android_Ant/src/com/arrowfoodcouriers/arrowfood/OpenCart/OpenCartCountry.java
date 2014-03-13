@@ -4,13 +4,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
-public class OpenCartCountry {
+public class OpenCartCountry 
+{
     public String CountryId;
     public String Name;
     public String ISOCode2;
@@ -19,7 +23,8 @@ public class OpenCartCountry {
     public String PostCodeRequired;
     public ArrayList<OpenCartZone> Zones;
 
-    private void parseJson(String json) throws JSONException {
+    private void parseJson(String json) throws JSONException 
+    {
         JSONObject obj = new JSONObject(json);
         Name = obj.getString("name");
         ISOCode2 = obj.getString("iso_code_2");
@@ -27,7 +32,8 @@ public class OpenCartCountry {
         AddressFormat = obj.getString("address_format");
         PostCodeRequired = obj.getString("0");
         JSONArray zones = obj.getJSONArray("zone");
-        for (int i = 0, l = zones.length(); i < l; ++i) {
+        for (int i = 0, l = zones.length(); i < l; ++i) 
+        {
             OpenCartZone zone = new OpenCartZone();
             JSONObject zoneObj = zones.getJSONObject(i);
             zone.ZoneId = zoneObj.getString("zone_id");
@@ -39,11 +45,12 @@ public class OpenCartCountry {
         }
     }
 
-    public OpenCartCountry(String countryId, OpenCartSession session)
-            throws MalformedURLException, ExecutionException, InterruptedException, JSONException {
+    public OpenCartCountry(String countryId, IRESTCall restCall, OpenCartSession session)
+            throws MalformedURLException, ExecutionException, InterruptedException, JSONException 
+            {
         CountryId = countryId;
         Zones = new ArrayList<OpenCartZone>();
-        GETTask request = new GETTask(OpenCartTask.COUNTRY, session, new RealGETCall(), session);
+        GETTask request = new GETTask(OpenCartTask.COUNTRY, new RESTCallback(null, null, null), restCall, session);
         String accept = "application/json, text/javascript, */*; q=0.01";
         URL url = new URL(OpenCartSession.Server + OpenCartSession.CountryRoute + "&country=" + CountryId);
         request.execute(url, session.GetCookieManager(), accept);

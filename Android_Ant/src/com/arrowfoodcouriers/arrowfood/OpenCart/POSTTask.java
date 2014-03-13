@@ -16,9 +16,10 @@ public class POSTTask extends AsyncTask<Object, Integer, String>
 
     /**
      * Constructor for POSTs without a dialog listener.
-     * @param task The task the POST is being executed for.
-     * @param restCallback The listener waiting for task completion callback.
-     * @param loginDialogCallback The listener waiting to update dialog in UI.
+     * @param task The task for which the POST is being executed
+     * @param restCallback The listener waiting for task completion callback
+     * @param postCall A class containing the business logic for POST
+     * @param session A session interface object for session updates in {@link #onPostExecute(String)}
      */
     public POSTTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall postCall, ISession session)
     {
@@ -31,12 +32,14 @@ public class POSTTask extends AsyncTask<Object, Integer, String>
     public Boolean urlEncodeData = false;
 
 	@Override
-    protected String doInBackground(Object... objects) {
+    protected String doInBackground(Object... objects) 
+	{
         return _restCall.makeRequestToServer(objects);
     }
 
     @Override
-    protected void onPostExecute(String response) {
+    protected void onPostExecute(String response) 
+    {
         _RESTCallback.onTaskCompleted(_task, _session, response);
     }
 }

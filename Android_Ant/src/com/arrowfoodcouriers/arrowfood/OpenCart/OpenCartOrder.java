@@ -1,14 +1,17 @@
 package com.arrowfoodcouriers.arrowfood.OpenCart;
 
 // TODO: Stub
-public class OpenCartOrder {
+public class OpenCartOrder 
+{
     //TODO: Stub function
-    public Boolean IsValid() {
+    public Boolean IsValid() 
+    {
         return false;
     }
 
     // TODO: Stub function
-    public String GetJson() {
+    public String GetJson() 
+    {
         return null;
     }
 }

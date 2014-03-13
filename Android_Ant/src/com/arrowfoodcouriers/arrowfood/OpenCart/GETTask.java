@@ -18,8 +18,10 @@ public class GETTask extends AsyncTask<Object, Integer, String>
 
     /**
      *
-     * @param task The task the POST is being executed for.
-     * @param restCallback The listener waiting for task completion callback.
+     * @param task The task for which the GET is being executed
+     * @param restCallback The listener waiting for task completion callback
+     * @param restCall A class containing GET business logic
+     * @param session A session interface object for managing session updates after {@link #onPostExecute(String)}
      */
     public GETTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall restCall, ISession session)
     {
@@ -36,7 +38,8 @@ public class GETTask extends AsyncTask<Object, Integer, String>
     }
 
     @Override
-    protected void onPostExecute(String response) {
+    protected void onPostExecute(String response) 
+    {
         _RESTCallback.onTaskCompleted(_task, _session, response);
     }
 }

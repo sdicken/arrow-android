@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class OpenCartItem {
+public class OpenCartItem 
+{
     public String ProductId;
     public String Quantity;
     public Map<String, String> Options;
@@ -14,11 +15,13 @@ public class OpenCartItem {
         Options = new HashMap<String, String>();
     }
 
-    public Map<String, String> GetData() {
+    public Map<String, String> GetData() 
+    {
         Map<String, String> data = new HashMap<String, String>();
         Set<String> keys = Options.keySet();
         Iterator<String> keyIter = keys.iterator();
-        for (int i = 0; keyIter.hasNext(); ++i) {
+        for (int i = 0; keyIter.hasNext(); ++i) 
+        {
             Object key = keyIter.next();
             data.put("option[" + key + "]", Options.get(key));
         }

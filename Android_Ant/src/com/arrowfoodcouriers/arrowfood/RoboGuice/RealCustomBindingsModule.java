@@ -24,16 +24,12 @@ public class RealCustomBindingsModule implements Module
 	public void configure(Binder binder) 
 	{
 		binder.bind(IRESTCallback.class).to(RESTCallback.class);
-		binder.bind(ILoginDialogCallback.class).to(LoginDialogFragment.class);
-		binder.bind(IRegistrationDialogCallback.class).to(RegistrationDialogFragment.class);
-		binder.bind(INavigationDrawerCallback.class).to(NavigationDrawerCallback.class);
+		binder.bind(ILoginDialogCallback.class).to(LoginDialogFragment.class);					// gets overridden by SessionFactory, but needed for injecting dummy code until real instance supplied by SessionFactory
+		binder.bind(IRegistrationDialogCallback.class).to(RegistrationDialogFragment.class);	// gets overridden by SessionFactory, but needed for injecting dummy code until real instance supplied by SessionFactory
+		binder.bind(INavigationDrawerCallback.class).to(NavigationDrawerCallback.class);		// gets overridden by SessionFactory, but needed for injecting dummy code until real instance supplied by SessionFactory
 		binder.bind(IRESTCall.class).annotatedWith(POSTCall.class).to(RealPOSTCall.class);
 		binder.bind(IRESTCall.class).annotatedWith(GETCall.class).to(RealGETCall.class);
 		binder.bind(ISession.class).to(OpenCartSession.class);
 		binder.bind(SessionFactory.class).to(RealSessionFactory.class);
-//		binder.bind(SessionFactory.class).toProvider(FactoryProvider.newFactory(SessionFactory.class, OpenCartSession.class));
-//		binder.install(new FactoryModuleBuilder()
-//		.implement(ISession.class, OpenCartSession.class)
-//		.build(OpenCartSessionFactory.class));
 	}
 }

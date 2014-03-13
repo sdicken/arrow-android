@@ -45,7 +45,7 @@ public class LoginDialogFragment extends RoboDialogFragment implements ILoginDia
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        ISession session = ((MainActivity)getActivity()).getOpenCartSession();
+        ISession session = ((MainActivity)getActivity()).getSession();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_signin, null);
 //        _session = ((MainActivity)getActivity()).getOpenCartSession();

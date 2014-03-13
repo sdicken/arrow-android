@@ -3,7 +3,8 @@ package com.arrowfoodcouriers.arrowfood.OpenCart;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OpenCartRegistration {
+public class OpenCartRegistration 
+{
     public String FirstName; // Required
     public String LastName; // Required
     public String Email; // Required
@@ -27,7 +28,8 @@ public class OpenCartRegistration {
     public String Newsletter; // default false == "0"
     public String Agree; // default false == "0", required true == "1"
 
-    public OpenCartRegistration() {
+    public OpenCartRegistration() 
+    {
         City = "Louisville";
         CountryId = "223";
         ZoneId = "3639";
@@ -37,7 +39,8 @@ public class OpenCartRegistration {
         Agree = "0";
     }
 
-    public Boolean IsValid() {
+    public Boolean IsValid() 
+    {
         return FirstName != null && LastName != null
                 && Email != null && Password != null
                 && Telephone != null && Address1 != null
@@ -45,7 +48,8 @@ public class OpenCartRegistration {
                 && CountryId != null && ZoneId != null;
     }
 
-    public Map<String, String> GetData() {
+    public Map<String, String> GetData() 
+    {
         Map<String, String> data = new HashMap<String, String>();
         data.put("firstname", FirstName);
         data.put("lastname", LastName);

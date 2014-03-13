@@ -65,8 +65,6 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-//    @Inject LoginDialogFragment loginFragment;
-//    @Inject OpenCartSession _session;
     @Inject private SessionFactory _sessionFactory;
     private ILoginDialogCallback _loginDialogCallback;
     private IRegistrationDialogCallback _registrationDialogCallback;
@@ -83,7 +81,8 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
 	}
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+	{
         super.onCreate(savedInstanceState);
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);  // prevent delay in loading ActionBar
@@ -94,15 +93,15 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         if(savedInstanceState != null)
         {
             _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION);
-//            _session.AttachNavigationDrawerCallback(this);
         }
         else
         {
         	_registrationDialogCallback = new RegistrationDialogFragment();
         	_loginDialogCallback = new LoginDialogFragment(_registrationDialogCallback);
-        	_session = _sessionFactory.create(new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), this, _loginDialogCallback, _registrationDialogCallback);
-//            _session = new OpenCartSession();
-//            _session.AttachNavigationDrawerCallback(this);
+        	_session = _sessionFactory.create(new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), 
+        			this, 
+        			_loginDialogCallback, 
+        			_registrationDialogCallback);
 
             // Create fragment here
             Fragment fragment = new PlaceholderFragment();
@@ -112,8 +111,6 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         }
 
         mTitle = mDrawerTitle = getTitle();
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.setAdapter(new DrawerListAdapter(_session));
@@ -128,12 +125,14 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
                 R.string.drawer_opening,
                 R.string.drawer_closing
         ) {
-            public void onDrawerClosed(View view) {
+            public void onDrawerClosed(View view) 
+            {
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
-            public void onDrawerOpened(View view) {
+            public void onDrawerOpened(View view) 
+            {
                 getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu();
             }
@@ -150,10 +149,12 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) 
+    {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) 
+        {
             return true;
         }
 
@@ -162,14 +163,16 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
 
     // this gets called when user leaves app running and app gets killed because system needs memory
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) 
+    {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_TAG_SESSION, _session);
     }
 
     // this is currently not being called
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate(Bundle savedInstanceState) 
+    {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
@@ -178,65 +181,76 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     // this gets called when the user changes device orientation or changes screen size
     // enabled via android:configChanges in AndroidManifest.xml
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig) 
+    {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggle
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private void selectItem(int position) {
+    private void selectItem(int position) 
+    {
         Fragment fragment;
-        switch (position) {
-            case HOME_NAV_DRAWER_POSITION: {
+        switch (position) 
+        {
+            case HOME_NAV_DRAWER_POSITION: 
+            {
                 fragment = new PlaceholderFragment();
                 break;
             }
 
-            case RESTAURANTS_NAV_DRAWER_POSITION: {
+            case RESTAURANTS_NAV_DRAWER_POSITION: 
+            {
                 fragment = new RestaurantFragment();
                 break;
             }
 
-            case FOOD_SEARCH_NAV_DRAWER_POSITION: {
+            case FOOD_SEARCH_NAV_DRAWER_POSITION: 
+            {
                 fragment = new FoodSearchFragment();
                 break;
             }
 
-            case PROFILE_NAV_DRAWER_POSITION: {
+            case PROFILE_NAV_DRAWER_POSITION: 
+            {
                 fragment = new ProfileFragment();
                 break;
             }
 
-            case PREV_ORDERS_NAV_DRAWER_POSITION: {
+            case PREV_ORDERS_NAV_DRAWER_POSITION: 
+            {
                 fragment = new PreviousOrdersFragment();
                 break;
             }
 
-            case FAVE_ORDERS_NAV_DRAWER_POSITION: {
+            case FAVE_ORDERS_NAV_DRAWER_POSITION: 
+            {
                 fragment = new FavoriteOrdersFragment();
                 break;
             }
 
-            case AREAS_MAP_NAV_DRAWER_POSITION: {
+            case AREAS_MAP_NAV_DRAWER_POSITION: 
+            {
                 fragment = new AreasMapFragment();
                 break;
             }
 
-            case ABOUT_NAV_DRAWER_POSITION: {
+            case ABOUT_NAV_DRAWER_POSITION: 
+            {
                 fragment = new AboutFragment();
                 break;
             }
 
-            case SIGN_OUT_NAV_DRAWER_POSITION: {
+            case SIGN_OUT_NAV_DRAWER_POSITION: 
+            {
                 fragment = new PlaceholderFragment();
                 _session.Logout();
                 break;
             }
 
-            case LOGIN_NAV_DRAWER_POSITION: {
-//                DialogFragment loginFragment = new LoginDialogFragment();
+            case LOGIN_NAV_DRAWER_POSITION: 
+            {
             	((LoginDialogFragment)_loginDialogCallback).show(getSupportFragmentManager(), "login");
-//                loginFragment.show(getSupportFragmentManager(), "login");
                 fragment = new PlaceholderFragment();
                 break;
             }
@@ -252,12 +266,13 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         mDrawerLayout.closeDrawers();
     }
     
-    public ISession getOpenCartSession()
+    public ISession getSession()
     {
     	return _session;
     }
 
-    private void configureActionBar() {
+    private void configureActionBar() 
+    {
         final ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.action_bar);   // contains centered Arrow logo in white
         actionBar.setDisplayShowTitleEnabled(false);
@@ -267,14 +282,17 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public void onNavigationDrawerUpdated() {
+    public void onNavigationDrawerUpdated() 
+    {
         ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
     }
 
 
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment 
+    {
 
-        public PlaceholderFragment() {
+        public PlaceholderFragment() 
+        {
 
         }
 

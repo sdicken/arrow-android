@@ -20,7 +20,8 @@ import java.util.StringTokenizer;
  * <p/>
  * Derived from http://www.hccp.org/java-net-cookie-how-to.html
  */
-public class ThisitaCookieManager implements Parcelable{
+public class ThisitaCookieManager implements Parcelable
+{
 
     private Map<String, Map> store;
 
@@ -37,7 +38,8 @@ public class ThisitaCookieManager implements Parcelable{
 
     private DateFormat dateFormat;
 
-    public ThisitaCookieManager() {
+    public ThisitaCookieManager() 
+    {
         store = new HashMap<String, Map>();
         dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
@@ -49,7 +51,8 @@ public class ThisitaCookieManager implements Parcelable{
         dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
 
-    public void storeCookies(URLConnection conn) throws IOException {
+    public void storeCookies(URLConnection conn) throws IOException 
+    {
 
         // let's determine the domain from where these cookies are being sent
         String domain = getDomainFromHost(conn.getURL().getHost());
@@ -71,8 +74,10 @@ public class ThisitaCookieManager implements Parcelable{
         // OK, now we are ready to get the cookies out of the URLConnection
 
         String headerName;
-        for (int i = 1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
-            if (headerName.equalsIgnoreCase(SET_COOKIE)) {
+        for (int i = 1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) 
+        {
+            if (headerName.equalsIgnoreCase(SET_COOKIE)) 
+            {
                 Map<String, String> cookie = new HashMap<String, String>();
                 StringTokenizer st = new StringTokenizer(conn.getHeaderField(i), COOKIE_VALUE_DELIMITER);
 
@@ -80,7 +85,8 @@ public class ThisitaCookieManager implements Parcelable{
                 // in the string is the cookie name and value, so let's handle
                 // them as a special case:
 
-                if (st.hasMoreTokens()) {
+                if (st.hasMoreTokens()) 
+                {
                     String token = st.nextToken();
                     String name = token.substring(0, token.indexOf(NAME_VALUE_SEPARATOR));
                     String value = token.substring(token.indexOf(NAME_VALUE_SEPARATOR) + 1, token.length());
@@ -88,7 +94,8 @@ public class ThisitaCookieManager implements Parcelable{
                     cookie.put(name, value);
                 }
 
-                while (st.hasMoreTokens()) {
+                while (st.hasMoreTokens()) 
+                {
                     String token = st.nextToken();
                     cookie.put(token.substring(0, token.indexOf(NAME_VALUE_SEPARATOR)).toLowerCase(Locale.US),
                             token.substring(token.indexOf(NAME_VALUE_SEPARATOR) + 1, token.length()));
@@ -108,7 +115,8 @@ public class ThisitaCookieManager implements Parcelable{
      * @param conn a java.net.URLConnection - must NOT be open, or IOException will be thrown
      * @throws java.io.IOException Thrown if conn has already been opened.
      */
-    public void setCookies(URLConnection conn) throws IOException {
+    public void setCookies(URLConnection conn) throws IOException 
+    {
 
         // let's determine the domain and path to retrieve the appropriate cookies
         URL url = conn.getURL();
@@ -140,7 +148,8 @@ public class ThisitaCookieManager implements Parcelable{
         }
     }
 
-    private String getDomainFromHost(String host) {
+    private String getDomainFromHost(String host) 
+    {
         if (host.indexOf(DOT) != host.lastIndexOf(DOT)) {
             return host.substring(host.indexOf(DOT) + 1);
         } else {
@@ -148,7 +157,8 @@ public class ThisitaCookieManager implements Parcelable{
         }
     }
 
-    private boolean isNotExpired(String cookieExpires) {
+    private boolean isNotExpired(String cookieExpires) 
+    {
         if (cookieExpires == null) return true;
         Date now = new Date();
         try {
@@ -159,7 +169,8 @@ public class ThisitaCookieManager implements Parcelable{
         }
     }
 
-    private boolean comparePaths(String cookiePath, String targetPath) {
+    private boolean comparePaths(String cookiePath, String targetPath) 
+    {
         return cookiePath == null || cookiePath.equals("/")
                 || targetPath.regionMatches(0, cookiePath, 0, cookiePath.length());
     }
@@ -168,7 +179,8 @@ public class ThisitaCookieManager implements Parcelable{
      * Returns a string representation of stored cookies organized by domain.
      */
 
-    public String toString() {
+    public String toString() 
+    {
         return store.toString();
     }
 
@@ -185,11 +197,13 @@ public class ThisitaCookieManager implements Parcelable{
         }
     };
 
-    public int describeContents() {
+    public int describeContents() 
+    {
         return 0;
     }
 
-    public void writeToParcel(Parcel out, int flags) {
+    public void writeToParcel(Parcel out, int flags) 
+    {
         out.writeMap(store);
     }
 }
