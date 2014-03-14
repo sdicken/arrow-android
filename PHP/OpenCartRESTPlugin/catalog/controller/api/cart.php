@@ -5,9 +5,16 @@ class ControllerApiCart extends Controller {
     private $debug = false;
     
     public function _get() {
-		# ----- TODO: IMPLEMENT --------------------
-        $json = array('success' => true);
+		$this->language->load('checkout/cart');
 
+		if (!isset($this->session->data['vouchers'])) {
+			$this->session->data['vouchers'] = array();
+		}
+		
+        $json = array('success' => true);
+		$this->load->model('tool/image');
+
+		$json['products'] = $this->cart->getProducts();
 
         if ($this->debug) {
             echo '<pre>';
@@ -126,6 +133,37 @@ class ControllerApiCart extends Controller {
 		}
 		
 		if ($this->debug) {
+            echo '<pre>';
+            print_r($json);
+        } else {
+            $this->response->setOutput(json_encode($json));
+        }
+    }
+	
+	public function _remove() {
+		$this->language->load('checkout/cart');
+
+		if (!isset($this->session->data['vouchers'])) {
+			$this->session->data['vouchers'] = array();
+		}
+		
+        $json = array('success' => false);
+		
+		if (isset($this->request->get['remove'])) {
+			$this->cart->remove($this->request->get['remove']);
+			$json['success'] = true;
+			unset($this->session->data['vouchers'][$this->request->get['remove']]);
+
+			$this->session->data['success'] = $this->language->get('text_remove');
+
+			unset($this->session->data['shipping_method']);
+			unset($this->session->data['shipping_methods']);
+			unset($this->session->data['payment_method']);
+			unset($this->session->data['payment_methods']); 
+			unset($this->session->data['reward']);
+		}
+
+        if ($this->debug) {
             echo '<pre>';
             print_r($json);
         } else {
