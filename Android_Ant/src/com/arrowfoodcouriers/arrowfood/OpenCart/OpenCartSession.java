@@ -16,9 +16,6 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.RoboGuice.GETCall;
-import com.arrowfoodcouriers.arrowfood.RoboGuice.POSTCall;
-import com.google.inject.Inject;
 
 public class OpenCartSession implements IRESTCallback, ISession, Parcelable
 {
@@ -91,7 +88,6 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     }
 
     /**
-     * Dependency injected constructor, managed by RoboGuice. See RoboGuice package to change dependency injections.
      * @param restCallback A callback for after GET/POST requests finish
      * @param postCall A class containing business logic to be executed when POSTing to server
      * @param getCall A class containing business logic to be executed when GETing from server
@@ -99,11 +95,11 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
      * @param loginDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment}
      * @param registrationDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment}
      */
-    @Inject									// injects for each item in this constructor, but those not commented get overwritten in MainActivity from the SessionFactory
+    									
     public OpenCartSession(
     		IRESTCallback restCallback, 
-    		@POSTCall IRESTCall postCall,	// injected by RoboGuice, see RoboGuice package for module details
-    		@GETCall IRESTCall getCall,		// injected by RoboGuice, see RoboGuice package for module details
+    		IRESTCall postCall,	
+    		IRESTCall getCall,
     		INavigationDrawerCallback navigationDrawerCallback, 
     		ILoginDialogCallback loginDialogCallback, 
     		IRegistrationDialogCallback registrationDialogCallback) 
@@ -122,17 +118,38 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
             Log.d("EXCEPTION:", ex.toString());
         }
     }
+    
+    public OpenCartSession(
+    		ISession session,
+    		IRESTCallback restCallback, 
+    		IRESTCall postCall,	
+    		IRESTCall getCall,
+    		INavigationDrawerCallback navigationDrawerCallback, 
+    		ILoginDialogCallback loginDialogCallback, 
+    		IRegistrationDialogCallback registrationDialogCallback) 
+    {
+    	_cookieManager = session.GetCookieManager();
+        _authenticated = session.IsAuthenticated();
+    	_restCallback = restCallback;
+    	_postCall = postCall;
+    	_getCall = getCall;
+    	_navigationDrawerCallback = navigationDrawerCallback;
+    	_loginDialogCallback = loginDialogCallback;
+    	_registrationDialogCallback = registrationDialogCallback;
+    }
 
     private OpenCartSession(Parcel in)
     {
         _authenticated = in.readByte() != 0;    // true if byte != 0 (no readBoolean method)
         _cookieManager = in.readParcelable(getClass().getClassLoader());
-        _restCallback = in.readParcelable(getClass().getClassLoader());
-        _postCall = in.readParcelable(getClass().getClassLoader());
-        _getCall = in.readParcelable(getClass().getClassLoader());
-        _navigationDrawerCallback = in.readParcelable(getClass().getClassLoader());
-        _loginDialogCallback = in.readParcelable(getClass().getClassLoader());
-        _registrationDialogCallback = in.readParcelable(getClass().getClassLoader());
+        // BEGIN: items re-created by MainActivity and passed to factory
+        _getCall = null;
+        _postCall = null;
+        _loginDialogCallback = null;
+        _registrationDialogCallback = null;
+        _navigationDrawerCallback = null;
+        _restCallback = null;
+        // END
     }
 
     public String GetEmail() 

@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Interfaces;
 
-public interface IRESTCall 
+
+public interface IRESTCall
 {
 	String makeRequestToServer(Object... objects);
 }

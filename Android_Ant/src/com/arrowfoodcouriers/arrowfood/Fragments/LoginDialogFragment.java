@@ -1,12 +1,11 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import roboguice.fragment.RoboDialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,22 +18,23 @@ import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
-import com.google.inject.Inject;
 
 /**
  * Created by Ryan on 2/17/14.
  */
-public class LoginDialogFragment extends RoboDialogFragment implements ILoginDialogCallback
+public class LoginDialogFragment extends DialogFragment implements ILoginDialogCallback
 {
     ProgressBar _progressBar;
     private Dialog _alertDialog = null;
-    EditText _usernameField;
-    EditText _passwordField;
+    private EditText _usernameField;
+    private EditText _passwordField;
     private IRegistrationDialogCallback _registrationDialogCallback;
-//    @Inject RegistrationDialogFragment fragment;
     
-    @Inject
+    public LoginDialogFragment()
+    {
+    	
+    }
+    
     public LoginDialogFragment(IRegistrationDialogCallback registrationDialogCallback)
     {
     	this._registrationDialogCallback = registrationDialogCallback;
@@ -48,8 +48,6 @@ public class LoginDialogFragment extends RoboDialogFragment implements ILoginDia
         ISession session = ((MainActivity)getActivity()).getSession();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_signin, null);
-//        _session = ((MainActivity)getActivity()).getOpenCartSession();
-//        _session.AttachLoginDialogCallback(this);
         _usernameField = (EditText) dialogView.findViewById(R.id.login_username);
         _passwordField = (EditText) dialogView.findViewById(R.id.login_password);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.login_activity_circle);
@@ -126,10 +124,8 @@ public class LoginDialogFragment extends RoboDialogFragment implements ILoginDia
                 {
                     // TODO: put registration code here
                     _alertDialog.dismiss();
-//                    DialogFragment fragment = new RegistrationDialogFragment();
                     FragmentManager fragmentManager = getFragmentManager();
-                    ((RegistrationDialogFragment)_registrationDialogCallback).show(fragmentManager, "register");
-//                    fragment.show(fragmentManager, "register");
+                    ((RegistrationDialogFragment)_registrationDialogCallback).show(fragmentManager, MainActivity.FRAGMENT_TAG_REGISTER);
                 }
             });
             Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
@@ -142,5 +138,11 @@ public class LoginDialogFragment extends RoboDialogFragment implements ILoginDia
                 }
             });
         }		
+	}
+
+	public void attachRegistrationDialogCallback(
+			IRegistrationDialogCallback registrationDialogCallback) 
+	{
+		this._registrationDialogCallback = registrationDialogCallback;		
 	}
 }

@@ -14,7 +14,7 @@ public class RealGETCall implements IRESTCall
 	{
 		
 	}
-	
+
 	public String makeRequestToServer(Object... objects) 
 	{
 		URL url = (URL) objects[0];

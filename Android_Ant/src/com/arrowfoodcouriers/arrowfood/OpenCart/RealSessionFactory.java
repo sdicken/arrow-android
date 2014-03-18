@@ -38,5 +38,20 @@ public class RealSessionFactory implements SessionFactory
 				loginDialogCallback, 
 				registrationDialogCallback);
 	}
+	
+	public ISession create(ISession session,
+			IRESTCallback restCallback,
+			INavigationDrawerCallback navigationDrawerCallback,
+			ILoginDialogCallback loginDialogCallback,
+			IRegistrationDialogCallback registrationDialogCallback)
+	{
+		return new OpenCartSession(session,
+				restCallback, 
+				_postCallProvider.get(), 
+				_getCallProvider.get(), 
+				navigationDrawerCallback, 
+				loginDialogCallback, 
+				registrationDialogCallback);
+	}
 
 }

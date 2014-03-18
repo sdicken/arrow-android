@@ -1,10 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import roboguice.fragment.RoboDialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +23,7 @@ import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 /**
  * Created by Sam on 2/25/14.
  */
-public class RegistrationDialogFragment extends RoboDialogFragment implements IRegistrationDialogCallback
+public class RegistrationDialogFragment extends DialogFragment implements IRegistrationDialogCallback
 {
     private Dialog _alertDialog = null;
     ProgressBar _progressBar;
@@ -44,6 +44,11 @@ public class RegistrationDialogFragment extends RoboDialogFragment implements IR
     EditText _confirmPasswordField;
     RadioGroup _newsletterField;
     CheckBox _privacyPolicyField;
+    
+    public RegistrationDialogFragment()
+    {
+    	
+    }
 
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) 

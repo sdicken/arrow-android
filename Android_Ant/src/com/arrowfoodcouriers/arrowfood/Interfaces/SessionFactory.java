@@ -8,4 +8,10 @@ public interface SessionFactory
 			INavigationDrawerCallback navigationDrawerCallback,
 			ILoginDialogCallback loginDialogCallback, 
 			IRegistrationDialogCallback registrationDialogCallback);
+	
+	ISession create(ISession session,
+			IRESTCallback restCallback,
+			INavigationDrawerCallback navigationDrawerCallback,
+			ILoginDialogCallback loginDialogCallback, 
+			IRegistrationDialogCallback registrationDialogCallback);
 }

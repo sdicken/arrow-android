@@ -1,14 +1,13 @@
 package com.arrowfoodcouriers.arrowfood;
 
-import roboguice.activity.RoboFragmentActivity;
+import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -43,7 +42,7 @@ import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.google.inject.Inject;
 
 	
-public class MainActivity extends RoboFragmentActivity implements INavigationDrawerCallback
+public class MainActivity extends RoboActivity implements INavigationDrawerCallback
 {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
@@ -57,6 +56,11 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     private static final int SIGN_OUT_NAV_DRAWER_POSITION = 9;
 
     private static final String BUNDLE_TAG_SESSION = "session";
+    private static final String BUNDLE_TAG_LOGIN_FRAGMENT = "login_fragment";
+    private static final String BUNDLE_TAG_REGISTER_FRAGMENT = "register_fragment";
+    
+    private static final String FRAGMENT_TAG_LOGIN = "login";
+    public static final String FRAGMENT_TAG_REGISTER = "register";
 
     @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @InjectView(R.id.left_drawer) ListView mDrawerList;
@@ -65,7 +69,7 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-    @Inject private SessionFactory _sessionFactory;
+    @Inject private SessionFactory _sessionFactory; // injected by RoboGuice
     private ILoginDialogCallback _loginDialogCallback;
     private IRegistrationDialogCallback _registrationDialogCallback;
     private ISession _session;
@@ -74,11 +78,6 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     {
     	
     }
-
-    public MainActivity(Parcel in) 
-    {
-		_session = in.readParcelable(getClass().getClassLoader());
-	}
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -90,9 +89,18 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         setContentView(R.layout.activity_main);
         getActionBar().show();
 
-        if(savedInstanceState != null)
+        if(savedInstanceState != null)	// scenario where user changing between apps
         {
-            _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION);
+            _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION); // retrieve previous session state (cookies and auth state)
+//            _registrationDialogCallback = new RegistrationDialogFragment();
+            instantiateRegisterCallback(savedInstanceState);
+            instantiateLoginCallback(savedInstanceState, _registrationDialogCallback);	// refresh callback in scenario where dialog was already open before state lost      
+            
+        	_session = _sessionFactory.create(_session,								// recreate session
+        			new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), 
+        			this, 
+        			_loginDialogCallback, 
+        			_registrationDialogCallback);
         }
         else
         {
@@ -105,7 +113,7 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
 
             // Create fragment here
             Fragment fragment = new PlaceholderFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentManager fragmentManager = getFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         }
@@ -141,7 +149,53 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    @Override
+    private boolean loginDialogWasShowingBeforeSave(Bundle savedInstanceState) 
+    {
+    	Fragment fragment = (LoginDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_LOGIN_FRAGMENT);
+    	return (fragment != null);
+	}
+    
+    private boolean registerDialogWasShowingBeforeSave(Bundle savedInstanceState) 
+	{
+    	Fragment fragment = (RegistrationDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_REGISTER_FRAGMENT);
+    	return (fragment != null);
+	}
+
+    // show fragment and give it a tag for reference later
+	private void displayLoginDialogFragment() 
+    {
+    	((LoginDialogFragment)_loginDialogCallback).show(getFragmentManager(), FRAGMENT_TAG_LOGIN);
+	}
+
+	// retrieve existing LoginDialogFragment instance (if available) or create new
+	private void instantiateLoginCallback(Bundle savedInstanceState,
+			IRegistrationDialogCallback registrationDialogCallback) 
+	{
+    	if(loginDialogWasShowingBeforeSave(savedInstanceState))
+		{
+    		_loginDialogCallback = (LoginDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_LOGIN_FRAGMENT);
+    		_loginDialogCallback.attachRegistrationDialogCallback(registrationDialogCallback);
+		}
+        else
+        {
+        	_loginDialogCallback = new LoginDialogFragment(registrationDialogCallback);
+        }		
+	}
+	
+	// retrieve existing LoginDialogFragment instance (if available) or create new
+	private void instantiateRegisterCallback(Bundle savedInstanceState) 
+	{
+    	if(registerDialogWasShowingBeforeSave(savedInstanceState))
+		{
+    		_registrationDialogCallback = (RegistrationDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_REGISTER_FRAGMENT);
+		}
+        else
+        {
+        	_registrationDialogCallback = new RegistrationDialogFragment();
+        }		
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
@@ -167,6 +221,12 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
     {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_TAG_SESSION, _session);
+        Fragment fragment = (LoginDialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG_LOGIN);
+        if(fragment != null && fragment.isAdded())
+        	getFragmentManager().putFragment(outState, BUNDLE_TAG_LOGIN_FRAGMENT, (LoginDialogFragment)_loginDialogCallback);
+        fragment = (RegistrationDialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG_REGISTER);
+        if(fragment != null && fragment.isAdded())
+        	getFragmentManager().putFragment(outState, BUNDLE_TAG_REGISTER_FRAGMENT, (RegistrationDialogFragment)_registrationDialogCallback);
     }
 
     // this is currently not being called
@@ -250,7 +310,7 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
 
             case LOGIN_NAV_DRAWER_POSITION: 
             {
-            	((LoginDialogFragment)_loginDialogCallback).show(getSupportFragmentManager(), "login");
+            	displayLoginDialogFragment();
                 fragment = new PlaceholderFragment();
                 break;
             }
@@ -261,7 +321,7 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
                 break;
             }
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
         mDrawerLayout.closeDrawers();
     }
@@ -314,5 +374,4 @@ public class MainActivity extends RoboFragmentActivity implements INavigationDra
             selectItem(selectedFromList.position);
         }
     }
-
 }
