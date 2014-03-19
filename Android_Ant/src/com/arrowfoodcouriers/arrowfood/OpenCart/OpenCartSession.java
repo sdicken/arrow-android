@@ -10,12 +10,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
+import com.google.inject.Inject;
 
 public class OpenCartSession implements IRESTCallback, ISession, Parcelable
 {
@@ -31,7 +33,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     public static final String CountryRoute = "index.php?route=checkout/cart/country";
     public static final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
-    private ThisitaCookieManager _cookieManager;
+    @Inject ICookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
     private final ILoginDialogCallback _loginDialogCallback;
@@ -172,7 +174,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         return _telephone;
     }
 
-    public ThisitaCookieManager GetCookieManager()
+    public ICookieManager GetCookieManager()
     {
         return _cookieManager;
     }
@@ -399,7 +401,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     public void writeToParcel(Parcel out, int flags)
     {
         out.writeByte((byte) (_authenticated ? 1 : 0)); // if _authenticated true, byte == 1 (no writeBoolean method)
-        out.writeParcelable(_cookieManager, 0);
+        out.writeParcelable((ThisitaCookieManager)_cookieManager, 0);
         // Android reads/writes into internal map using reflection
         // source: https://stackoverflow.com/questions/4853952/android-parcelable-writetoparcel-and-parcelable-creator-createfromparcel-are-ne
     }

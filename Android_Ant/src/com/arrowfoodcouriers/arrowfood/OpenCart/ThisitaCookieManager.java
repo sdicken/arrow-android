@@ -15,12 +15,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
+
 /**
  * Created by thisita on 2/18/14.
  * <p/>
  * Derived from http://www.hccp.org/java-net-cookie-how-to.html
  */
-public class ThisitaCookieManager implements Parcelable
+public class ThisitaCookieManager implements ICookieManager, Parcelable
 {
 
     private Map<String, Map> store;
