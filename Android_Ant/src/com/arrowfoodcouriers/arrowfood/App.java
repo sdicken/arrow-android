@@ -12,6 +12,9 @@ public class App extends Application
 	{
 		super.onCreate();
 		
-		RoboGuice.setBaseApplicationInjector(this, RoboGuice.DEFAULT_STAGE, RoboGuice.newDefaultRoboModule(this), new RealCustomBindingsModule());
+		RoboGuice.setBaseApplicationInjector(this, 
+				RoboGuice.DEFAULT_STAGE, 
+				RoboGuice.newDefaultRoboModule(this), 
+				new RealCustomBindingsModule());
 	}
 }

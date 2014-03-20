@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 
 public class RealGETCall implements IRESTCall 
@@ -18,7 +19,7 @@ public class RealGETCall implements IRESTCall
 	public String makeRequestToServer(Object... objects) 
 	{
 		URL url = (URL) objects[0];
-        ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[1];
+        ICookieManager cookieManager = (ThisitaCookieManager) objects[1];
         String response = "";
         String accept = (String) objects[2];
         try {

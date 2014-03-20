@@ -17,7 +17,9 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.google.inject.Inject;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class OpenCartSession implements IRESTCallback, ISession, Parcelable
 {
@@ -33,7 +35,7 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     public static final String CountryRoute = "index.php?route=checkout/cart/country";
     public static final String OrderRoute = "index.php?route=order/checkout"; // TODO: Check me!
 
-    @Inject ICookieManager _cookieManager;
+    private ICookieManager _cookieManager;
     private String _email;
     private Boolean _authenticated;
     private final ILoginDialogCallback _loginDialogCallback;
@@ -97,7 +99,6 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
      * @param loginDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment}
      * @param registrationDialogCallback A callback that updates UI for {@link com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment}
      */
-    									
     public OpenCartSession(
     		IRESTCallback restCallback, 
     		IRESTCall postCall,	
@@ -106,7 +107,9 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
     		ILoginDialogCallback loginDialogCallback, 
     		IRegistrationDialogCallback registrationDialogCallback) 
     {
-    	_cookieManager = new ThisitaCookieManager();
+    	Injector injector = Guice.createInjector(new OpenCartModule());
+    	
+    	_cookieManager = injector.getInstance(ICookieManager.class);	// cookie manager injected by Guice
         _authenticated = false;
     	_restCallback = restCallback;
     	_postCall = postCall;
@@ -121,6 +124,17 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         }
     }
     
+    /**
+     * Constructor used for re-creating based on continuing a previous session 
+     * (e.g., user switches between apps)
+     * @param session
+     * @param restCallback
+     * @param postCall
+     * @param getCall
+     * @param navigationDrawerCallback
+     * @param loginDialogCallback
+     * @param registrationDialogCallback
+     */
     public OpenCartSession(
     		ISession session,
     		IRESTCallback restCallback, 
@@ -404,5 +418,14 @@ public class OpenCartSession implements IRESTCallback, ISession, Parcelable
         out.writeParcelable((ThisitaCookieManager)_cookieManager, 0);
         // Android reads/writes into internal map using reflection
         // source: https://stackoverflow.com/questions/4853952/android-parcelable-writetoparcel-and-parcelable-creator-createfromparcel-are-ne
+    }
+    
+    private class OpenCartModule extends AbstractModule
+    {
+		@Override
+		protected void configure() 
+		{
+			bind(ICookieManager.class).to(ThisitaCookieManager.class);
+		}
     }
 }

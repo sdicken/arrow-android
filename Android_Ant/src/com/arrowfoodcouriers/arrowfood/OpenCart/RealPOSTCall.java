@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 
 /**
@@ -34,7 +35,7 @@ public class RealPOSTCall implements IRESTCall
     {
     	URL url = (URL) objects[0];
         Map<String, String> data = (Map<String, String>) objects[1];
-        ThisitaCookieManager cookieManager = (ThisitaCookieManager) objects[2];
+        ICookieManager cookieManager = (ThisitaCookieManager) objects[2];
         String response = "";
         try {
             // create the request
