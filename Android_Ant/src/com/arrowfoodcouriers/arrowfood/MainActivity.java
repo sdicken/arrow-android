@@ -121,6 +121,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         mTitle = mDrawerTitle = getTitle();
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerList.addHeaderView(View.inflate(this, R.layout.navdrawer_header, null), null, false);
         mDrawerList.setAdapter(new DrawerListAdapter(_session));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
