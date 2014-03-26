@@ -7,7 +7,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:id="@+id/rest_list_image"
+        android:id="@+id/restaurant_list_logo"
         android:layout_gravity="center_vertical"
         android:minHeight="32dp"
         android:minWidth="32dp" />
@@ -23,7 +23,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/rest_list_title"
+            android:id="@+id/restaurant_list_title"
             android:textStyle="bold"
             android:textColor="@color/ArrowRed" />
 
@@ -31,7 +31,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/rest_list_subtitle"
+            android:id="@+id/restaurant_list_subtitle"
             android:layout_marginBottom="4dp" />
     </LinearLayout>
 

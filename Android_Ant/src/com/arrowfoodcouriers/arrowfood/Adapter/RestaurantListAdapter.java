@@ -48,17 +48,17 @@ public class RestaurantListAdapter extends BaseAdapter
         if (view == null) 
         {
             view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.rest_list_item,
+                    R.layout.restaurant_list_item,
                     parent, false);
         }
 
-        TextView titleView = (TextView)view.findViewById(R.id.rest_list_title);
-        TextView subtitleView = (TextView)view.findViewById(R.id.rest_list_subtitle);
-        ImageView imageView = (ImageView)view.findViewById(R.id.rest_list_image);
+        TextView titleView = (TextView)view.findViewById(R.id.restaurant_list_title);
+        TextView subtitleView = (TextView)view.findViewById(R.id.restaurant_list_subtitle);
+        ImageView imageView = (ImageView)view.findViewById(R.id.restaurant_list_logo);
         RestaurantListObject restListObject = (RestaurantListObject)getItem(position);
-        titleView.setText(restListObject.name);
-        subtitleView.setText(restListObject.subtitle);
-        imageView.setImageResource(restListObject.image);
+        titleView.setText(restListObject.getName());
+        subtitleView.setText(restListObject.getSubtitle());
+        imageView.setImageResource(restListObject.getImage());
 
         return view;
     }
