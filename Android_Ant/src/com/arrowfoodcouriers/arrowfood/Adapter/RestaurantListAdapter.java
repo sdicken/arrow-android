@@ -13,9 +13,11 @@ import com.arrowfoodcouriers.arrowfood.R;
 /**
  * Created by Ryan on 2/18/14.
  */
-public class RestaurantListAdapter extends BaseAdapter {
+public class RestaurantListAdapter extends BaseAdapter 
+{
 
-    private static final Object[] restaurants = {
+    private static final Object[] restaurants = 
+    	{
             new RestaurantListObject("QDOBA", "Mexican Grill", R.drawable.ic_launcher),
             new RestaurantListObject("QUILLS COFFEE", "Coffee Shop and Cafe", R.drawable.ic_launcher),
             new RestaurantListObject("NORTHEND CAFE", "Breakfast, Lunch, and Dinner", R.drawable.ic_launcher),
@@ -25,21 +27,26 @@ public class RestaurantListAdapter extends BaseAdapter {
             new RestaurantListObject("Restaurant 7", "You Won't Regret It", R.drawable.ic_launcher)
     };
 
-    public Object getItem(int position) {
+    public Object getItem(int position) 
+    {
         return restaurants[position];
     }
 
-    public long getItemId(int position) {
+    public long getItemId(int position) 
+    {
         return position;
     }
 
-    public int getCount() {
+    public int getCount() 
+    {
         return restaurants.length;
     }
 
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) 
+    {
 
-        if (view == null) {
+        if (view == null) 
+        {
             view = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.rest_list_item,
                     parent, false);

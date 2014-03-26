@@ -25,7 +25,8 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
 public class ThisitaCookieManager implements ICookieManager, Parcelable
 {
 
-    private Map<String, Map> store;
+    @SuppressWarnings("rawtypes")
+	private Map<String, Map> store;
 
     public static final String SET_COOKIE = "Set-Cookie";
     public static final String COOKIE_VALUE_DELIMITER = ";";
@@ -40,20 +41,23 @@ public class ThisitaCookieManager implements ICookieManager, Parcelable
 
     private DateFormat dateFormat;
 
-    public ThisitaCookieManager() 
+    @SuppressWarnings("rawtypes")
+	public ThisitaCookieManager() 
     {
         store = new HashMap<String, Map>();
         dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
 
-    private ThisitaCookieManager(Parcel in)
+    @SuppressWarnings("rawtypes")
+	private ThisitaCookieManager(Parcel in)
     {
         store = new HashMap<String, Map>();
         in.readMap(store, getClass().getClassLoader());
         dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
     }
 
-    public void storeCookies(URLConnection conn) throws IOException 
+    @SuppressWarnings("unchecked")
+	public void storeCookies(URLConnection conn) throws IOException 
     {
 
         // let's determine the domain from where these cookies are being sent
@@ -63,7 +67,8 @@ public class ThisitaCookieManager implements ICookieManager, Parcelable
         Map<String, Map<String, String>> domainStore; // this is where we will store cookies for this domain
 
         // now let's check the store to see if we have an entry for this domain
-        if (store.containsKey(domain)) {
+        if (store.containsKey(domain)) 
+        {
             // we do, so lets retrieve it from the store
             domainStore = (Map<String, Map<String, String>>) store.get(domain);
         } else {

@@ -92,7 +92,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
             _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION); // retrieve previous session state (cookies and auth state)
-//            _registrationDialogCallback = new RegistrationDialogFragment();
             instantiateRegisterCallback(savedInstanceState);
             instantiateLoginCallback(savedInstanceState, _registrationDialogCallback);	// refresh callback in scenario where dialog was already open before state lost      
             
@@ -112,7 +111,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         			_registrationDialogCallback);
 
             // Create fragment here
-            Fragment fragment = new PlaceholderFragment();
+            Fragment fragment = new RestaurantFragment();
             FragmentManager fragmentManager = getFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
