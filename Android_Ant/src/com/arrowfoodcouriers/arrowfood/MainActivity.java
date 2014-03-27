@@ -321,8 +321,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
                 break;
             }
         }
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        Utils.loadFragment(getFragmentManager(), fragment);
         mDrawerLayout.closeDrawers();
     }
     

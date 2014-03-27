@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 
 public class RestaurantFragment extends ListFragment 
@@ -38,8 +39,7 @@ public class RestaurantFragment extends ListFragment
 	    	case QDOBA_POSITION:
 	    	{
 	    		Fragment fragment = new MenuFragment();
-	    		FragmentManager fragmentManager = getFragmentManager();
-	    		fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+	    		Utils.loadFragment(getFragmentManager(), fragment);
 	    		break;
 	    	}
 	    	case QUILLS_POSITION:
