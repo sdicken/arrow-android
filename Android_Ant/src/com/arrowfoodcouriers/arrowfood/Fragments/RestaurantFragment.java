@@ -37,7 +37,7 @@ public class RestaurantFragment extends ListFragment
     	{
 	    	case QDOBA_POSITION:
 	    	{
-	    		Fragment fragment = new RestaurantFragment();
+	    		Fragment fragment = new MenuFragment();
 	    		FragmentManager fragmentManager = getFragmentManager();
 	    		fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 	    		break;
