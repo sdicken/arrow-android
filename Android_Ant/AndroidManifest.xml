@@ -42,9 +42,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-    		android:name="com.google.android.maps.v2.API_KEY"
-    		android:value="AIzaSyC6zzDgFInbRAcxWZdP2h2Hzh-zIDDTT74" />
+        <!-- uncomment and remove spaces between dashes (compiler error because generated token has dashes in it) when deploying to Google Play -->
+        <!-- <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBE1Gudgq2nAgG5ZimMMLuyR3B3- - -CIXA" /> -->
+        <!-- use when debugging (uses different keystore) -->
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCzB8mldP5eDgseG6qvNVu3oVphvo0oBJc" />
     </application>
 
 </manifest>
