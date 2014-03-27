@@ -1,6 +1,7 @@
 package mocks;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 
 public class MockLoginCallback implements ILoginDialogCallback 
 {
@@ -31,6 +32,13 @@ public class MockLoginCallback implements ILoginDialogCallback
 	public void onFailure() 
 	{
 		failureWasCalled = true;
+	}
+
+	@Override
+	public void attachRegistrationDialogCallback(
+			IRegistrationDialogCallback registrationDialogCallback) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

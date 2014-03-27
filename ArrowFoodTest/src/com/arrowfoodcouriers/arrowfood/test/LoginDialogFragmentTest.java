@@ -10,23 +10,22 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
+import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 @RunWith(RobolectricTestRunner.class)
 public class LoginDialogFragmentTest 
 {
 	private MainActivity _activity;
-	private OpenCartSession _session;
+	private ISession _session;
 	private MockLoginCallback _loginCallback;
 	
 	@Before
 	public void setUp()
 	{
 		_activity = Robolectric.buildActivity(MainActivity.class).create().get();
-		_session = _activity.getOpenCartSession();
+		_session = _activity.getSession();
 		_loginCallback = new MockLoginCallback();
-		_session.AttachLoginDialogCallback(_loginCallback);
-		_activity.setOpenCartSession(_session);
 	}
 	
 	@Test

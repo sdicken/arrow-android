@@ -19,7 +19,7 @@ public class RESTCallbackTest
 	@Test
 	public void restCallbackShouldUpdate()
 	{
-		_mockRestCallback.onTaskCompleted(null, null);
+		_mockRestCallback.onTaskCompleted(null, null, null);
 		assertTrue(_mockRestCallback.completeWasCalled);
 	}
 }
