@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal" 
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:id="@+id/restaurant_list_logo"
-        android:layout_gravity="center_vertical"
-        android:minHeight="32dp"
-        android:minWidth="32dp" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_weight="7"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp">
 
@@ -23,22 +17,25 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/restaurant_list_title"
+            android:id="@+id/menu_list_title"
             style="@style/list_item_title" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/restaurant_list_subtitle"
-            style="@style/list_item_subtitle" />
-        
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/restaurant_list_description"
+            android:id="@+id/menu_list_subtitle"
             style="@style/list_item_details" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/menu_list_price"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.05"
+        style="@style/menu_prices"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="New text" />
 
 </LinearLayout>
