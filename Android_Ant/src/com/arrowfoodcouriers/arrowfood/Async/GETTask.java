@@ -1,39 +1,40 @@
-package com.arrowfoodcouriers.arrowfood.OpenCart;
+package com.arrowfoodcouriers.arrowfood.Async;
 
 import android.os.AsyncTask;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
+import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartTask;
 
-public class POSTTask extends AsyncTask<Object, Integer, String>
+/**
+ * Android-based threading abstraction class used for GETs.
+ */
+public class GETTask extends AsyncTask<Object, Integer, String>
 {
-
-	private OpenCartTask _task;
+    private OpenCartTask _task;
     private IRESTCallback _RESTCallback;
     private IRESTCall _restCall;
     private ISession _session;
 
     /**
-     * Constructor for POSTs without a dialog listener.
-     * @param task The task for which the POST is being executed
+     *
+     * @param task The task for which the GET is being executed
      * @param restCallback The listener waiting for task completion callback
-     * @param postCall A class containing the business logic for POST
-     * @param session A session interface object for session updates in {@link #onPostExecute(String)}
+     * @param restCall A class containing GET business logic
+     * @param session A session interface object for managing session updates after {@link #onPostExecute(String)}
      */
-    public POSTTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall postCall, ISession session)
+    public GETTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall restCall, ISession session)
     {
         _task = task;
         _RESTCallback = restCallback;
-        _restCall = postCall;
+        _restCall = restCall;
         _session = session;
     }
 
-    public Boolean urlEncodeData = false;
-
-	@Override
+    @Override
     protected String doInBackground(Object... objects) 
-	{
+    {
         return _restCall.makeRequestToServer(objects);
     }
 

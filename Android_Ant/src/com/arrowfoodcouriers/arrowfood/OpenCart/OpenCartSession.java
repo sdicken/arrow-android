@@ -10,6 +10,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.arrowfoodcouriers.arrowfood.Async.GETTask;
+import com.arrowfoodcouriers.arrowfood.Async.LoginPOSTTask;
+import com.arrowfoodcouriers.arrowfood.Async.POSTTask;
+import com.arrowfoodcouriers.arrowfood.Async.RegistrationPOSTTask;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ICookieManager;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
