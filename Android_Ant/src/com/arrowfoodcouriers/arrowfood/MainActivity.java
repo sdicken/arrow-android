@@ -33,6 +33,7 @@ import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.TrackingFragment;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
@@ -47,13 +48,14 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
     private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
-    private static final int PROFILE_NAV_DRAWER_POSITION = 3;
-    private static final int LOGIN_NAV_DRAWER_POSITION = 4;
-    private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 5;
-    private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 6;
-    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 7;
-    private static final int ABOUT_NAV_DRAWER_POSITION = 8;
-    private static final int SIGN_OUT_NAV_DRAWER_POSITION = 9;
+    private static final int TRACK_NAV_DRAWER_POSITION = 3;
+    private static final int PROFILE_NAV_DRAWER_POSITION = 4;
+    private static final int LOGIN_NAV_DRAWER_POSITION = 5;
+    private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 6;
+    private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 7;
+    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 8;
+    private static final int ABOUT_NAV_DRAWER_POSITION = 9;
+    private static final int SIGN_OUT_NAV_DRAWER_POSITION = 10;
 
     private static final String BUNDLE_TAG_SESSION = "session";
     private static final String BUNDLE_TAG_LOGIN_FRAGMENT = "login_fragment";
@@ -313,6 +315,12 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             	displayLoginDialogFragment();
                 fragment = new PlaceholderFragment();
                 break;
+            }
+            
+            case TRACK_NAV_DRAWER_POSITION:
+            {
+            	fragment = new TrackingFragment();
+            	break;
             }
 
             default: {

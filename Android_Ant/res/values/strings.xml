@@ -45,5 +45,13 @@
     <string name="dialog_register_newsletter_subscribe_yes">Yes</string>
     <string name="dialog_register_newsletter_subscribe_no">No</string>
     <string name="dialog_register_privacy_policy_agree">I have read and agree to the privacy policy</string>
+    <string name="label_eta">ETA: </string>
+    <string name="placeholder">placeholder</string>
+    <string name="tracking_status_received">Received</string>
+    <string name="tracking_status_cooking">Cooking</string>
+    <string name="tracking_status_delivering">En route</string>
+    <string name="tracking_status_delivered">Delivered</string>
+    <string name="description_connector_line">A line used to create space between status markers.</string>
+    <string name="maps_marker_food_location">Your order is here</string>
 
 </resources>
