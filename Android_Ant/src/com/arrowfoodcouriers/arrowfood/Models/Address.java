@@ -1,6 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
-import java.util.Iterator;
 
 public class Address
 {

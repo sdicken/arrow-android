@@ -9,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,7 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class TrackingFragment extends Fragment
 {
 	private GoogleMap map;
-//	private MapFragment mapFragment;
 	private MapView mapView;
 	private TextView statusText1;
 	private TextView statusText2;
