@@ -53,5 +53,8 @@
     <string name="tracking_status_delivered">Delivered</string>
     <string name="description_connector_line">A line used to create space between status markers.</string>
     <string name="maps_marker_food_location">Your order is here</string>
+    <string name="header_delivery_text">DELIVERY</string>
+    <string name="header_name_text">Name</string>
+    <string name="header_address_text">Address</string>
 
 </resources>

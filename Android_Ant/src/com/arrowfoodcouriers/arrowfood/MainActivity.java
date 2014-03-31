@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import java.util.Date;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.ActionBar;
@@ -21,6 +23,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
 import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
@@ -39,7 +42,9 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
+import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
+import com.arrowfoodcouriers.arrowfood.gson.UserAccountLoader;
 import com.google.inject.Inject;
 
 	
@@ -78,7 +83,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     
     public MainActivity()
     {
-    	
     }
 
 	@Override
@@ -90,6 +94,12 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         getActionBar().hide();
         setContentView(R.layout.activity_main);
         getActionBar().show();
+        
+        // TODO: Remove because this is for debugging only
+        UserAccountLoader loader = new UserAccountLoader(this);
+        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date());
+        loader.saveData(testUser);
+        //-------------------------------------------------
 
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
@@ -126,6 +136,8 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         mDrawerList.setAdapter(new DrawerListAdapter(_session));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+        updateNavHeader(loader.loadData());
+        
         configureActionBar();
 
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -371,6 +383,17 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         }
     }
 
+    private void updateNavHeader(User userData) {
+    	String name = userData.getName();
+    	String fullAddress = userData.getAddress1() + " " + userData.getAddress2() + ", " + userData.getCity() + ", " + userData.getState() + " " + userData.getZip();
+    	
+    	TextView nameTextView = (TextView)findViewById(R.id.header_name);
+    	TextView addressTextView = (TextView)findViewById(R.id.header_address);
+    	nameTextView.setText(name);
+    	addressTextView.setText(fullAddress);
+    	
+    }
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         private ListView listView = (ListView)findViewById(R.id.left_drawer);
 
