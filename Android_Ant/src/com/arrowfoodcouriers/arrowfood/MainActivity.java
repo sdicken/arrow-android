@@ -29,6 +29,7 @@ import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
 import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
 import com.arrowfoodcouriers.arrowfood.Fragments.AboutFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
+import com.arrowfoodcouriers.arrowfood.Fragments.CartFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
@@ -196,7 +197,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         }		
 	}
 	
-	// retrieve existing LoginDialogFragment instance (if available) or create new
+	// retrieve existing RegisterDialogFragment instance (if available) or create new
 	private void instantiateRegisterCallback(Bundle savedInstanceState) 
 	{
     	if(registerDialogWasShowingBeforeSave(savedInstanceState))
@@ -224,6 +225,11 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         if (mDrawerToggle.onOptionsItemSelected(item)) 
         {
             return true;
+        }
+        else if(item.getTitle().equals(getResources().getString(R.string.actionbar_cart)))
+        {
+        	Utils.loadFragment(getFragmentManager(), new CartFragment());
+        	return true;
         }
 
         return super.onOptionsItemSelected(item);
