@@ -10,8 +10,17 @@ public class Order
 	private Address shipping;
 	private OrderStatus status;
 	private Cart cart;
+	private Double rating;
+	private String comment;
 	
-	public Order(String username, Date created, Address billing, Address shipping, OrderStatus status, Cart cart)
+	public Order(String username, 
+			Date created, 
+			Address billing, 
+			Address shipping, 
+			OrderStatus status, 
+			Cart cart,
+			Double rating,
+			String comment)
 	{
 		this.username = username;
 		this.created = created;
@@ -19,6 +28,8 @@ public class Order
 		this.shipping = shipping;
 		this.status = status;
 		this.cart = cart;
+		this.rating = rating;
+		this.comment = comment;
 	}
 
 	public String getUsername() {
@@ -67,5 +78,21 @@ public class Order
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

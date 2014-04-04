@@ -6,18 +6,24 @@ public class Cart
 {
 	private String username;
 	private Date created;
-	private Date lastUpdate;
+	private Date updated;
 	private CartItem[] items;
+	private Coupon[] coupons;
+	private Double total;
 	
 	public Cart(String username,
 			Date created,
-			Date lastUpdate,
-			CartItem[] items)
+			Date updated,
+			CartItem[] items,
+			Coupon[] coupons,
+			Double total)
 	{
 		this.username = username;
 		this.created = created;
-		this.lastUpdate = lastUpdate;
+		this.updated = updated;
 		this.items = items;
+		this.coupons = coupons;
+		this.total = total;
 	}
 
 	public String getUsername() {
@@ -36,19 +42,35 @@ public class Cart
 		this.created = created;
 	}
 
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
 	public CartItem[] getItems() {
 		return items;
 	}
 
 	public void setItems(CartItem[] items) {
 		this.items = items;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Coupon[] getCoupons() {
+		return coupons;
+	}
+
+	public void setCoupons(Coupon[] coupons) {
+		this.coupons = coupons;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 }
