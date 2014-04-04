@@ -4,16 +4,48 @@ import java.util.Date;
 
 public class Geotags 
 {
-	private final String username;
-	private final Double latitude;
-	private final Double longitude;
-	private final Date createdOn;
+	private String username;
+	private Double latitude;
+	private Double longitude;
+	private Date created;
 	
-	public Geotags(String username, Double latitude, Double longitude, Date createdOn)
+	public Geotags(String username, Double latitude, Double longitude, Date created)
 	{
 		this.username = username;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.createdOn = createdOn;
+		this.created = created;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 }

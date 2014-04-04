@@ -12,11 +12,11 @@ public class User {
 	private String city;
 	private String state;
 	private String zip;
-	private Date createdOn;
+	private Date created;
 	
 	public User(String userName, String role, String email, String name,
 			String address1, String address2, String city, String state,
-			String zip, Date createdOn ) {
+			String zip, Date created ) {
 		
 		this.userName = userName;
 		this.role = role;
@@ -27,7 +27,7 @@ public class User {
 		this.setCity(city);
 		this.setState(state);
 		this.setZip(zip);
-		this.setCreatedOn(createdOn);
+		this.setCreatedOn(created);
 	}
 	
 	public String getUserName() {
@@ -103,10 +103,10 @@ public class User {
 	}
 
 	public Date getCreatedOn() {
-		return createdOn;
+		return created;
 	}
 
 	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
+		this.created = createdOn;
 	}
 }
