@@ -1,11 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
-import java.util.Date;
 
 public class Order 
 {
 	private String username;
-	private Date created;
+	private Long created;
 	private Address billing;
 	private Address shipping;
 	private OrderStatus status;
@@ -14,7 +13,7 @@ public class Order
 	private String comment;
 	
 	public Order(String username, 
-			Date created, 
+			Long created, 
 			Address billing, 
 			Address shipping, 
 			OrderStatus status, 
@@ -38,14 +37,6 @@ public class Order
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
 	}
 
 	public Address getBilling() {
@@ -94,5 +85,13 @@ public class Order
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Long getCreated() {
+		return created;
+	}
+
+	public void setCreated(Long created) {
+		this.created = created;
 	}
 }

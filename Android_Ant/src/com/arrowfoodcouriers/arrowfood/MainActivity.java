@@ -97,7 +97,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         
         // TODO: Remove because this is for debugging only
         UserAccountLoader loader = new UserAccountLoader(this);
-        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date());
+        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
         loader.saveData(testUser);
         //-------------------------------------------------
 

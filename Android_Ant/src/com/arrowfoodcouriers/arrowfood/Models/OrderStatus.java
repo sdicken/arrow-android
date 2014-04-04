@@ -6,9 +6,9 @@ public class OrderStatus
 {
 	private String authority;
 	private String state;
-	private Date created;
+	private Long created;
 	
-	public OrderStatus(String authority, String state, Date created)
+	public OrderStatus(String authority, String state, Long created)
 	{
 		this.authority = authority;
 		this.state = state;
@@ -31,11 +31,12 @@ public class OrderStatus
 		this.state = state;
 	}
 
-	public Date getCreated() {
+	public Long getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Long created) {
 		this.created = created;
 	}
+	
 }

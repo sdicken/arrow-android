@@ -6,9 +6,9 @@ public class Email
 {
 	private String name;
 	private String address;
-	private Date created;
+	private Long created;
 	
-	public Email(String name, String address, Date created)
+	public Email(String name, String address, Long created)
 	{
 		this.name = name;
 		this.address = address;
@@ -31,11 +31,13 @@ public class Email
 		this.address = address;
 	}
 
-	public Date getCreated() {
+	public Long getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Long created) {
 		this.created = created;
 	}
+
+	
 }

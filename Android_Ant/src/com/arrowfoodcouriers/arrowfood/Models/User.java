@@ -1,6 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
-import java.util.Date;
 
 public class User {
 	private String userName;
@@ -12,11 +11,11 @@ public class User {
 	private String city;
 	private String state;
 	private String zip;
-	private Date created;
+	private Long created;
 	
 	public User(String userName, String role, String email, String name,
 			String address1, String address2, String city, String state,
-			String zip, Date created ) {
+			String zip, Long created ) {
 		
 		this.userName = userName;
 		this.role = role;
@@ -27,7 +26,7 @@ public class User {
 		this.setCity(city);
 		this.setState(state);
 		this.setZip(zip);
-		this.setCreatedOn(created);
+		this.setCreated(created);
 	}
 	
 	public String getUserName() {
@@ -101,12 +100,120 @@ public class User {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+	
 
-	public Date getCreatedOn() {
+	public Long getCreated() {
 		return created;
 	}
 
-	public void setCreatedOn(Date createdOn) {
-		this.created = createdOn;
+	public void setCreated(Long created) {
+		this.created = created;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((address1 == null) ? 0 : address1.hashCode());
+		result = prime * result
+				+ ((address2 == null) ? 0 : address2.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((created == null) ? 0 : created.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result
+				+ ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((zip == null) ? 0 : zip.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof User)) {
+			return false;
+		}
+		User other = (User) obj;
+		if (address1 == null) {
+			if (other.address1 != null) {
+				return false;
+			}
+		} else if (!address1.equals(other.address1)) {
+			return false;
+		}
+		if (address2 == null) {
+			if (other.address2 != null) {
+				return false;
+			}
+		} else if (!address2.equals(other.address2)) {
+			return false;
+		}
+		if (city == null) {
+			if (other.city != null) {
+				return false;
+			}
+		} else if (!city.equals(other.city)) {
+			return false;
+		}
+		if (created == null) {
+			if (other.created != null) {
+				return false;
+			}
+		} else if (!created.equals(other.created)) {
+			return false;
+		}
+		if (email == null) {
+			if (other.email != null) {
+				return false;
+			}
+		} else if (!email.equals(other.email)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (role == null) {
+			if (other.role != null) {
+				return false;
+			}
+		} else if (!role.equals(other.role)) {
+			return false;
+		}
+		if (state == null) {
+			if (other.state != null) {
+				return false;
+			}
+		} else if (!state.equals(other.state)) {
+			return false;
+		}
+		if (userName == null) {
+			if (other.userName != null) {
+				return false;
+			}
+		} else if (!userName.equals(other.userName)) {
+			return false;
+		}
+		if (zip == null) {
+			if (other.zip != null) {
+				return false;
+			}
+		} else if (!zip.equals(other.zip)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 }

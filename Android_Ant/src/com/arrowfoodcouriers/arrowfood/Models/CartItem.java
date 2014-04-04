@@ -1,6 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
-import java.util.Date;
 
 public class CartItem 
 {
@@ -8,15 +7,15 @@ public class CartItem
 	private String itemId;
 	private Integer quantity;
 	private Double total;
-	private Date created;
-	private Date updated;
+	private Long created;
+	private Long updated;
 	
 	public CartItem(String menuId, 
 			String itemId, 
 			Integer quantity, 
 			Double total,
-			Date created,
-			Date updated)
+			Long created,
+			Long updated)
 	{
 		this.menuId = menuId;
 		this.itemId = itemId;
@@ -58,19 +57,19 @@ public class CartItem
 		this.total = total;
 	}
 
-	public Date getCreated() {
+	public Long getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Long created) {
 		this.created = created;
 	}
 
-	public Date getUpdated() {
+	public Long getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Date updated) {
+	public void setUpdated(Long updated) {
 		this.updated = updated;
 	}
 }

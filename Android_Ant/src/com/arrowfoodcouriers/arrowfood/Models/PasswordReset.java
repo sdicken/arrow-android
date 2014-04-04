@@ -1,20 +1,19 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
-import java.util.Date;
 
 public class PasswordReset 
 {
 	private String username;
 	private String token;
-	private Date expiration;
-	private Date created;
+	private Long expiration;
+	private Long created;
 	
-	public PasswordReset(String username, String token, Date expiration, Date createdOn)
+	public PasswordReset(String username, String token, Long expiration, Long created)
 	{
 		this.username = username;
 		this.token = token;
 		this.expiration = expiration;
-		this.created = createdOn;
+		this.created = created;
 	}
 
 	public String getUsername() {
@@ -33,19 +32,21 @@ public class PasswordReset
 		this.token = token;
 	}
 
-	public Date getExpiration() {
+	public Long getExpiration() {
 		return expiration;
 	}
 
-	public void setExpiration(Date expiration) {
+	public void setExpiration(Long expiration) {
 		this.expiration = expiration;
 	}
 
-	public Date getCreated() {
+	public Long getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Long created) {
 		this.created = created;
 	}
+
+	
 }
