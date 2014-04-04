@@ -5,15 +5,26 @@ import java.util.Date;
 public class Coupon 
 {
 	private String token;
+	private byte[] image;
+	private byte[] icon;
 	private String type;
 	private String param;
 	private Date updated;
 	private Date created;
 	private Integer claims;
 	
-	public Coupon(String token, String type, String param, Date updated, Date created, Integer claims)
+	public Coupon(String token, 
+			byte[] image,
+			byte[] icon,
+			String type, 
+			String param, 
+			Date updated, 
+			Date created, 
+			Integer claims)
 	{
 		this.token = token;
+		this.image = image;
+		this.icon = icon;
 		this.type = type;
 		this.param = param;
 		this.updated = updated;
@@ -67,6 +78,22 @@ public class Coupon
 
 	public void setClaims(Integer claims) {
 		this.claims = claims;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 	
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 public class Restaurant 
 {
 	private String name;
+	private byte[] image;
+	private byte[] icon;
 	private String description;
 	private String[] tags;
 	private Email[] emails;
@@ -15,6 +17,8 @@ public class Restaurant
 	private Integer orders;
 	
 	public Restaurant(String name,
+			byte[] image,
+			byte[] icon,
 			String description,
 			String[] tags,
 			Email[] emails,
@@ -25,6 +29,8 @@ public class Restaurant
 			Integer orders)
 	{
 		this.name = name;
+		this.image = image;
+		this.icon = icon;
 		this.description = description;
 		this.tags = tags;
 		this.emails = emails;
@@ -105,5 +111,21 @@ public class Restaurant
 
 	public void setOrders(Integer orders) {
 		this.orders = orders;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 }

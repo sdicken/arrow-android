@@ -6,6 +6,8 @@ public class Menu
 {
 	private String name;
 	private String restaurant;
+	private byte[] image;
+	private byte[] icon;
 	private MenuItem[] items;
 	private String[] tags;
 	private Date updated;
@@ -16,6 +18,8 @@ public class Menu
 	{
 		this.name = name;
 		this.restaurant = restaurant;
+		this.image = image;
+		this.icon = icon;
 		this.items = items;
 		this.tags = tags;
 		this.updated = updated;
@@ -77,5 +81,21 @@ public class Menu
 
 	public void setOrders(Integer orders) {
 		this.orders = orders;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 }

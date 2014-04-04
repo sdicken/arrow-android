@@ -5,14 +5,24 @@ import java.util.Date;
 public class Achievement 
 {
 	private String name;
+	private byte[] image;
+	private byte[] icon;
 	private String type;
 	private String param;
 	private Date created;
 	private Date updated;
 	
-	public Achievement(String name, String type, String param, Date created, Date updated)
+	public Achievement(String name, 
+			byte[] image,
+			byte[] icon,
+			String type, 
+			String param, 
+			Date created, 
+			Date updated)
 	{
 		this.name = name;
+		this.image = image;
+		this.icon = icon;
 		this.type = type;
 		this.param = param;
 		this.created = created;
@@ -57,6 +67,22 @@ public class Achievement
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 	
 }

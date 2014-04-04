@@ -6,6 +6,8 @@ public class MenuItem
 {
 	private String name;
 	private Double price;
+	private byte[] image;
+	private byte[] icon;
 	private String[] tags;
 	private MenuItemOption[] itemOptions;
 	private String description;
@@ -14,6 +16,8 @@ public class MenuItem
 	
 	public MenuItem(String name,
 			Double price,
+			byte[] image,
+			byte[] icon,
 			String[] tags,
 			MenuItemOption[] itemOptions,
 			String description,
@@ -22,6 +26,8 @@ public class MenuItem
 	{
 		this.name = name;
 		this.price = price;
+		this.image = image;
+		this.icon = icon;
 		this.tags = tags;
 		this.itemOptions = itemOptions;
 		this.description = description;
@@ -83,5 +89,21 @@ public class MenuItem
 
 	public void setItemOptions(MenuItemOption[] itemOptions) {
 		this.itemOptions = itemOptions;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public byte[] getIcon() {
+		return icon;
+	}
+
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 }
