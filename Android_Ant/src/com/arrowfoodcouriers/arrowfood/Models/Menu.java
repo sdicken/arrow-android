@@ -14,7 +14,15 @@ public class Menu
 	private Date created;
 	private Integer orders;
 	
-	public Menu(String name, String restaurant, MenuItem[] items, String[] tags, Date updated, Date created, Integer orders)
+	public Menu(String name, 
+			String restaurant, 
+			byte[] image,
+			byte[] icon,
+			MenuItem[] items,
+			String[] tags, 
+			Date updated, 
+			Date created, 
+			Integer orders)
 	{
 		this.name = name;
 		this.restaurant = restaurant;
