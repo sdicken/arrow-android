@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="4"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/cart_list_title"
+            style="@style/list_item_title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/cart_list_subtitle"
+            style="@style/list_item_details" />
+        
+        <TextView
+        android:id="@+id/cart_list_price"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        style="@style/menu_prices"
+        android:text="New text" />
+        
+        <Button 
+            android:id="@+id/cart_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cart_delete_button_text"/>"
+    </LinearLayout>
+
+    <RelativeLayout 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+        <ImageView 
+            android:id="@+id/cart_quantity_up_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_collapse"
+            android:clickable="true"/>
+	    <TextView
+	        android:id="@+id/cart_list_quantity"
+	        android:layout_width="wrap_content"
+	        android:layout_height="fill_parent"
+	        android:layout_below="@id/cart_quantity_up_arrow"
+	        style="@style/menu_prices"
+	        android:layout_marginRight="8dp"
+	        android:layout_marginTop="8dp"
+	        android:text="New text" />
+	    <ImageView 
+            android:id="@+id/cart_quantity_down_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_expand"
+            android:layout_below="@id/cart_list_quantity"
+            android:clickable="true"/>
+    </RelativeLayout>
+
+</LinearLayout>

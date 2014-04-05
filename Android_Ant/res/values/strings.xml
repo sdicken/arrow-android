@@ -56,8 +56,10 @@
     <string name="header_delivery_text">DELIVERY</string>
     <string name="header_name_text">Name</string>
     <string name="header_address_text">Address</string>
-    <string name="cart_subtotal_text">Subtotal</string>
+    <string name="cart_subtotal_label">Subtotal</string>
+    <string name="cart_subtotal_value">$0.00</string>
     <string name="cart_checkout_button_text">Checkout</string>
     <string name="cart_items_in_cart_text">Items in cart</string>
     <string name="cart_quantity_text">Quantity</string>
+    <string name="cart_delete_button_text">Delete</string>
 </resources>
