@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Arrays;
+
 
 public class Coupon 
 {
@@ -93,6 +95,84 @@ public class Coupon
 
 	public void setCreated(Long created) {
 		this.created = created;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((claims == null) ? 0 : claims.hashCode());
+		result = prime * result + ((created == null) ? 0 : created.hashCode());
+		result = prime * result + Arrays.hashCode(icon);
+		result = prime * result + Arrays.hashCode(image);
+		result = prime * result + ((param == null) ? 0 : param.hashCode());
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Coupon)) {
+			return false;
+		}
+		Coupon other = (Coupon) obj;
+		if (claims == null) {
+			if (other.claims != null) {
+				return false;
+			}
+		} else if (!claims.equals(other.claims)) {
+			return false;
+		}
+		if (created == null) {
+			if (other.created != null) {
+				return false;
+			}
+		} else if (!created.equals(other.created)) {
+			return false;
+		}
+		if (!Arrays.equals(icon, other.icon)) {
+			return false;
+		}
+		if (!Arrays.equals(image, other.image)) {
+			return false;
+		}
+		if (param == null) {
+			if (other.param != null) {
+				return false;
+			}
+		} else if (!param.equals(other.param)) {
+			return false;
+		}
+		if (token == null) {
+			if (other.token != null) {
+				return false;
+			}
+		} else if (!token.equals(other.token)) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		if (updated == null) {
+			if (other.updated != null) {
+				return false;
+			}
+		} else if (!updated.equals(other.updated)) {
+			return false;
+		}
+		return true;
 	}
 	
 }

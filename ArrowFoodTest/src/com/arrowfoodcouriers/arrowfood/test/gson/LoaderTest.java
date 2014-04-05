@@ -2,7 +2,6 @@ package com.arrowfoodcouriers.arrowfood.test.gson;
 
 import java.util.Date;
 
-import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
