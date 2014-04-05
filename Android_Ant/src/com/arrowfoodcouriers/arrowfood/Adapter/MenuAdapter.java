@@ -7,15 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.arrowfoodcouriers.arrowfood.MenuListObject;
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 
 public class MenuAdapter extends BaseAdapter 
 {
-	private static final Object[] menus = 
-    	{
-            new MenuListObject("Burrito", "House special", 0.99)
-    };
+	private static final MenuItem[] menus = Utils.getMenuItems();
 	
 	public int getCount() 
 	{
@@ -43,11 +41,11 @@ public class MenuAdapter extends BaseAdapter
 		
 		Typeface rokkitt = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Rokkitt-Regular.ttf");
 
-        TextView titleView = (TextView)view.findViewById(R.id.menu_list_title);
+        TextView titleView = (TextView) view.findViewById(R.id.menu_list_title);
         titleView.setTypeface(rokkitt);
-        TextView subtitleView = (TextView)view.findViewById(R.id.menu_list_subtitle);
+        TextView subtitleView = (TextView) view.findViewById(R.id.menu_list_subtitle);
         TextView priceView = (TextView) view.findViewById(R.id.menu_list_price);
-        MenuListObject menuListObject = (MenuListObject)getItem(position);
+        MenuItem menuListObject = (MenuItem) getItem(position);
         titleView.setText(menuListObject.getName());
         subtitleView.setText(menuListObject.getDescription());
         priceView.setText("$" + String.valueOf(menuListObject.getPrice()));
