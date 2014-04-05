@@ -275,7 +275,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         {
             case HOME_NAV_DRAWER_POSITION: 
             {
-                fragment = new PlaceholderFragment();
+                fragment = new RestaurantFragment();
                 break;
             }
 
@@ -323,7 +323,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 
             case SIGN_OUT_NAV_DRAWER_POSITION: 
             {
-                fragment = new PlaceholderFragment();
+                fragment = new RestaurantFragment();
                 _session.Logout();
                 break;
             }
@@ -331,7 +331,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             case LOGIN_NAV_DRAWER_POSITION: 
             {
             	displayLoginDialogFragment();
-                fragment = new PlaceholderFragment();
+                fragment = new RestaurantFragment();
                 break;
             }
             
@@ -341,9 +341,10 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             	break;
             }
 
-            default: {
+            default: 
+            {
                 Log.d("DEBUG", "THE POSITION IS " + position);
-                fragment = new PlaceholderFragment();
+                fragment = new RestaurantFragment();
                 break;
             }
         }
