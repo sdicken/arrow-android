@@ -38,5 +38,51 @@ public class Email
 		this.created = created;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((created == null) ? 0 : created.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Email)) {
+			return false;
+		}
+		Email other = (Email) obj;
+		if (address == null) {
+			if (other.address != null) {
+				return false;
+			}
+		} else if (!address.equals(other.address)) {
+			return false;
+		}
+		if (created == null) {
+			if (other.created != null) {
+				return false;
+			}
+		} else if (!created.equals(other.created)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
 	
 }
