@@ -41,6 +41,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:layout_row="0"
+        android:maxLength="20"
         android:text="@string/header_name_text"
         android:textColor="@color/ArrowRed" />
 
