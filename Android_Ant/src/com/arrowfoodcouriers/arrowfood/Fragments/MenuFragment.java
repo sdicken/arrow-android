@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Adapter.MenuAdapter;
@@ -37,5 +39,13 @@ public class MenuFragment extends ListFragment
 
         // Inflate the layout for this fragment
         return view;
+    }
+    
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) 
+    {
+    	CharSequence itemName = ((TextView) v.findViewById(R.id.menu_list_title)).getText();
+    	Toast.makeText(getActivity(), itemName + " " + getResources().getString(R.string.toast_menu_to_cart), Toast.LENGTH_SHORT).show();;
+    	super.onListItemClick(l, v, position, id);
     }
 }

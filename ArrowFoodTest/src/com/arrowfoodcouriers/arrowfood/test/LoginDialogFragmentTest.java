@@ -11,7 +11,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 
 @RunWith(RobolectricTestRunner.class)
 public class LoginDialogFragmentTest 
