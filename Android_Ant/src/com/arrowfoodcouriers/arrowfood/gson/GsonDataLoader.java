@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 
 import android.content.Context;
 
-import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
 
 public class GsonDataLoader<T> {
