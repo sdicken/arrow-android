@@ -45,7 +45,7 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
-import com.arrowfoodcouriers.arrowfood.gson.UserAccountLoader;
+import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
 import com.google.inject.Inject;
 
 	
@@ -97,7 +97,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         getActionBar().show();
         
         // TODO: Remove because this is for debugging only
-        UserAccountLoader loader = new UserAccountLoader(this);
+        GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
         User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
         loader.saveData(testUser);
         //-------------------------------------------------
