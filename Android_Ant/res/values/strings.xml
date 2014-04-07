@@ -62,4 +62,5 @@
     <string name="cart_items_in_cart_text">Items in cart</string>
     <string name="cart_quantity_text">Quantity</string>
     <string name="cart_delete_button_text">Delete</string>
+    <string name="toast_menu_to_cart"> added to cart</string>
 </resources>
