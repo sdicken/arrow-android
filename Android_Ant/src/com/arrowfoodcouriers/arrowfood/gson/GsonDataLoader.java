@@ -9,11 +9,8 @@ import java.lang.reflect.Type;
 
 import android.content.Context;
 
-<<<<<<< HEAD
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
-import com.arrowfoodcouriers.arrowfood.Models.User;
-=======
->>>>>>> 0b17b13f7bd9e5647f8a92c02ccc9d87eb372961
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
