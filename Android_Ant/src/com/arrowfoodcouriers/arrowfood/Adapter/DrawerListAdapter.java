@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
+import java.util.List;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
-import com.arrowfoodcouriers.arrowfood.DrawerValues;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.R;
 
@@ -21,20 +22,18 @@ public class DrawerListAdapter extends BaseAdapter {
     private static final int DRAWER_LIST_SECTION = 1;
     private static final int DRAWER_LIST_ITEM = 0;
 
-    private ISession _session;
-    private DrawerValues mDrawerValues;
+    private List<DrawerListObject> drawerListObjects;
 
-    public DrawerListAdapter(ISession session) {
-        this._session = session;
-        mDrawerValues = new DrawerValues(_session);
+    public DrawerListAdapter(List<DrawerListObject> drawerListObjects) {
+        this.drawerListObjects = drawerListObjects;
     }
     
     public int getCount() {
-        return mDrawerValues.getDrawerValues().length;
+        return drawerListObjects.size();
     }
 
     public Object getItem(int position) {
-        return mDrawerValues.getDrawerValues()[position];
+        return drawerListObjects.get(position);
     }
 
     public long getItemId(int position) {
@@ -48,8 +47,8 @@ public class DrawerListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (mDrawerValues.getDrawerValues()[position] instanceof  String) ?
-                DRAWER_LIST_SECTION : DRAWER_LIST_ITEM;
+    	DrawerListObject obj = drawerListObjects.get(position);
+        return (obj.isHeader()) ? DRAWER_LIST_SECTION : DRAWER_LIST_ITEM;
     }
 
     @Override
@@ -68,13 +67,13 @@ public class DrawerListAdapter extends BaseAdapter {
         }
 
         if (type == DRAWER_LIST_SECTION) {
-            ((TextView)view).setText((String) getItem(position));
+            ((TextView)view).setText(((DrawerListObject)getItem(position)).getTitle());
         } else {
             TextView textView = (TextView)view.findViewById(R.id.list_item_text);
             ImageView imageView = (ImageView)view.findViewById(R.id.list_item_icon);
             DrawerListObject drawerListObject = (DrawerListObject)getItem(position);
-            textView.setText(drawerListObject.title);
-            imageView.setImageResource(drawerListObject.image);
+            textView.setText(drawerListObject.getTitle());
+            imageView.setImageResource(drawerListObject.getImage());
         }
 
         return view;
