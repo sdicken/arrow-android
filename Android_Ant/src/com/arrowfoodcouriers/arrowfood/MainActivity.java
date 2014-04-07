@@ -1,12 +1,15 @@
 package com.arrowfoodcouriers.arrowfood;
 
 import java.util.Date;
+import java.util.List;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -43,6 +46,8 @@ import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
+import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
+import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
@@ -53,15 +58,15 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
-    private static final int FOOD_SEARCH_NAV_DRAWER_POSITION = 2;
-    private static final int TRACK_NAV_DRAWER_POSITION = 3;
-    private static final int PROFILE_NAV_DRAWER_POSITION = 4;
-    private static final int LOGIN_NAV_DRAWER_POSITION = 5;
-    private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 6;
-    private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 7;
-    private static final int AREAS_MAP_NAV_DRAWER_POSITION = 8;
-    private static final int ABOUT_NAV_DRAWER_POSITION = 9;
-    private static final int SIGN_OUT_NAV_DRAWER_POSITION = 10;
+    private static final int TRACK_NAV_DRAWER_POSITION = 2;
+    private static final int PROFILE_NAV_DRAWER_POSITION = 3;
+    private static final int LOGIN_NAV_DRAWER_POSITION = 4;
+    private static final int PREV_ORDERS_NAV_DRAWER_POSITION = 5;
+    private static final int FAVE_ORDERS_NAV_DRAWER_POSITION = 6;
+    private static final int SIGN_OUT_NAV_DRAWER_POSITION = 7;
+    
+    private static final int USER_ACCOUNT_LOADER = 1;
+    private static final int NAV_DRAWER_VALUE_LOADER = 2;
 
     private static final String BUNDLE_TAG_SESSION = "session";
     private static final String BUNDLE_TAG_LOGIN_FRAGMENT = "login_fragment";
@@ -81,6 +86,44 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private ILoginDialogCallback _loginDialogCallback;
     private IRegistrationDialogCallback _registrationDialogCallback;
     private ISession _session;
+    
+    private LoaderCallbacks<User> userAccountLoaderListener = new LoaderCallbacks<User>() {
+
+    	@Override
+    	public Loader<User> onCreateLoader(int id, Bundle args) {
+    		return new UserAccountLoader(MainActivity.this);
+    	}
+
+    	@Override
+    	public void onLoadFinished(Loader<User> loader, User data) {
+    		updateNavHeader(data);
+    		
+    	}
+
+    	@Override
+    	public void onLoaderReset(Loader<User> loader) {
+    		resetNavHeader();
+    		
+    	}    	
+    };
+    
+    private LoaderCallbacks<List<DrawerListObject>> drawerValuesLoaderListener = new LoaderCallbacks<List<DrawerListObject>>() {
+
+    	@Override
+    	public Loader<List<DrawerListObject>> onCreateLoader(int id, Bundle args) {
+    		return new DrawerValuesLoader(MainActivity.this);
+    	}
+
+    	@Override
+    	public void onLoadFinished(Loader<List<DrawerListObject>> loader, List<DrawerListObject> data) {
+    		MainActivity.this.mDrawerList.setAdapter(new DrawerListAdapter(data));
+    	}
+
+    	@Override
+    	public void onLoaderReset(Loader<List<DrawerListObject>> loader) {
+    		
+    	}    	
+    };
     
     public MainActivity()
     {
@@ -134,10 +177,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.addHeaderView(View.inflate(this, R.layout.navdrawer_header, null), null, false);
-        mDrawerList.setAdapter(new DrawerListAdapter(_session));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        updateNavHeader(loader.loadData());
         
         configureActionBar();
 
@@ -162,6 +202,8 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getLoaderManager().initLoader(USER_ACCOUNT_LOADER, null, userAccountLoaderListener);
+        getLoaderManager().initLoader(NAV_DRAWER_VALUE_LOADER, null, drawerValuesLoaderListener);
     }
 
     private boolean loginDialogWasShowingBeforeSave(Bundle savedInstanceState) 
@@ -285,12 +327,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
                 break;
             }
 
-            case FOOD_SEARCH_NAV_DRAWER_POSITION: 
-            {
-                fragment = new FoodSearchFragment();
-                break;
-            }
-
             case PROFILE_NAV_DRAWER_POSITION: 
             {
                 fragment = new ProfileFragment();
@@ -306,18 +342,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             case FAVE_ORDERS_NAV_DRAWER_POSITION: 
             {
                 fragment = new FavoriteOrdersFragment();
-                break;
-            }
-
-            case AREAS_MAP_NAV_DRAWER_POSITION: 
-            {
-                fragment = new AreasMapFragment();
-                break;
-            }
-
-            case ABOUT_NAV_DRAWER_POSITION: 
-            {
-                fragment = new AboutFragment();
                 break;
             }
 
@@ -390,6 +414,11 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     }
 
     private void updateNavHeader(User userData) {
+    	
+    	if (userData == null) {
+    		return;
+    	}
+    	
     	String name = userData.getName();
     	String fullAddress = userData.getAddress1() + " " + userData.getAddress2() + ", " + userData.getCity() + ", " + userData.getState() + " " + userData.getZip();
     	
@@ -400,6 +429,10 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     	
     }
     
+    private void resetNavHeader() {
+    	
+    }
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         private ListView listView = (ListView)findViewById(R.id.left_drawer);
 
@@ -407,7 +440,7 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             DrawerListObject selectedFromList =
                     (DrawerListObject)listView.getItemAtPosition(position);
 
-            selectItem(selectedFromList.position);
+            selectItem(selectedFromList.getPosition());
         }
     }
 }
