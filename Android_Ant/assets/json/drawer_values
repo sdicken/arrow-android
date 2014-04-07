@@ -1,0 +1,82 @@
+[
+  {
+    "title": "ORDERING",
+    "position": "0",
+    "image": "none",
+    "logoutOnly": false,
+    "loginOnly": false,
+    "isHeader": true
+  },
+  
+  {
+    "title": "Restaurants",
+    "position": "1",
+    "image": "ic_empty",
+    "logoutOnly": false,
+    "loginOnly": false,
+    "isHeader": false
+  },
+  
+  {
+    "title": "Track Order",
+    "position": "2",
+    "image": "ic_empty",
+    "logoutOnly": false,
+    "loginOnly": true,
+    "isHeader": false
+  },
+  
+  {
+    "title": "ACCOUNT",
+    "position": "0",
+    "image": "none",
+    "logoutOnly": false,
+    "loginOnly": false,
+    "isHeader": true
+  },
+  
+  {
+    "title": "Profile",
+    "position": "3",
+    "image": "ic_action_user",
+    "logoutOnly": false,
+    "loginOnly": true,
+    "isHeader": false
+  },
+  
+  {
+    "title": "Login",
+    "position": "4",
+    "image": "ic_account",
+    "logoutOnly": true,
+    "loginOnly": false,
+    "isHeader": false
+  },
+  
+  {
+    "title": "Previous Orders",
+    "position": "5",
+    "image": "ic_empty",
+    "logoutOnly": false,
+    "loginOnly": true,
+    "isHeader": false
+  },
+  
+  {
+    "title": "Favorites",
+    "position": "6",
+    "image": "ic_action_star",
+    "logoutOnly": false,
+    "loginOnly": true,
+    "isHeader": false
+  },
+  
+  {
+    "title": "Sign Out",
+    "position": "7",
+    "image": "ic_signout",
+    "logoutOnly": false,
+    "loginOnly": true,
+    "isHeader": false
+  }
+]
