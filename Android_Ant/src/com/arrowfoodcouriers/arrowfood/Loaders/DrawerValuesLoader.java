@@ -2,15 +2,14 @@ package com.arrowfoodcouriers.arrowfood.Loaders;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 
 import com.arrowfoodcouriers.arrowfood.DrawerListObject;
 import com.arrowfoodcouriers.arrowfood.Observers.LoginObserver;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
-
-import android.content.AsyncTaskLoader;
-import android.content.Context;
 
 public class DrawerValuesLoader extends AsyncTaskLoader<List<DrawerListObject>> {
 	private final GsonDataLoader<DrawerListObject[]> dataLoader;

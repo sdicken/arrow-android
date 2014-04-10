@@ -2,10 +2,10 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,6 @@ import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
 
 /**
  * Created by Ryan on 2/17/14.
@@ -45,7 +44,6 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        ISession session = ((MainActivity)getActivity()).getSession();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_signin, null);
         _usernameField = (EditText) dialogView.findViewById(R.id.login_username);
@@ -60,7 +58,7 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
                 .create();
 
         // Prevents automatic dismissal of dialog window on positive button click
-        _alertDialog.setOnShowListener(new LoginShowDialogListener(session));
+        _alertDialog.setOnShowListener(new LoginShowDialogListener());
 
         return _alertDialog;
     }
@@ -96,24 +94,16 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
 	}
 	
 	private class LoginShowDialogListener implements DialogInterface.OnShowListener
-	{
-		private final ISession _session;
-		public LoginShowDialogListener(ISession session)
-		{
-			_session = session;
-		}
-		
+	{		
 		public void onShow(DialogInterface dialogInterface) 
         {
             Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(new View.OnClickListener() 
             {
-               
                 public void onClick(View view) 
                 {
                     String username = _usernameField.getText().toString();
                     String password = _passwordField.getText().toString();
-                    _session.Login(username, password);
                 }
             });
             Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);

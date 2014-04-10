@@ -29,12 +29,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
-import com.arrowfoodcouriers.arrowfood.Callbacks.RESTCallback;
-import com.arrowfoodcouriers.arrowfood.Fragments.AboutFragment;
-import com.arrowfoodcouriers.arrowfood.Fragments.AreasMapFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.CartFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
-import com.arrowfoodcouriers.arrowfood.Fragments.FoodSearchFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
@@ -44,16 +40,12 @@ import com.arrowfoodcouriers.arrowfood.Fragments.TrackingFragment;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.Interfaces.SessionFactory;
 import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
 import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.User;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartSession;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
-import com.google.inject.Inject;
 
 	
 public class MainActivity extends RoboActivity implements INavigationDrawerCallback
@@ -70,7 +62,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private static final int USER_ACCOUNT_LOADER = 1;
     private static final int NAV_DRAWER_VALUE_LOADER = 2;
 
-    private static final String BUNDLE_TAG_SESSION = "session";
     private static final String BUNDLE_TAG_LOGIN_FRAGMENT = "login_fragment";
     private static final String BUNDLE_TAG_REGISTER_FRAGMENT = "register_fragment";
     
@@ -84,10 +75,8 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-    @Inject private SessionFactory _sessionFactory; // injected by RoboGuice
     private ILoginDialogCallback _loginDialogCallback;
     private IRegistrationDialogCallback _registrationDialogCallback;
-    private ISession _session;
     
     private LoaderCallbacks<User> userAccountLoaderListener = new LoaderCallbacks<User>() {
 
@@ -145,30 +134,19 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
 //        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
         int size = 2;
-        User testUser = new User("", "", "", "", "", null, null, new String[size], new Phone[size], new Address[size], new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
+        User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[]{new Address("123 Fake Address", "", "Louisville", "KY", "40291")}, new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
         loader.saveData(testUser);
         //-------------------------------------------------
 
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
-            _session = (OpenCartSession) savedInstanceState.get(BUNDLE_TAG_SESSION); // retrieve previous session state (cookies and auth state)
             instantiateRegisterCallback(savedInstanceState);
-            instantiateLoginCallback(savedInstanceState, _registrationDialogCallback);	// refresh callback in scenario where dialog was already open before state lost      
-            
-        	_session = _sessionFactory.create(_session,								// recreate session
-        			new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), 
-        			this, 
-        			_loginDialogCallback, 
-        			_registrationDialogCallback);
+            instantiateLoginCallback(savedInstanceState, _registrationDialogCallback);	// refresh callback in scenario where dialog was already open before state lost
         }
         else
         {
         	_registrationDialogCallback = new RegistrationDialogFragment();
         	_loginDialogCallback = new LoginDialogFragment(_registrationDialogCallback);
-        	_session = _sessionFactory.create(new RESTCallback(this, _loginDialogCallback, _registrationDialogCallback), 
-        			this, 
-        			_loginDialogCallback, 
-        			_registrationDialogCallback);
 
             // Create fragment here
             Fragment fragment = new RestaurantFragment();
@@ -286,7 +264,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     protected void onSaveInstanceState(Bundle outState) 
     {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(BUNDLE_TAG_SESSION, _session);
         Fragment fragment = (LoginDialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG_LOGIN);
         if(fragment != null && fragment.isAdded())
         	getFragmentManager().putFragment(outState, BUNDLE_TAG_LOGIN_FRAGMENT, (LoginDialogFragment)_loginDialogCallback);
@@ -352,7 +329,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
             case SIGN_OUT_NAV_DRAWER_POSITION: 
             {
                 fragment = new RestaurantFragment();
-                _session.Logout();
                 break;
             }
 
@@ -380,11 +356,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         mDrawerLayout.closeDrawers();
     }
     
-    public ISession getSession()
-    {
-    	return _session;
-    }
-
     private void configureActionBar() 
     {
         final ActionBar actionBar = getActionBar();

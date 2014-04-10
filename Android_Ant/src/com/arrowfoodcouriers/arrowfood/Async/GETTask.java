@@ -3,33 +3,21 @@ package com.arrowfoodcouriers.arrowfood.Async;
 import android.os.AsyncTask;
 
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCall;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IRESTCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartTask;
 
 /**
  * Android-based threading abstraction class used for GETs.
  */
 public class GETTask extends AsyncTask<Object, Integer, String>
 {
-    private OpenCartTask _task;
-    private IRESTCallback _RESTCallback;
     private IRESTCall _restCall;
-    private ISession _session;
 
     /**
      *
-     * @param task The task for which the GET is being executed
-     * @param restCallback The listener waiting for task completion callback
      * @param restCall A class containing GET business logic
-     * @param session A session interface object for managing session updates after {@link #onPostExecute(String)}
      */
-    public GETTask(OpenCartTask task, IRESTCallback restCallback, IRESTCall restCall, ISession session)
+    public GETTask(IRESTCall restCall)
     {
-        _task = task;
-        _RESTCallback = restCallback;
         _restCall = restCall;
-        _session = session;
     }
 
     @Override
@@ -41,6 +29,5 @@ public class GETTask extends AsyncTask<Object, Integer, String>
     @Override
     protected void onPostExecute(String response) 
     {
-        _RESTCallback.onTaskCompleted(_task, _session, response);
     }
 }

@@ -2,9 +2,9 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ISession;
-import com.arrowfoodcouriers.arrowfood.OpenCart.OpenCartRegistration;
 
 /**
  * Created by Sam on 2/25/14.
@@ -55,7 +52,6 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        ISession session = ((MainActivity)getActivity()).getSession();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_registration, null);
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.registration_activity_circle);
@@ -84,7 +80,7 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
                 .create();
 
         // Prevents automatic dismissal of dialog window on positive button click
-        _alertDialog.setOnShowListener(new RegistrationShowListener(session));
+        _alertDialog.setOnShowListener(new RegistrationShowListener());
 
         return _alertDialog;
     }
@@ -119,13 +115,7 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
     }
     
     private class RegistrationShowListener implements DialogInterface.OnShowListener
-    {
-    	private final ISession _session;
-    	public RegistrationShowListener(ISession session)
-    	{
-    		this._session = session;
-    	}
-    	
+    {    	
     	public void onShow(DialogInterface dialogInterface) 
         {
             Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -134,7 +124,6 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
                 public void onClick(View view) 
                 {
                     // TODO: put registration code here
-                    OpenCartRegistration register = new OpenCartRegistration();
                     String firstName = _firstNameField.getText().toString();
                     String lastName = _lastNameField.getText().toString();
                     String email = _emailField.getText().toString();
@@ -165,24 +154,6 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
                         }
                     }
                     String privacyPolicy = _privacyPolicyField.isChecked() ? "1" : "0";
-                    register.FirstName = firstName;
-                    register.LastName = lastName;
-                    register.Email = email;
-                    register.Telephone = telephone;
-                    register.Fax = fax;
-                    register.Company = company;
-                    register.CompanyId = companyid;
-                    register.Address1 = address1;
-                    register.Address2 = address2;
-//                    register.City = city;
-                    register.PostalCode = postalCode;
-//                    register.CountryId = country;   // TODO: fix this
-//                    register.ZoneId = state;        // TODO: fix this
-                    register.Password = password;
-                    register.ConfirmPassword = confirmPassword;
-                    register.Newsletter = newsletter;
-                    register.Agree = privacyPolicy;
-                    _session.Register(register);
                 }
             });
         }    	

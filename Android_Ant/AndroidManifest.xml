@@ -24,7 +24,6 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.arrowfoodcouriers.arrowfood.App"
         android:icon="@drawable/arrow_logo_emblem_half"
         android:logo="@drawable/ic_empty"
         android:label="@string/app_name"
