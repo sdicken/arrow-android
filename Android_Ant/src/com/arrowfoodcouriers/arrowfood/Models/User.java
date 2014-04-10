@@ -1,106 +1,125 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Arrays;
+
 
 public class User {
-	private String userName;
+	private String username;
+	private String password;
 	private String role;
 	private String email;
 	private String name;
-	private String address1;
-	private String address2;
-	private String city;
-	private String state;
-	private String zip;
+	private byte[] image;
+	private byte[] icon;
+	private String[] achievements;
+	private Phone[] phones;
+	private Address[] addresses;
 	private Long created;
+	private Long updated;
+	private Integer orders;
+	private Integer deliveries;
 	
-	public User(String userName, String role, String email, String name,
-			String address1, String address2, String city, String state,
-			String zip, Long created ) {
+	public User(String username, String password, String role, String email, String name,
+			byte[] image, byte[] icon, String[] achievements, Phone[] phones,
+			Address[] addresses, Long created, Long updated, Integer orders, 
+			Integer deliveries) 
+	{
 		
-		this.userName = userName;
+		this.username = username;
+		this.password = password;
 		this.role = role;
 		this.email = email;
 		this.name = name;
-		this.setAddress1(address1);
-		this.setAddress2(address2);
-		this.setCity(city);
-		this.setState(state);
-		this.setZip(zip);
-		this.setCreated(created);
+		this.image = image;
+		this.icon = icon;
+		this.achievements = achievements;
+		this.phones = phones;
+		this.addresses = addresses;
+		this.created = created;
+		this.updated = updated;
+		this.orders = orders;
+		this.deliveries = deliveries;
 	}
-	
-	public String getUserName() {
-		return userName;
+
+	public String getUsername() {
+		return username;
 	}
-	
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getRole() {
 		return role;
 	}
-	
+
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getAddress1() {
-		return address1;
+	public byte[] getImage() {
+		return image;
 	}
 
-	public void setAddress1(String address1) {
-		this.address1 = address1;
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
-	public String getAddress2() {
-		return address2;
+	public byte[] getIcon() {
+		return icon;
 	}
 
-	public void setAddress2(String address2) {
-		this.address2 = address2;
+	public void setIcon(byte[] icon) {
+		this.icon = icon;
 	}
 
-	public String getCity() {
-		return city;
+	public String[] getAchievements() {
+		return achievements;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setAchievements(String[] achievements) {
+		this.achievements = achievements;
 	}
 
-	public String getState() {
-		return state;
+	public Phone[] getPhones() {
+		return phones;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setPhones(Phone[] phones) {
+		this.phones = phones;
 	}
 
-	public String getZip() {
-		return zip;
+	public Address[] getAddresses() {
+		return addresses;
 	}
 
-	public void setZip(String zip) {
-		this.zip = zip;
+	public void setAddresses(Address[] addresses) {
+		this.addresses = addresses;
 	}
-	
 
 	public Long getCreated() {
 		return created;
@@ -110,23 +129,51 @@ public class User {
 		this.created = created;
 	}
 
+	public Long getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Long updated) {
+		this.updated = updated;
+	}
+
+	public Integer getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Integer orders) {
+		this.orders = orders;
+	}
+
+	public Integer getDeliveries() {
+		return deliveries;
+	}
+
+	public void setDeliveries(Integer deliveries) {
+		this.deliveries = deliveries;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((address1 == null) ? 0 : address1.hashCode());
-		result = prime * result
-				+ ((address2 == null) ? 0 : address2.hashCode());
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + Arrays.hashCode(achievements);
+		result = prime * result + Arrays.hashCode(addresses);
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((zip == null) ? 0 : zip.hashCode());
+				+ ((deliveries == null) ? 0 : deliveries.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + Arrays.hashCode(icon);
+		result = prime * result + Arrays.hashCode(image);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+		result = prime * result
+				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result + Arrays.hashCode(phones);
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+		result = prime * result
+				+ ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -142,25 +189,10 @@ public class User {
 			return false;
 		}
 		User other = (User) obj;
-		if (address1 == null) {
-			if (other.address1 != null) {
-				return false;
-			}
-		} else if (!address1.equals(other.address1)) {
+		if (!Arrays.equals(achievements, other.achievements)) {
 			return false;
 		}
-		if (address2 == null) {
-			if (other.address2 != null) {
-				return false;
-			}
-		} else if (!address2.equals(other.address2)) {
-			return false;
-		}
-		if (city == null) {
-			if (other.city != null) {
-				return false;
-			}
-		} else if (!city.equals(other.city)) {
+		if (!Arrays.equals(addresses, other.addresses)) {
 			return false;
 		}
 		if (created == null) {
@@ -170,11 +202,24 @@ public class User {
 		} else if (!created.equals(other.created)) {
 			return false;
 		}
+		if (deliveries == null) {
+			if (other.deliveries != null) {
+				return false;
+			}
+		} else if (!deliveries.equals(other.deliveries)) {
+			return false;
+		}
 		if (email == null) {
 			if (other.email != null) {
 				return false;
 			}
 		} else if (!email.equals(other.email)) {
+			return false;
+		}
+		if (!Arrays.equals(icon, other.icon)) {
+			return false;
+		}
+		if (!Arrays.equals(image, other.image)) {
 			return false;
 		}
 		if (name == null) {
@@ -184,6 +229,23 @@ public class User {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
+		if (orders == null) {
+			if (other.orders != null) {
+				return false;
+			}
+		} else if (!orders.equals(other.orders)) {
+			return false;
+		}
+		if (password == null) {
+			if (other.password != null) {
+				return false;
+			}
+		} else if (!password.equals(other.password)) {
+			return false;
+		}
+		if (!Arrays.equals(phones, other.phones)) {
+			return false;
+		}
 		if (role == null) {
 			if (other.role != null) {
 				return false;
@@ -191,25 +253,18 @@ public class User {
 		} else if (!role.equals(other.role)) {
 			return false;
 		}
-		if (state == null) {
-			if (other.state != null) {
+		if (updated == null) {
+			if (other.updated != null) {
 				return false;
 			}
-		} else if (!state.equals(other.state)) {
+		} else if (!updated.equals(other.updated)) {
 			return false;
 		}
-		if (userName == null) {
-			if (other.userName != null) {
+		if (username == null) {
+			if (other.username != null) {
 				return false;
 			}
-		} else if (!userName.equals(other.userName)) {
-			return false;
-		}
-		if (zip == null) {
-			if (other.zip != null) {
-				return false;
-			}
-		} else if (!zip.equals(other.zip)) {
+		} else if (!username.equals(other.username)) {
 			return false;
 		}
 		return true;
