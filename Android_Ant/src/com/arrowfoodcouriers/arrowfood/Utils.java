@@ -1,6 +1,17 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import java.util.Collections;
 import java.util.Date;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,9 +24,13 @@ import com.arrowfoodcouriers.arrowfood.Models.Email;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
+import com.arrowfoodcouriers.arrowfood.Models.User;
 
 public class Utils 
 {
+	private static final String URL = "http://rest-arrow.herokuapp.com/{query}";
+//	private static final String USER = URL + "/user";
+	
 	public static void loadFragment(FragmentManager fragmentManager, Fragment fragment)
     {
     	FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -63,5 +78,34 @@ public class Utils
 		restaurants[5] = new Restaurant("Comfy Cow", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
 		restaurants[6] = new Restaurant("China Inn", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
 		return restaurants;
+	}
+	
+	public static HttpStatus postUser(User user)
+	{
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+		HttpEntity<User> requestEntity = new HttpEntity<User>(user, requestHeaders);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+		
+		ResponseEntity<String> responseEntity = restTemplate.exchange(URL, HttpMethod.POST, requestEntity, String.class, "user");
+		return responseEntity.getStatusCode();		
+	}
+	
+	public static HttpStatus getOrders()
+	{
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+		
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL, String.class, "orders");
+		return responseEntity.getStatusCode();	
 	}
 }
