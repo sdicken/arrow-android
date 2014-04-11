@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
@@ -17,10 +18,11 @@ import org.springframework.web.client.RestClientException;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
+import com.arrowfoodcouriers.arrowfood.Models.Response;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 
 @RunWith(RobolectricTestRunner.class)
-public class RESTUtilsTest 
+public class RESTUtilsUserTest 
 {
 	private String username;
 	private String password;
@@ -36,7 +38,7 @@ public class RESTUtilsTest
 	private Long updated;
 	private Integer orders;
 	private Integer deliveries;
-	
+
 	private HttpStatus httpStatus;
 	private User user;
 	
@@ -66,13 +68,48 @@ public class RESTUtilsTest
 	}
 	
 	@Test
-	public void testUserRegistrationFails()
+	public void testUserRegistrationUsernameTaken()
 	{
+		try
+		{
+			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
+			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+			assertTrue(response.isUsernameTaken(response.getError()));
+		}
+		catch(Exception e)
+		{
+			getErrorStatusCode(e);
+		}
+	}
+	
+	@Test
+	public void testUserRegistrationEmailTaken()
+	{
+		try
+		{
+			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
+			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+			assertTrue(response.isEmailTaken(response.getError()));
+		}
+		catch(Exception e)
+		{
+			getErrorStatusCode(e);
+		}
 	}
 	
 	@Test
 	public void testUserRegistrationSucceeds()
 	{
+		try
+		{
+			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
+			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+			assertTrue(false); // sort this out when server error decided to be String or boolean
+		}
+		catch(Exception e)
+		{
+			getErrorStatusCode(e);
+		}
 	}
 	
 	@Test
