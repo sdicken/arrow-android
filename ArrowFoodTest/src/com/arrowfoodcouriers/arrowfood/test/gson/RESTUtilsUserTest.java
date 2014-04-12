@@ -63,8 +63,9 @@ public class RESTUtilsUserTest
 		orders = Integer.valueOf(3);
 		deliveries = Integer.valueOf(5);
 		
-		user = new User(username, password, role, email, name, image, icon, achievements, phones, 
-				addresses, created, updated, orders, deliveries);
+//		user = new User(username, password, role, email, name, image, icon, achievements, phones, 
+//				addresses, created, updated, orders, deliveries);
+		user = new User(username, password, email, name);
 	}
 	
 	@Test
@@ -100,6 +101,8 @@ public class RESTUtilsUserTest
 	@Test
 	public void testUserRegistrationSucceeds()
 	{
+		user.setUsername("bob1"); // need to change this each time or else delete from db after each run
+		email = new String("bob1@bob.bob");	// need to change this each time or else delete from db after each run
 		try
 		{
 			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);

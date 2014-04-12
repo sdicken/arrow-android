@@ -24,8 +24,8 @@ public class MenuDeserializerTest
 	private byte[] icon;
 	private MenuItem[] items;
 	private String[] tags;
-	private Long updated;
-	private Long created;
+	private Date updated;
+	private Date created;
 	private Integer orders;
 	
 	private MenuItemOption[] options;
@@ -44,16 +44,16 @@ public class MenuDeserializerTest
 		items = new MenuItem[size];
 		
 		options = new MenuItemOption[size];
-		options[0] = new MenuItemOption("Rice", "Brown or white", "", "", new Date().getTime());
-		options[1] = new MenuItemOption("Beans", "Black or pinto", "", "", new Date().getTime());
+		options[0] = new MenuItemOption("Rice", "Brown or white", "", "", new Date());
+		options[1] = new MenuItemOption("Beans", "Black or pinto", "", "", new Date());
 		
-		items[0] = new MenuItem("Burrito deluxe", 0.99, null, null, null, options, "descr", new Date().getTime(), 11);
-		items[1] = new MenuItem("Burrito supreme", 0.99, null, null, null, options, "descr", new Date().getTime(), 11);
+		items[0] = new MenuItem("Burrito deluxe", 0.99, null, null, null, options, "descr", new Date(), 11);
+		items[1] = new MenuItem("Burrito supreme", 0.99, null, null, null, options, "descr", new Date(), 11);
 		tags = new String[size];
 		tags[0] = new String("Mexican");
 		tags[1] = new String("Authentic");
-		updated = new Date().getTime();
-		created = new Date().getTime();
+		updated = new Date();
+		created = new Date();
 		orders = Integer.valueOf(10);
 		
 		menu = new Menu(name, restaurant, image, icon, items, tags, updated, created, orders);
