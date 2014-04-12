@@ -29,6 +29,7 @@ import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Utils 
 {
@@ -71,8 +72,8 @@ public class Utils
 	{
 		int size = 2;
 		CartItem [] items = new CartItem[size];
-		items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date().getTime(), new Date().getTime());
-		items[1] = new CartItem("Quills", "Small coffee", 1, 2.99, new Date().getTime(), new Date().getTime());
+items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date());
+		items[1] = new CartItem("Quills", "Small coffee", 1, 2.99, new Date(), new Date());
 		return items;
 	}
 
@@ -80,7 +81,7 @@ public class Utils
 	{
 		// TODO: replace with RestTemplate object making REST API calls to server
 //		return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
-		return new Cart("", new Date().getTime(), new Date().getTime(), null, null, 4.22);
+		return new Cart("", new Date(), new Date(), null, null, 4.22);
 	}
 		
 	// this will not be implemented by server
@@ -88,7 +89,7 @@ public class Utils
 	{
 		int size = 1;
 		MenuItem[] menuItems = new MenuItem[size];
-		menuItems[0] = new MenuItem("Burrito", 0.99, null, null, null, null, "House special", new Date().getTime(), null);
+		menuItems[0] = new MenuItem("Burrito", 0.99, null, null, null, null, "House special", new Date(), null);
 		return menuItems;
 	}
 	
@@ -97,16 +98,16 @@ public class Utils
 	{
 		int size = 7;
 		Restaurant[] restaurants = new Restaurant[size];
-		Email[] emails = new Email[] {new Email("Qdoba", "", new Date().getTime())};
-		Phone[] phones = new Phone[] {new Phone("Qdoba", "(111) 123 2234", new Date().getTime())};
+		Email[] emails = new Email[] {new Email("Qdoba", "", new Date())};
+		Phone[] phones = new Phone[] {new Phone("Qdoba", "(111) 123 2234", new Date())};
 		Address[] addresses = new Address[] {new Address("111 22nd Street", "", "Louisville", "KY", "40202")};
-		restaurants[0] = new Restaurant("J. Gumbos", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[1] = new Restaurant("Hill Street Fish Fry", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[2] = new Restaurant("Northend Cafe", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[3] = new Restaurant("Smoketown USA", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[4] = new Restaurant("Burger Boy", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[5] = new Restaurant("Comfy Cow", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
-		restaurants[6] = new Restaurant("China Inn", null, null, "Mexican Grill", null, emails, phones, addresses, new Date().getTime(), new Date().getTime(), null);
+		restaurants[0] = new Restaurant("J. Gumbos", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[1] = new Restaurant("Hill Street Fish Fry", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[2] = new Restaurant("Northend Cafe", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[3] = new Restaurant("Smoketown USA", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[4] = new Restaurant("Burger Boy", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[5] = new Restaurant("Comfy Cow", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		restaurants[6] = new Restaurant("China Inn", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
 		return restaurants;
 	}
 	
@@ -205,7 +206,9 @@ public class Utils
 	
 	public static <T> T convertResponseEntityToModel(ResponseEntity<String> responseEntityContainingJSON, Class<T> classOfT)
 	{
-		return new Gson().fromJson(responseEntityContainingJSON.getBody(), classOfT);
+		// parses a date of this format 2014-04-12T21:20:10.307Z (MongoDB standard)
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSS'Z'").create();
+		return gson.fromJson(responseEntityContainingJSON.getBody(), classOfT);
 	}
 	
 	private static ResponseEntity<String> get(String url, Map<String, String> route)
