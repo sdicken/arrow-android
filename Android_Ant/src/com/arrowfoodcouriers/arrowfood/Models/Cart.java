@@ -1,20 +1,21 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class Cart 
 {
 	private String username;
-	private Long created;
-	private Long updated;
+	private Date created;
+	private Date updated;
 	private CartItem[] items;
 	private Coupon[] coupons;
 	private Double total;
 	
 	public Cart(String username,
-			Long created,
-			Long updated,
+			Date created,
+			Date updated,
 			CartItem[] items,
 			Coupon[] coupons,
 			Double total)
@@ -59,19 +60,19 @@ public class Cart
 		this.total = total;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
-	public Long getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Long updated) {
+	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 

@@ -3,7 +3,8 @@ package com.arrowfoodcouriers.arrowfood.Models;
 import java.util.Arrays;
 
 
-public class User {
+public class User 
+{
 	private String username;
 	private String password;
 	private String role;
@@ -39,6 +40,18 @@ public class User {
 		this.updated = updated;
 		this.orders = orders;
 		this.deliveries = deliveries;
+	}
+
+	/**
+	 * Minimum required parameters to register a new User
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @param name
+	 */
+	public User(String username, String password, String email, String name)
+	{
+		this(username, password, null, email, name, null, null, null, null, null, null, null, null, null);
 	}
 
 	public String getUsername() {

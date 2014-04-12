@@ -1,14 +1,16 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Date;
+
 
 public class Geotags 
 {
 	private String username;
 	private Double latitude;
 	private Double longitude;
-	private Long created;
+	private Date created;
 	
-	public Geotags(String username, Double latitude, Double longitude, Long created)
+	public Geotags(String username, Double latitude, Double longitude, Date created)
 	{
 		this.username = username;
 		this.latitude = latitude;
@@ -40,11 +42,11 @@ public class Geotags
 		this.longitude = longitude;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 

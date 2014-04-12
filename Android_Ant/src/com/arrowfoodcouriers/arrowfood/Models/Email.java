@@ -1,13 +1,15 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Date;
+
 
 public class Email 
 {
 	private String name;
 	private String address;
-	private Long created;
+	private Date created;
 	
-	public Email(String name, String address, Long created)
+	public Email(String name, String address, Date created)
 	{
 		this.name = name;
 		this.address = address;
@@ -30,11 +32,11 @@ public class Email
 		this.address = address;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 

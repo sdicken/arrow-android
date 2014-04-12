@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Date;
+
 
 public class Achievement 
 {
@@ -8,16 +10,16 @@ public class Achievement
 	private byte[] icon;
 	private String type;
 	private String param;
-	private Long created;
-	private Long updated;
+	private Date created;
+	private Date updated;
 	
 	public Achievement(String name, 
 			byte[] image,
 			byte[] icon,
 			String type, 
 			String param, 
-			Long created, 
-			Long updated)
+			Date created, 
+			Date updated)
 	{
 		this.name = name;
 		this.image = image;
@@ -68,19 +70,19 @@ public class Achievement
 		this.icon = icon;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
-	public Long getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Long updated) {
+	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 	

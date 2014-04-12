@@ -1,13 +1,15 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Date;
+
 
 public class OrderStatus 
 {
 	private String authority;
 	private String state;
-	private Long created;
+	private Date created;
 	
-	public OrderStatus(String authority, String state, Long created)
+	public OrderStatus(String authority, String state, Date created)
 	{
 		this.authority = authority;
 		this.state = state;
@@ -30,11 +32,11 @@ public class OrderStatus
 		this.state = state;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 	

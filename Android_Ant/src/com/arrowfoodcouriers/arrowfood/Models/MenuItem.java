@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class MenuItem 
@@ -12,7 +13,7 @@ public class MenuItem
 	private String[] tags;
 	private MenuItemOption[] itemOptions;
 	private String description;
-	private Long created;
+	private Date created;
 	private Integer orders;
 	
 	public MenuItem(String name,
@@ -22,7 +23,7 @@ public class MenuItem
 			String[] tags,
 			MenuItemOption[] itemOptions,
 			String description,
-			Long created,
+			Date created,
 			Integer orders)
 	{
 		this.name = name;
@@ -100,11 +101,11 @@ public class MenuItem
 		this.icon = icon;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 

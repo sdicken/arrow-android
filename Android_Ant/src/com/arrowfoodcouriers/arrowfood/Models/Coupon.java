@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class Coupon 
@@ -10,8 +11,8 @@ public class Coupon
 	private byte[] icon;
 	private String type;
 	private String param;
-	private Long updated;
-	private Long created;
+	private Date updated;
+	private Date created;
 	private Integer claims;
 	
 	public Coupon(String token, 
@@ -19,8 +20,8 @@ public class Coupon
 			byte[] icon,
 			String type, 
 			String param, 
-			Long updated, 
-			Long created, 
+			Date updated, 
+			Date created, 
 			Integer claims)
 	{
 		this.token = token;
@@ -81,19 +82,19 @@ public class Coupon
 		this.icon = icon;
 	}
 
-	public Long getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Long updated) {
+	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
