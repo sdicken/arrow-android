@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -46,7 +45,6 @@ public class Utils
 	private static final String USER = "user";
 	private static final String CART = "cart";
 	private static final String PROFILE = "profile";
-	private static final String MENU = "menu";
 	private static final String MENUS = "menus";
 	private static final String ORDER = "order";
 	private static final String ORDERS = "orders";
@@ -54,10 +52,6 @@ public class Utils
 	private static final String LOGIN = "login";
 	private static final String LOGOUT = "logout";
 	private static final String RESET = "reset";
-	private static final String TOKEN = "token";
-	private static final String RESTAURANT = "restaurant";
-	private static final String ITEM = "item";
-	private static final String QUANTITY = "quantity";
 	
 	public static void loadFragment(FragmentManager fragmentManager, Fragment fragment)
     {
@@ -144,6 +138,19 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, PROFILE));
 	}
 	
+	public static ResponseEntity<String> postCart(String restaurantName, String menuName, 
+			String itemName, Integer quantity)
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, CART);
+		urlVariables.put(ROUTE2, restaurantName);
+		urlVariables.put(ROUTE3, menuName);
+		urlVariables.put(ROUTE4, itemName);
+		urlVariables.put(ROUTE5, quantity.toString());
+		// post to cart/order
+		return post(URL_5VAR, urlVariables);
+	}
+	
 	public static ResponseEntity<String> postCartOrder(Order order)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
@@ -165,13 +172,13 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT), user);
 	}
 	
-	public static ResponseEntity<String> resetPassword(PasswordReset reset)
+	public static ResponseEntity<String> resetPassword(PasswordReset reset, String token)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, USER);
 		urlVariables.put(ROUTE2, PASSWORD);
 		urlVariables.put(ROUTE3, RESET);
-		urlVariables.put(ROUTE4, TOKEN);	// TODO: is this correct?
+		urlVariables.put(ROUTE4, token);
 		// post to /user/password/reset/:token
 		return post(URL_4VAR, urlVariables, reset);
 	}
@@ -181,25 +188,26 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		delete(URL_1VAR, Collections.singletonMap(ROUTE, CART));
 	}
 	
-	public static void deleteCartItem()
+	public static void deleteCartItem(String restaurantName, String menuName, String itemName)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
-		urlVariables.put(ROUTE2, RESTAURANT); // TODO: are these right?
-		urlVariables.put(ROUTE3, MENU);
-		urlVariables.put(ROUTE4, ITEM);
+		urlVariables.put(ROUTE2, restaurantName);
+		urlVariables.put(ROUTE3, menuName);
+		urlVariables.put(ROUTE4, itemName);
 		// delete from /cart/:restaurant/:menu/:item
 		delete(URL_4VAR, urlVariables);
 	}
 	
-	public static void deleteCartItemQuantity()
+	public static void deleteCartItemQuantity(String restaurantName, String menuName, 
+			String itemName, Integer quantity)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
-		urlVariables.put(ROUTE2, RESTAURANT); // TODO: are these right?
-		urlVariables.put(ROUTE3, MENU);
-		urlVariables.put(ROUTE4, ITEM);
-		urlVariables.put(ROUTE5, QUANTITY);
+		urlVariables.put(ROUTE2, restaurantName);
+		urlVariables.put(ROUTE3, menuName);
+		urlVariables.put(ROUTE4, itemName);
+		urlVariables.put(ROUTE5, quantity.toString());
 		// delete from /cart/:restaurant/:menu/:item/:quantity
 		delete(URL_5VAR, urlVariables);
 	}
@@ -211,7 +219,7 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		return gson.fromJson(responseEntityContainingJSON.getBody(), classOfT);
 	}
 	
-	private static ResponseEntity<String> get(String url, Map<String, String> route)
+	private static ResponseEntity<String> get(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -221,11 +229,11 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class, route);
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity(baseUrl, String.class, route);
 		return responseEntity;
 	}
 	
-	private static <T> ResponseEntity<String> post(String url, Map<String, String> route, T data)
+	private static <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route, T data)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -237,11 +245,27 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class, route);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl, requestEntity, String.class, route);
 		return responseEntity;	
 	}
 	
-	private static <T> void delete(String url, Map<String, String> route)
+	private static <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route)
+	{
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		HttpEntity<T> requestEntity = new HttpEntity<T>(requestHeaders);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+		
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl, requestEntity, String.class, route);
+		return responseEntity;	
+	}
+	
+	private static <T> void delete(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -251,6 +275,6 @@ items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		restTemplate.delete(url, route);
+		restTemplate.delete(baseUrl, route);
 	}
 }
