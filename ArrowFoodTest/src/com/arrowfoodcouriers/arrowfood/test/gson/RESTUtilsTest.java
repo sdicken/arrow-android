@@ -13,6 +13,8 @@ public class RESTUtilsTest
 {
 	private RESTUtils utils;
 	private RESTUtilsUserTestHelper userTestHelper;
+	private RESTUtilsMenusTestHelper menuTestHelper;
+	private RESTUtilsCartTestHelper cartTestHelper;
 	
 	@Before
 	public void setUp()
@@ -21,6 +23,8 @@ public class RESTUtilsTest
 		
 		utils = new RESTUtils();
 		userTestHelper = new RESTUtilsUserTestHelper(utils);
+		menuTestHelper = new RESTUtilsMenusTestHelper(utils);
+		cartTestHelper = new RESTUtilsCartTestHelper(utils);
 	}
 	
 	@Test
@@ -28,5 +32,7 @@ public class RESTUtilsTest
 	{
 		userTestHelper.testUserRegistrationSucceeds();
 		userTestHelper.testLoginSuccess();
+		menuTestHelper.testGetMenus();
+		cartTestHelper.testPlaceOrder();
 	}
 }
