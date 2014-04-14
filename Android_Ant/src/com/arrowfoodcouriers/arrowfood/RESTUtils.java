@@ -216,19 +216,27 @@ public class RESTUtils
 		return gson.fromJson(responseEntityContainingJSON.getBody(), classOfT);
 	}
 	
-	private ResponseEntity<String> get(String baseUrl, Map<String, String> route)
+	private <T> ResponseEntity<String> get(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		HttpEntity<T> requestEntity = new HttpEntity<T>(requestHeaders);
 		RestTemplate restTemplate = new RestTemplate();
 		
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.getForEntity(baseUrl, String.class, route);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.GET, requestEntity, String.class, route);
 		return responseEntity;
 	}
 	
+	/**
+	 * POST with a request body
+	 * @param baseUrl
+	 * @param route
+	 * @param data
+	 * @return
+	 */
 	private <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route, T data)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
@@ -241,10 +249,16 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl, requestEntity, String.class, route);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 		return responseEntity;	
 	}
 	
+	/**
+	 * POST without a request body
+	 * @param baseUrl
+	 * @param route
+	 * @return
+	 */
 	private <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
@@ -257,7 +271,7 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl, requestEntity, String.class, route);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 		return responseEntity;	
 	}
 	
@@ -265,9 +279,6 @@ public class RESTUtils
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		
-//		requestHeaders.set("Set-Cookie", rawCookieStore.get(this.baseUrl).get(0).toString());
-//		requestHeaders.set("Cookie", cookie);
 		HttpEntity<T> requestEntity = new HttpEntity<T>(requestHeaders);
 		
 		RestTemplate restTemplate = new RestTemplate();
@@ -276,7 +287,6 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
 		restTemplate.exchange(baseUrl, HttpMethod.DELETE, requestEntity, String.class, route);
-//		restTemplate.delete(baseUrl, route);
 	}
 	
 	private <T> void triggerCookieManagement()
