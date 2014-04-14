@@ -53,6 +53,11 @@ public class User
 	{
 		this(username, password, null, email, name, null, null, null, null, null, null, null, null, null);
 	}
+	
+	public User(String username, String password)
+	{
+		this(username, password, null, null, null, null, null, null, null, null, null, null, null, null);
+	}
 
 	public String getUsername() {
 		return username;

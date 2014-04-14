@@ -1,30 +1,28 @@
 package com.arrowfoodcouriers.arrowfood.test.gson;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
-import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 import org.springframework.http.ResponseEntity;
 
-import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Menu;
 
 @RunWith(RobolectricTestRunner.class)
-public class RESTUtilsMenusTest 
+public class RESTUtilsMenusTestHelper 
 {
-	@Before
-	public void setUp()
+	private final RESTUtils utils;
+	
+	public RESTUtilsMenusTestHelper(RESTUtils utils)
 	{
-		ShadowLog.stream = System.out;
+		this.utils = utils;
 	}
 	
-	@Test
 	public void testGetMenus()
 	{
-		ResponseEntity<String> response = Utils.getMenus();
-		Menu[] menus = Utils.convertResponseEntityToModel(response, Menu[].class);
+		ResponseEntity<String> response = utils.getMenus();
+		Menu[] menus = RESTUtils.convertResponseEntityToModel(response, Menu[].class);
 		assertNotNull(menus);
 	}
 }

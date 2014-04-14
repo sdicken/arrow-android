@@ -4,25 +4,22 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 
-import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 
 @RunWith(RobolectricTestRunner.class)
-public class RESTUtilsUserTest 
+public class RESTUtilsUserTestHelper 
 {
 	private String username;
 	private String password;
@@ -39,14 +36,33 @@ public class RESTUtilsUserTest
 	private Integer orders;
 	private Integer deliveries;
 
+	private final RESTUtils utils;
 	private HttpStatus httpStatus;
-	private User user;
 	
-	@Before
-	public void setUp()
+	public RESTUtilsUserTestHelper(RESTUtils utils)
 	{
-		ShadowLog.stream = System.out;
+		this.utils = utils;
+	}
+	
+	public User createUserForLogin()
+	{
+		username = new String("bob");
+		password = new String("pass");
+		return new User(username, password);
+	}
+	
+	public User createUserForRegistration()
+	{
+		username = new String("bob");
+		password = new String("pass");
+		email = new String("bob@bob.bob");
+		name = new String("Bobby");
 		
+		return new User(username, password, email, name);
+	}
+	
+	public User createUser()
+	{
 		username = new String("bob");
 		password = new String("pass");
 		role = new String("Customer");
@@ -63,18 +79,17 @@ public class RESTUtilsUserTest
 		orders = Integer.valueOf(3);
 		deliveries = Integer.valueOf(5);
 		
-//		user = new User(username, password, role, email, name, image, icon, achievements, phones, 
-//				addresses, created, updated, orders, deliveries);
-		user = new User(username, password, email, name);
+		return new User(username, password, role, email, name, image, icon, achievements, phones, 
+				addresses, created, updated, orders, deliveries);
 	}
 	
-	@Test
 	public void testUserRegistrationUsernameTaken()
 	{
+		User user = createUserForRegistration();
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
-			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
 			assertTrue(response.isUsernameTaken(response.getError()));
 		}
 		catch(Exception e)
@@ -83,13 +98,13 @@ public class RESTUtilsUserTest
 		}
 	}
 	
-	@Test
 	public void testUserRegistrationEmailTaken()
 	{
+		User user = createUserForRegistration();
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
-			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
 			assertTrue(response.isEmailTaken(response.getError()));
 		}
 		catch(Exception e)
@@ -98,16 +113,16 @@ public class RESTUtilsUserTest
 		}
 	}
 	
-	@Test
 	public void testUserRegistrationSucceeds()
 	{
+		User user = createUserForRegistration();
 		user.setUsername("bob1"); // need to change this each time or else delete from db after each run
-		email = new String("bob1@bob.bob");	// need to change this each time or else delete from db after each run
+		user.setEmail("bob1@bob.bob");	// need to change this each time or else delete from db after each run
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = Utils.postUser(user);
-			Response response = Utils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
-			assertTrue(false); // sort this out when server error decided to be String or boolean
+			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
+//			assertTrue(false); // sort this out when server error decided to be String or boolean
 		}
 		catch(Exception e)
 		{
@@ -115,12 +130,50 @@ public class RESTUtilsUserTest
 		}
 	}
 	
-	@Test
+	
+	public void testLoginSuccess()
+	{
+		User user = createUserForLogin();
+		httpStatus = HttpStatus.OK;
+		ResponseEntity<String> responseEntity = utils.login(user.getUsername(), user.getPassword());
+		assertTrue(responseEntity.getStatusCode().equals(httpStatus));
+	}
+	
+	public void testLoginFailure()
+	{
+		User user = createUserForLogin();
+		user.setUsername("a");
+		httpStatus = HttpStatus.NOT_FOUND;
+		try
+		{
+			utils.login(user.getUsername(), user.getPassword());
+		}
+		catch(Exception e)
+		{
+			assertTrue(getErrorStatusCode(e).equals(httpStatus));
+		}
+	}
+	
+	public void testLoginMalformed()
+	{
+		User user = createUserForLogin();
+		user.setUsername("");
+		httpStatus = HttpStatus.BAD_REQUEST;
+		try
+		{
+			utils.login(user.getUsername(), user.getPassword());
+		}
+		catch(Exception e)
+		{
+			assertTrue(getErrorStatusCode(e).equals(httpStatus));
+		}
+	}
+
 	public void testGetOrdersUnauthorized()
 	{
 		httpStatus = HttpStatus.UNAUTHORIZED;
 		try{
-			Utils.getOrders();
+			utils.getOrders();
 		}
 		catch(Exception e)
 		{

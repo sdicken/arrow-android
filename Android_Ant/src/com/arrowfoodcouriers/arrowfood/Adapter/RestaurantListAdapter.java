@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 
 /**
@@ -18,7 +18,7 @@ import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 public class RestaurantListAdapter extends BaseAdapter 
 {
 
-    private static final Restaurant[] restaurants = Utils.getRestaurants();
+    private static final Restaurant[] restaurants = new RESTUtils().getRestaurants();
 
     public Object getItem(int position) 
     {

@@ -8,12 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 
 public class MenuAdapter extends BaseAdapter 
 {
-	private static final MenuItem[] menus = Utils.getMenuItems();
+	private static final MenuItem[] menus = new RESTUtils().getMenuItems();
 	
 	public int getCount() 
 	{

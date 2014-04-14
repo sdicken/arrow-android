@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Utils;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 
 public class CartAdapter extends BaseAdapter 
 {
-	private static final CartItem[] cart = Utils.getCartItems();
+	private static final CartItem[] cart = new RESTUtils().getCartItems();
 
 	@Override
 	public int getCount() 

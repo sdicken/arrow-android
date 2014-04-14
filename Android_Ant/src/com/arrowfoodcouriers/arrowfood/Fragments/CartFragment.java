@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.CartAdapter;
 
 public class CartFragment extends ListFragment 
@@ -23,7 +22,7 @@ public class CartFragment extends ListFragment
 		View view = inflater.inflate(R.layout.fragment_cart, container, false);
 		
 		TextView subtotalText = (TextView) view.findViewById(R.id.cart_subtotal_value);
-		subtotalText.setText("$" + String.valueOf(Utils.getCart().getTotal()));
+//		subtotalText.setText("$" + String.valueOf(Utils.getCart().getTotal()));
 		
 		mAdapter = new CartAdapter();
 		setListAdapter(mAdapter);
