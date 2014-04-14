@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 
@@ -94,7 +95,12 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
 	}
 	
 	private class LoginShowDialogListener implements DialogInterface.OnShowListener
-	{		
+	{
+		private RESTUtils utils;
+		public LoginShowDialogListener()
+		{
+			utils = new RESTUtils();
+		}
 		public void onShow(DialogInterface dialogInterface) 
         {
             Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -104,6 +110,7 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
                 {
                     String username = _usernameField.getText().toString();
                     String password = _passwordField.getText().toString();
+                    utils.login(username, password);
                 }
             });
             Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
