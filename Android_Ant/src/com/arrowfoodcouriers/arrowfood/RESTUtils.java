@@ -68,19 +68,10 @@ public class RESTUtils
 		items[1] = new CartItem("Quills", "Small coffee", 1, 2.99, new Date(), new Date());
 		return items;
 	}
-	
-//		public static Cart getCart() 
-//		{
-//			// TODO: replace with RestTemplate object making REST API calls to server
-//			return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
-//			return new Cart("", new Date(), new Date(), null, null, 4.22);
-//		}
 
 	public ResponseEntity<String> getCart() 
 	{
-		// TODO: replace with RestTemplate object making REST API calls to server
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
-//			return new Cart("", new Date(), new Date(), null, null, 4.22);
 	}
 		
 	// this will not be implemented by server
@@ -229,8 +220,6 @@ public class RESTUtils
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//		requestHeaders.set("Set-Cookie", rawCookieStore.get(this.baseUrl).get(0).toString());
-//		requestHeaders.set("Cookie", cookie);
 		RestTemplate restTemplate = new RestTemplate();
 		
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
@@ -245,8 +234,6 @@ public class RESTUtils
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//		requestHeaders.set("Set-Cookie", rawCookieStore.get(this.baseUrl).get(0).toString());
-//		requestHeaders.set("Cookie", cookie);
 		HttpEntity<T> requestEntity = new HttpEntity<T>(data, requestHeaders);
 		
 		RestTemplate restTemplate = new RestTemplate();
@@ -263,8 +250,6 @@ public class RESTUtils
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//		requestHeaders.set("Set-Cookie", rawCookieStore.get(this.baseUrl).get(0).toString());
-//		requestHeaders.set("Cookie", cookie);
 		HttpEntity<T> requestEntity = new HttpEntity<T>(requestHeaders);
 		
 		RestTemplate restTemplate = new RestTemplate();
