@@ -15,7 +15,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Models.User;
 
 /**
  * Created by Sam on 2/25/14.
@@ -27,20 +29,8 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
     EditText _firstNameField;
     EditText _lastNameField;
     EditText _emailField;
-    EditText _telephoneField;
-    EditText _faxField;
-    EditText _companyField;
-    EditText _companyidField;
-    EditText _address1Field;
-    EditText _address2Field;
-    EditText _cityField;
-    EditText _postalCodeField;
-    EditText _countryField;
-    EditText _stateField;
     EditText _passwordField;
     EditText _confirmPasswordField;
-    RadioGroup _newsletterField;
-    CheckBox _privacyPolicyField;
     
     public RegistrationDialogFragment()
     {
@@ -58,20 +48,8 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
         _firstNameField = (EditText) dialogView.findViewById(R.id.register_first_name);
         _lastNameField = (EditText) dialogView.findViewById(R.id.register_last_name);
         _emailField = (EditText) dialogView.findViewById(R.id.register_email);
-        _telephoneField = (EditText) dialogView.findViewById(R.id.register_telephone);
-        _faxField = (EditText) dialogView.findViewById(R.id.register_fax);
-        _companyField = (EditText) dialogView.findViewById(R.id.register_company);
-        _companyidField = (EditText) dialogView.findViewById(R.id.register_companyid);
-        _address1Field  = (EditText) dialogView.findViewById(R.id.register_address1);
-        _address2Field = (EditText) dialogView.findViewById(R.id.register_address2);
-        _cityField = (EditText) dialogView.findViewById(R.id.register_city);
-        _postalCodeField = (EditText) dialogView.findViewById(R.id.register_postal_code);
-        _countryField = (EditText) dialogView.findViewById(R.id.register_country);
-        _stateField = (EditText) dialogView.findViewById(R.id.register_state);
         _passwordField = (EditText) dialogView.findViewById(R.id.register_password);
         _confirmPasswordField = (EditText) dialogView.findViewById(R.id.register_confirm_password);
-        _newsletterField = (RadioGroup) dialogView.findViewById(R.id.register_newsletter);
-        _privacyPolicyField = (CheckBox) dialogView.findViewById(R.id.register_privacy_policy);
 
         _alertDialog = builder.setView(dialogView)
                 .setTitle(R.string.dialog_register_title)
@@ -115,7 +93,14 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
     }
     
     private class RegistrationShowListener implements DialogInterface.OnShowListener
-    {    	
+    {
+    	private RESTUtils utils;
+    	
+    	public RegistrationShowListener()
+    	{
+    		utils = new RESTUtils();
+    	}
+    	
     	public void onShow(DialogInterface dialogInterface) 
         {
             Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -127,33 +112,10 @@ public class RegistrationDialogFragment extends DialogFragment implements IRegis
                     String firstName = _firstNameField.getText().toString();
                     String lastName = _lastNameField.getText().toString();
                     String email = _emailField.getText().toString();
-                    String telephone = _telephoneField.getText().toString();
-                    String fax = _faxField.getText().toString();
-                    String company = _companyField.getText().toString();
-                    String companyid = _companyidField.getText().toString();
-                    String address1 = _address1Field.getText().toString();
-                    String address2 = _address2Field.getText().toString();
-                    String city = _cityField.getText().toString();
-                    String postalCode = _postalCodeField.getText().toString();
-                    String country = _countryField.getText().toString();
-                    String state = _stateField.getText().toString();
                     String password = _passwordField.getText().toString();
                     String confirmPassword = _confirmPasswordField.getText().toString();
-                    String newsletter = new String();
-                    switch(_newsletterField.getId())
-                    {
-                        case R.id.register_newsletter_yes:
-                        {
-                            newsletter = "1";
-                            break;
-                        }
-                        case R.id.register_newsletter_no:
-                        {
-                            newsletter = "0";
-                            break;
-                        }
-                    }
-                    String privacyPolicy = _privacyPolicyField.isChecked() ? "1" : "0";
+//                    User user = new User(username, password, email, name);
+//                    utils.postUser(user);
                 }
             });
         }    	
