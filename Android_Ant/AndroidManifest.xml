@@ -50,7 +50,10 @@
         </activity>
         
         <service android:name="com.paypal.android.sdk.payments.PayPalService"
-        android:exported="false" />
+            android:exported="false" />
+        
+        <service android:name="com.octo.android.robospice.GsonSpringAndroidSpiceService"
+            android:exported="false" />
 
 		<activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
 		<activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
