@@ -21,6 +21,7 @@ import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Email;
+import com.arrowfoodcouriers.arrowfood.Models.Geotags;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
@@ -52,6 +53,7 @@ public class RESTUtils
 	private static final String LOGIN = "login";
 	private static final String LOGOUT = "logout";
 	private static final String RESET = "reset";
+	private static final String GEOTAG = "geotag";
 	
 	public RESTUtils()
 	{
@@ -210,6 +212,40 @@ public class RESTUtils
 		urlVariables.put(ROUTE5, quantity.toString());
 		// delete from /cart/:restaurant/:menu/:item/:quantity
 		delete(URL_5VAR, urlVariables);
+	}
+	
+	public ResponseEntity<String> getGeo()
+	{
+		// GET from /geotag
+		return get(URL_1VAR, Collections.singletonMap(ROUTE, GEOTAG));
+	}
+	
+	public ResponseEntity<String> postGeo(Geotags tags)
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, tags.getLatitude().toString());
+		urlVariables.put(ROUTE2, tags.getLongitude().toString());
+		// POST to /geotag/:latitude/:longitude
+		return post(URL_2VAR, urlVariables);
+	}
+	
+	public ResponseEntity<String> getGeoUser(String username)
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, GEOTAG);
+		urlVariables.put(ROUTE2, username);
+		// GET from /geotag/:username
+		return get(URL_2VAR, urlVariables);
+	}
+	
+	public ResponseEntity<String> getGeoUserLimit(String username, Integer limit)
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, GEOTAG);
+		urlVariables.put(ROUTE2, username);
+		urlVariables.put(ROUTE3, limit.toString());
+		// GET from /geotag/:username/:limit
+		return get(URL_3VAR, urlVariables);
 	}
 	
 	public static <T> T convertResponseEntityToModel(ResponseEntity<String> responseEntityContainingJSON, Class<T> classOfT)

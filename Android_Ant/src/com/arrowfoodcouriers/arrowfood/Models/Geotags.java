@@ -17,6 +17,12 @@ public class Geotags
 		this.longitude = longitude;
 		this.created = created;
 	}
+	
+	public Geotags(Double latitude, Double longitude)
+	{
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
 
 	public String getUsername() {
 		return username;
