@@ -33,6 +33,6 @@ public class RESTUtilsTest
 		userTestHelper.testUserRegistrationSucceeds();
 		userTestHelper.testLoginSuccess();
 		menuTestHelper.testGetMenus();
-		cartTestHelper.testPlaceOrder();
+		cartTestHelper.testPlaceOrderSuccess();
 	}
 }
