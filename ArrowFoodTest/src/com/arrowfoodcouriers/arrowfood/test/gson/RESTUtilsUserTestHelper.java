@@ -116,8 +116,8 @@ public class RESTUtilsUserTestHelper
 	public void testUserRegistrationSucceeds()
 	{
 		User user = createUserForRegistration();
-		user.setUsername("bob1"); // need to change this each time or else delete from db after each run
-		user.setEmail("bob1@bob.bob");	// need to change this each time or else delete from db after each run
+		//user.setUsername("bob1"); // need to change this each time or else delete from db after each run
+		//user.setEmail("bob1@bob.bob");	// need to change this each time or else delete from db after each run
 		try
 		{
 			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);

@@ -32,6 +32,11 @@ public class Order
 		this.rating = rating;
 		this.comment = comment;
 	}
+	
+	public Order(Address billing, Address shipping)
+	{
+		this(null, null, billing, shipping, null, null, null, null);
+	}
 
 	public String getUsername() {
 		return username;

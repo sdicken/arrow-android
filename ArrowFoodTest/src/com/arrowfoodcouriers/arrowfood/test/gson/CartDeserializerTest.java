@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.arrowfoodcouriers.arrowfood.Models.Cart;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
+import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Coupon;
 import com.google.gson.Gson;
 
@@ -24,6 +25,7 @@ public class CartDeserializerTest
 	private CartItem[] items;
 	private Coupon[] coupons;
 	private Double total;
+	private CartItemOption[] itemOptions;
 	
 	@Before
 	public void setUp()
@@ -36,8 +38,11 @@ public class CartDeserializerTest
 
 		int size = 2;
 		items = new CartItem[size];
-		items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date());
-		items[1] = new CartItem("Quills", "Small coffee", 1, 2.99, new Date(), new Date());
+		itemOptions = new CartItemOption[size];
+		itemOptions[0] = new CartItemOption("Side", "Select", "Rice");
+		itemOptions[1] = new CartItemOption("Side", "Select", "Beans");
+		items[0] = new CartItem("Lunch", "Qdoba", "Burrito deluxe", itemOptions, 1, 2.99, new Date(), new Date());
+		items[1] = new CartItem("Breakfast", "Quills", "Small coffee", itemOptions, 1, 2.99, new Date(), new Date());
 		coupons = new Coupon[size];
 		coupons[0] = new Coupon("token1", null, null, "", "", new Date(), new Date(), 11);
 		coupons[1] = new Coupon("token2", null, null, "", "", new Date(), new Date(), 11);

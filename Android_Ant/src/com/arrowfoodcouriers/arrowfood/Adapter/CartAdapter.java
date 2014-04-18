@@ -58,8 +58,8 @@ public class CartAdapter extends BaseAdapter
         CartItem cartItem = (CartItem)getItem(position);
         
         // fill out views with model's info
-        titleView.setText(cartItem.getItemId());
-        subtitleView.setText(cartItem.getMenuId());
+        titleView.setText(cartItem.getItem());
+        subtitleView.setText(cartItem.getMenu());
         priceView.setText("$" + String.valueOf(cartItem.getTotal()));
 		quantityView.setText(String.valueOf(cartItem.getQuantity()));
 		

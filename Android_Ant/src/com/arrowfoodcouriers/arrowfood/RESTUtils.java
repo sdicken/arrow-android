@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
+import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Email;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
@@ -44,7 +45,6 @@ public class RESTUtils
 	private static final String URL_5VAR = URL_4VAR + "/{" + ROUTE5 + "}";
 	private static final String USER = "user";
 	private static final String CART = "cart";
-	private static final String PROFILE = "profile";
 	private static final String MENUS = "menus";
 	private static final String ORDER = "order";
 	private static final String ORDERS = "orders";
@@ -63,9 +63,12 @@ public class RESTUtils
 	public CartItem[] getCartItems() 
 	{
 		int size = 2;
+		CartItemOption[] itemOptions = new CartItemOption[size];
+		itemOptions[0] = new CartItemOption("Side", "Select", "Rice");
+		itemOptions[1] = new CartItemOption("Side", "Select", "Beans");
 		CartItem [] items = new CartItem[size];
-		items[0] = new CartItem("Qdoba", "Burrito deluxe", 1, 2.99, new Date(), new Date());
-		items[1] = new CartItem("Quills", "Small coffee", 1, 2.99, new Date(), new Date());
+		items[0] = new CartItem("Lunch", "Qdoba", "Burrito deluxe", itemOptions, 1, 2.99, new Date(), new Date());
+		items[1] = new CartItem("Breakfast", "Quills", "Small coffee", itemOptions, 1, 2.99, new Date(), new Date());
 		return items;
 	}
 
@@ -128,14 +131,14 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables, user);
 	}
 	
-	public ResponseEntity<String> getProfile()
+	public ResponseEntity<String> getUser()
 	{
 		// get from /profile
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, PROFILE));
+		return get(URL_1VAR, Collections.singletonMap(ROUTE, USER));
 	}
 	
 	public ResponseEntity<String> postCart(String restaurantName, String menuName, 
-			String itemName, Integer quantity)
+			String itemName, Integer quantity, CartItemOption[] itemOptions)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
@@ -144,7 +147,7 @@ public class RESTUtils
 		urlVariables.put(ROUTE4, itemName);
 		urlVariables.put(ROUTE5, quantity.toString());
 		// post to cart/order
-		return post(URL_5VAR, urlVariables);
+		return post(URL_5VAR, urlVariables, itemOptions);
 	}
 	
 	public ResponseEntity<String> postCartOrder(Order order)

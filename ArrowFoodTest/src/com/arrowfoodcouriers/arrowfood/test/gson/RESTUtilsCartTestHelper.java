@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Cart;
+import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Menu;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
@@ -31,11 +32,17 @@ public class RESTUtilsCartTestHelper
 		MenuItem item1 = menus[0].getItems()[0];
 		String itemName = item1.getName();
 		Integer quantity = 2;
-		responseEntity = utils.postCart(restaurantName, menuName, itemName, quantity);
+		CartItemOption[] itemOptions = new CartItemOption[1];
+		itemOptions[0] = new CartItemOption(item1.getItemOptions()[0].getName(), 
+				item1.getItemOptions()[0].getType(),
+				item1.getItemOptions()[0].getParam());
+		responseEntity = utils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
 		Response response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
 		assertTrue(response.getSuccess());
 		responseEntity = utils.getCart();
 		Cart cart = RESTUtils.convertResponseEntityToModel(responseEntity, Cart.class);
-		assertTrue(cart.getItems()[0].getMenuId().equals(menuName));
+		assertTrue(cart.getItems()[0].getRestaurant().equals(restaurantName));
+		assertTrue(cart.getItems()[0].getMenu().equals(menuName));
+		assertTrue(cart.getItems()[0].getItem().equals(itemName));
 	}
 }

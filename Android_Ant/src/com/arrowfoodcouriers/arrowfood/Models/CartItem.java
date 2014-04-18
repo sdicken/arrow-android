@@ -5,42 +5,32 @@ import java.util.Date;
 
 public class CartItem 
 {
-	private String menuId;
-	private String itemId;
+	private String menu;
+	private String restaurant;
+	private String item;
+	private CartItemOption[] itemOptions;
 	private Integer quantity;
 	private Double total;
 	private Date created;
 	private Date updated;
 	
-	public CartItem(String menuId, 
-			String itemId, 
+	public CartItem(String menu, 
+			String restaurant,
+			String item, 
+			CartItemOption[] itemOptions,
 			Integer quantity, 
 			Double total,
 			Date created,
 			Date updated)
 	{
-		this.menuId = menuId;
-		this.itemId = itemId;
+		this.menu = menu;
+		this.restaurant = restaurant;
+		this.item = item;
+		this.itemOptions = itemOptions;
 		this.quantity = quantity;
 		this.total = total;
 		this.created = created;
 		this.updated = updated;
-	}
-
-	public String getMenuId() {
-		return menuId;
-	}
-
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
-	}
-
-	public String getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
 	}
 
 	public Integer getQuantity() {
@@ -80,8 +70,8 @@ public class CartItem
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((itemId == null) ? 0 : itemId.hashCode());
-		result = prime * result + ((menuId == null) ? 0 : menuId.hashCode());
+		result = prime * result + ((item == null) ? 0 : item.hashCode());
+		result = prime * result + ((menu == null) ? 0 : menu.hashCode());
 		result = prime * result
 				+ ((quantity == null) ? 0 : quantity.hashCode());
 		result = prime * result + ((total == null) ? 0 : total.hashCode());
@@ -108,18 +98,18 @@ public class CartItem
 		} else if (!created.equals(other.created)) {
 			return false;
 		}
-		if (itemId == null) {
-			if (other.itemId != null) {
+		if (item == null) {
+			if (other.item != null) {
 				return false;
 			}
-		} else if (!itemId.equals(other.itemId)) {
+		} else if (!item.equals(other.item)) {
 			return false;
 		}
-		if (menuId == null) {
-			if (other.menuId != null) {
+		if (menu == null) {
+			if (other.menu != null) {
 				return false;
 			}
-		} else if (!menuId.equals(other.menuId)) {
+		} else if (!menu.equals(other.menu)) {
 			return false;
 		}
 		if (quantity == null) {
@@ -144,5 +134,37 @@ public class CartItem
 			return false;
 		}
 		return true;
+	}
+
+	public String getMenu() {
+		return menu;
+	}
+
+	public void setMenu(String menu) {
+		this.menu = menu;
+	}
+
+	public String getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(String restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
+
+	public CartItemOption[] getItemOptions() {
+		return itemOptions;
+	}
+
+	public void setItemOptions(CartItemOption[] itemOptions) {
+		this.itemOptions = itemOptions;
 	}
 }
