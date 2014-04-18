@@ -3,12 +3,16 @@ package com.arrowfoodcouriers.arrowfood;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -46,6 +50,10 @@ import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 	
 public class MainActivity extends RoboActivity implements INavigationDrawerCallback
@@ -65,6 +73,9 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private static final String BUNDLE_TAG_LOGIN_FRAGMENT = "login_fragment";
     private static final String BUNDLE_TAG_REGISTER_FRAGMENT = "register_fragment";
     
+    private static final String CLIENT_ID = "ATE_yRBSgW-8LCAH7hcG0Y1EA6Zm-7zPg6zBtk4QC_l5BPMbX_URHCmN-nz_";
+    private static final String PAYPAL = "paypal";
+    
     private static final String FRAGMENT_TAG_LOGIN = "login";
     public static final String FRAGMENT_TAG_REGISTER = "register";
 
@@ -77,6 +88,10 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 
     private ILoginDialogCallback _loginDialogCallback;
     private IRegistrationDialogCallback _registrationDialogCallback;
+    
+    private static PayPalConfiguration config = new PayPalConfiguration()
+    .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+    .clientId(CLIENT_ID);
     
     private LoaderCallbacks<User> userAccountLoaderListener = new LoaderCallbacks<User>() {
 
@@ -129,6 +144,11 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         getActionBar().hide();
         setContentView(R.layout.activity_main);
         getActionBar().show();
+        
+        // PayPal setup
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intent);
         
         // TODO: Remove because this is for debugging only
         GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
@@ -258,6 +278,13 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 
         return super.onOptionsItemSelected(item);
     }
+    
+    @Override
+    protected void onDestroy() 
+    {
+    	stopService(new Intent(this, PayPalService.class));
+    	super.onDestroy();
+    }
 
     // this gets called when user leaves app running and app gets killed because system needs memory
     @Override
@@ -289,6 +316,36 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggle
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+    {
+    	if(resultCode == Activity.RESULT_OK)
+    	{
+    		PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) 
+            {
+                try {
+                    Log.i(PAYPAL, confirm.toJSONObject().toString(4));
+
+                    // TODO: send 'confirm' to your server for verification.
+                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                    // for more details.
+
+                } catch (JSONException e) {
+                    Log.e(PAYPAL, "an extremely unlikely failure occurred: ", e);
+                }
+            }
+    	}
+    	else if(resultCode == Activity.RESULT_CANCELED)
+    	{
+    		Log.i(PAYPAL, "The user canceled.");
+    	}
+    	else if(resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
+    	{
+    		Log.i(PAYPAL, "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+    	}
     }
 
     private void selectItem(int position) 
