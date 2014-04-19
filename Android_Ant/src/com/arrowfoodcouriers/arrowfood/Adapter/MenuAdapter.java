@@ -13,6 +13,11 @@ import android.widget.TextView;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 
+/**
+ * 
+ * @author Sam
+ * Ideas borrowed by Sam from http://www.christopherbiscardi.com/2014/01/28/android-listfragment-populated-by-robospice/
+ */
 public class MenuAdapter extends ArrayAdapter<MenuItem>
 {	
 	public MenuAdapter(Context context, List<MenuItem> menuItems)
