@@ -22,7 +22,7 @@ public class RESTUtilsTest
 		ShadowLog.stream = System.out;
 		
 		utils = new RESTUtils();
-		userTestHelper = new RESTUtilsUserTestHelper(utils);
+		userTestHelper = new RESTUtilsUserTestHelper();
 		menuTestHelper = new RESTUtilsMenusTestHelper(utils);
 		cartTestHelper = new RESTUtilsCartTestHelper(utils);
 	}

@@ -14,7 +14,7 @@ import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 
 public class CartAdapter extends BaseAdapter 
 {
-	private static final CartItem[] cart = new RESTUtils().getCartItems();
+	private static final CartItem[] cart = RESTUtils.getCartItems();
 
 	@Override
 	public int getCount() 

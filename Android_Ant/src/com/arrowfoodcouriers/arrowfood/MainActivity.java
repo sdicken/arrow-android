@@ -1,12 +1,10 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.Date;
 import java.util.List;
 
-import org.json.JSONException;
-
-import roboguice.activity.RoboActivity;
-import roboguice.inject.InjectView;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -41,22 +39,20 @@ import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.TrackingFragment;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
 import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
 import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
+import com.octo.android.robospice.GsonSpringAndroidSpiceService;
+import com.octo.android.robospice.SpiceManager;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 	
-public class MainActivity extends RoboActivity implements INavigationDrawerCallback
+public class MainActivity extends Activity implements INavigationDrawerCallback
 {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
@@ -74,24 +70,27 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     private static final String BUNDLE_TAG_REGISTER_FRAGMENT = "register_fragment";
     
     private static final String CLIENT_ID = "ATE_yRBSgW-8LCAH7hcG0Y1EA6Zm-7zPg6zBtk4QC_l5BPMbX_URHCmN-nz_";
-    private static final String PAYPAL = "paypal";
     
     private static final String FRAGMENT_TAG_LOGIN = "login";
     public static final String FRAGMENT_TAG_REGISTER = "register";
 
-    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @InjectView(R.id.left_drawer) ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mTitle;
     private CharSequence mDrawerTitle;
 
-    private ILoginDialogCallback _loginDialogCallback;
-    private IRegistrationDialogCallback _registrationDialogCallback;
+    private LoginDialogFragment loginDialogFragment;
+    private RegistrationDialogFragment registrationDialogFragment;
     
     private static PayPalConfiguration config = new PayPalConfiguration()
-    .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
-    .clientId(CLIENT_ID);
+    .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+    .clientId(CLIENT_ID)
+    .defaultUserEmail("sd.nfltitan@gmail.com")
+    .sandboxUserPassword("passpass");
+    
+    public static SpiceManager spiceManager = new SpiceManager(GsonSpringAndroidSpiceService.class);
     
     private LoaderCallbacks<User> userAccountLoaderListener = new LoaderCallbacks<User>() {
 
@@ -130,10 +129,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     		
     	}    	
     };
-    
-    public MainActivity()
-    {
-    }
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -144,6 +139,8 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         getActionBar().hide();
         setContentView(R.layout.activity_main);
         getActionBar().show();
+        
+        CookieHandler.setDefault(new CookieManager());
         
         // PayPal setup
         Intent intent = new Intent(this, PayPalService.class);
@@ -161,12 +158,12 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
             instantiateRegisterCallback(savedInstanceState);
-            instantiateLoginCallback(savedInstanceState, _registrationDialogCallback);	// refresh callback in scenario where dialog was already open before state lost
+            instantiateLoginCallback(savedInstanceState, registrationDialogFragment);	// refresh callback in scenario where dialog was already open before state lost
         }
         else
         {
-        	_registrationDialogCallback = new RegistrationDialogFragment();
-        	_loginDialogCallback = new LoginDialogFragment(_registrationDialogCallback);
+        	registrationDialogFragment = new RegistrationDialogFragment();
+        	loginDialogFragment = new LoginDialogFragment();
 
             // Create fragment here
             Fragment fragment = new RestaurantFragment();
@@ -176,6 +173,9 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         }
 
         mTitle = mDrawerTitle = getTitle();
+        
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerList.addHeaderView(View.inflate(this, R.layout.navdrawer_header, null), null, false);
@@ -223,21 +223,20 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     // show fragment and give it a tag for reference later
 	private void displayLoginDialogFragment() 
     {
-    	((LoginDialogFragment)_loginDialogCallback).show(getFragmentManager(), FRAGMENT_TAG_LOGIN);
+    	loginDialogFragment.show(getFragmentManager(), FRAGMENT_TAG_LOGIN);
 	}
 
 	// retrieve existing LoginDialogFragment instance (if available) or create new
 	private void instantiateLoginCallback(Bundle savedInstanceState,
-			IRegistrationDialogCallback registrationDialogCallback) 
+			RegistrationDialogFragment registrationDialogFragment) 
 	{
     	if(loginDialogWasShowingBeforeSave(savedInstanceState))
 		{
-    		_loginDialogCallback = (LoginDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_LOGIN_FRAGMENT);
-    		_loginDialogCallback.attachRegistrationDialogCallback(registrationDialogCallback);
+    		loginDialogFragment = (LoginDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_LOGIN_FRAGMENT);
 		}
         else
         {
-        	_loginDialogCallback = new LoginDialogFragment(registrationDialogCallback);
+        	loginDialogFragment = new LoginDialogFragment();
         }		
 	}
 	
@@ -246,11 +245,11 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
 	{
     	if(registerDialogWasShowingBeforeSave(savedInstanceState))
 		{
-    		_registrationDialogCallback = (RegistrationDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_REGISTER_FRAGMENT);
+    		registrationDialogFragment = (RegistrationDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_REGISTER_FRAGMENT);
 		}
         else
         {
-        	_registrationDialogCallback = new RegistrationDialogFragment();
+        	registrationDialogFragment = new RegistrationDialogFragment();
         }		
 	}
 
@@ -280,6 +279,20 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
     }
     
     @Override
+    protected void onStart() 
+    {
+    	super.onStart();
+    	spiceManager.start(this);
+    }
+    
+    @Override
+    protected void onStop() 
+    {
+    	spiceManager.shouldStop();
+    	super.onStop();
+    }
+    
+    @Override
     protected void onDestroy() 
     {
     	stopService(new Intent(this, PayPalService.class));
@@ -293,10 +306,10 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         super.onSaveInstanceState(outState);
         Fragment fragment = (LoginDialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG_LOGIN);
         if(fragment != null && fragment.isAdded())
-        	getFragmentManager().putFragment(outState, BUNDLE_TAG_LOGIN_FRAGMENT, (LoginDialogFragment)_loginDialogCallback);
+        	getFragmentManager().putFragment(outState, BUNDLE_TAG_LOGIN_FRAGMENT, loginDialogFragment);
         fragment = (RegistrationDialogFragment) getFragmentManager().findFragmentByTag(FRAGMENT_TAG_REGISTER);
         if(fragment != null && fragment.isAdded())
-        	getFragmentManager().putFragment(outState, BUNDLE_TAG_REGISTER_FRAGMENT, (RegistrationDialogFragment)_registrationDialogCallback);
+        	getFragmentManager().putFragment(outState, BUNDLE_TAG_REGISTER_FRAGMENT, registrationDialogFragment);
     }
 
     // this is currently not being called
@@ -316,36 +329,6 @@ public class MainActivity extends RoboActivity implements INavigationDrawerCallb
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggle
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-    {
-    	if(resultCode == Activity.RESULT_OK)
-    	{
-    		PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-            if (confirm != null) 
-            {
-                try {
-                    Log.i(PAYPAL, confirm.toJSONObject().toString(4));
-
-                    // TODO: send 'confirm' to your server for verification.
-                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-                    // for more details.
-
-                } catch (JSONException e) {
-                    Log.e(PAYPAL, "an extremely unlikely failure occurred: ", e);
-                }
-            }
-    	}
-    	else if(resultCode == Activity.RESULT_CANCELED)
-    	{
-    		Log.i(PAYPAL, "The user canceled.");
-    	}
-    	else if(resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
-    	{
-    		Log.i(PAYPAL, "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
-    	}
     }
 
     private void selectItem(int position) 

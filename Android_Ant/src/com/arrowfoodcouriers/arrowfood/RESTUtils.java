@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.arrowfoodcouriers.arrowfood.Models.Address;
@@ -58,11 +57,10 @@ public class RESTUtils
 	public RESTUtils()
 	{
 		CookieHandler.setDefault(new CookieManager());
-		triggerCookieManagement();
 	}
 	
 	// this will not be implemented by server
-	public CartItem[] getCartItems() 
+	public static CartItem[] getCartItems() 
 	{
 		int size = 2;
 		CartItemOption[] itemOptions = new CartItemOption[size];
@@ -106,13 +104,13 @@ public class RESTUtils
 		return restaurants;
 	}
 	
-	public ResponseEntity<String> postUser(User user)
+	public static ResponseEntity<String> postUser(User user)
 	{
 		// post to /user
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, USER), user);
 	}
 	
-	public ResponseEntity<String> getOrders()
+	public static ResponseEntity<String> getOrders()
 	{
 		// get from /orders
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS));
@@ -161,7 +159,7 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables, order);
 	}
 	
-	public ResponseEntity<String> login(String username, String password)
+	public static ResponseEntity<String> login(String username, String password)
 	{
 		User user = new User(username, password);
 		// post to /login
@@ -255,7 +253,7 @@ public class RESTUtils
 		return gson.fromJson(responseEntityContainingJSON.getBody(), classOfT);
 	}
 	
-	private <T> ResponseEntity<String> get(String baseUrl, Map<String, String> route)
+	private static <T> ResponseEntity<String> get(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -264,9 +262,8 @@ public class RESTUtils
 		
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		
-		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.GET, requestEntity, String.class, route);
-		return responseEntity;
+
+		return restTemplate.exchange(baseUrl, HttpMethod.GET, requestEntity, String.class, route);
 	}
 	
 	/**
@@ -276,7 +273,7 @@ public class RESTUtils
 	 * @param data
 	 * @return
 	 */
-	private <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route, T data)
+	private static <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route, T data)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -288,8 +285,7 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
-		return responseEntity;	
+		return restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 	}
 	
 	/**
@@ -310,8 +306,7 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		ResponseEntity<String> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
-		return responseEntity;	
+		return restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 	}
 	
 	private <T> void delete(String baseUrl, Map<String, String> route)
@@ -326,21 +321,5 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
 		restTemplate.exchange(baseUrl, HttpMethod.DELETE, requestEntity, String.class, route);
-	}
-	
-	private <T> void triggerCookieManagement()
-	{
-		HttpEntity<T> requestEntity = new HttpEntity<T>(new HttpHeaders());
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		try
-		{
-			restTemplate.exchange(HOST_NAME, HttpMethod.GET, requestEntity, String.class);
-		}
-		catch(HttpClientErrorException e)
-		{
-			e.getStatusCode();
-		}
-		
 	}
 }

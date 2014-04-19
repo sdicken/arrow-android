@@ -54,6 +54,20 @@ public class User
 		this(username, password, null, email, name, null, null, null, null, null, null, null, null, null);
 	}
 	
+	/**
+	 * Expanded set of parameters for registering a new User
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @param name
+	 * @param address
+	 * @param phone
+	 */
+	public User(String username, String password, String email, String name, Address[] addresses, Phone[] phones)
+	{
+		this(username, password, null, email, name, null, null, null, phones, addresses, null, null, null, null);
+	}
+	
 	public User(String username, String password)
 	{
 		this(username, password, null, null, null, null, null, null, null, null, null, null, null, null);

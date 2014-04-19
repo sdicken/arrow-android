@@ -36,13 +36,7 @@ public class RESTUtilsUserTestHelper
 	private Integer orders;
 	private Integer deliveries;
 
-	private final RESTUtils utils;
 	private HttpStatus httpStatus;
-	
-	public RESTUtilsUserTestHelper(RESTUtils utils)
-	{
-		this.utils = utils;
-	}
 	
 	public User createUserForLogin()
 	{
@@ -88,7 +82,7 @@ public class RESTUtilsUserTestHelper
 		User user = createUserForRegistration();
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			ResponseEntity<String> receivedResponseEntity = RESTUtils.postUser(user);
 			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
 			assertTrue(response.isUsernameTaken(response.getError()));
 		}
@@ -103,7 +97,7 @@ public class RESTUtilsUserTestHelper
 		User user = createUserForRegistration();
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			ResponseEntity<String> receivedResponseEntity = RESTUtils.postUser(user);
 			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
 			assertTrue(response.isEmailTaken(response.getError()));
 		}
@@ -120,7 +114,7 @@ public class RESTUtilsUserTestHelper
 		//user.setEmail("bob1@bob.bob");	// need to change this each time or else delete from db after each run
 		try
 		{
-			ResponseEntity<String> receivedResponseEntity = utils.postUser(user);
+			ResponseEntity<String> receivedResponseEntity = RESTUtils.postUser(user);
 			Response response = RESTUtils.convertResponseEntityToModel(receivedResponseEntity, Response.class);
 //			assertTrue(false); // sort this out when server error decided to be String or boolean
 		}
@@ -135,7 +129,7 @@ public class RESTUtilsUserTestHelper
 	{
 		User user = createUserForLogin();
 		httpStatus = HttpStatus.OK;
-		ResponseEntity<String> responseEntity = utils.login(user.getUsername(), user.getPassword());
+		ResponseEntity<String> responseEntity = RESTUtils.login(user.getUsername(), user.getPassword());
 		assertTrue(responseEntity.getStatusCode().equals(httpStatus));
 	}
 	
@@ -146,7 +140,7 @@ public class RESTUtilsUserTestHelper
 		httpStatus = HttpStatus.NOT_FOUND;
 		try
 		{
-			utils.login(user.getUsername(), user.getPassword());
+			RESTUtils.login(user.getUsername(), user.getPassword());
 		}
 		catch(Exception e)
 		{
@@ -161,7 +155,7 @@ public class RESTUtilsUserTestHelper
 		httpStatus = HttpStatus.BAD_REQUEST;
 		try
 		{
-			utils.login(user.getUsername(), user.getPassword());
+			RESTUtils.login(user.getUsername(), user.getPassword());
 		}
 		catch(Exception e)
 		{
@@ -173,7 +167,7 @@ public class RESTUtilsUserTestHelper
 	{
 		httpStatus = HttpStatus.UNAUTHORIZED;
 		try{
-			utils.getOrders();
+			RESTUtils.getOrders();
 		}
 		catch(Exception e)
 		{

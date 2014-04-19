@@ -15,6 +15,12 @@ public class Phone
 		this.number = number;
 		this.created = created;
 	}
+	
+	public Phone(String name, String number)
+	{
+		this.name = name;
+		this.number = number;
+	}
 
 	public String getName() {
 		return name;
