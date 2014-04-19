@@ -18,7 +18,6 @@ import com.arrowfoodcouriers.arrowfood.Models.Response;
 @RunWith(RobolectricTestRunner.class)
 public class RESTUtilsCartTestHelper 
 {
-	private final RESTUtils utils;
 	private String menuName;
 	private String restaurantName;
 	private String itemName;
@@ -26,14 +25,9 @@ public class RESTUtilsCartTestHelper
 	private ResponseEntity<String> responseEntity;
 	private Response response;
 	
-	public RESTUtilsCartTestHelper(RESTUtils utils)
-	{
-		this.utils = utils;
-	}
-	
 	private void testAddToCartSuccess()
 	{
-		responseEntity = utils.getMenus();
+		responseEntity = RESTUtils.getMenus();
 		Menu[] menus = RESTUtils.convertResponseEntityToModel(responseEntity, Menu[].class);
 		menuName = menus[0].getName();
 		restaurantName = menus[0].getRestaurant();
@@ -44,10 +38,10 @@ public class RESTUtilsCartTestHelper
 		itemOptions[0] = new CartItemOption(item1.getItemOptions()[0].getName(), 
 				item1.getItemOptions()[0].getType(),
 				item1.getItemOptions()[0].getParam());
-		responseEntity = utils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
+		responseEntity = RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
 		response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
 		assertTrue(response.getSuccess());
-		responseEntity = utils.getCart();
+		responseEntity = RESTUtils.getCart();
 		Cart cart = RESTUtils.convertResponseEntityToModel(responseEntity, Cart.class);
 		assertTrue(cart.getItems()[0].getRestaurant().equals(restaurantName));
 		assertTrue(cart.getItems()[0].getMenu().equals(menuName));
@@ -61,7 +55,7 @@ public class RESTUtilsCartTestHelper
 		Address billing = new Address("Test Street", "", "Louisville", "KY", "40202");
 		Address shipping = new Address("Test Avenue", "", "Louisville", "KY", "40205");
 		Order order = new Order(billing, shipping);
-		responseEntity = utils.postCartOrder(order);
+		responseEntity = RESTUtils.postCartOrder(order);
 		response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
 		assertTrue(response.getSuccess());
 	}

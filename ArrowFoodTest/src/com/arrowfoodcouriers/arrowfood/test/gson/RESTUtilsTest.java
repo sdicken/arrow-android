@@ -1,17 +1,17 @@
 package com.arrowfoodcouriers.arrowfood.test.gson;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
-import com.arrowfoodcouriers.arrowfood.RESTUtils;
-
 @RunWith(RobolectricTestRunner.class)
 public class RESTUtilsTest 
 {
-	private RESTUtils utils;
 	private RESTUtilsUserTestHelper userTestHelper;
 	private RESTUtilsMenusTestHelper menuTestHelper;
 	private RESTUtilsCartTestHelper cartTestHelper;
@@ -21,10 +21,11 @@ public class RESTUtilsTest
 	{
 		ShadowLog.stream = System.out;
 		
-		utils = new RESTUtils();
+		CookieHandler.setDefault(new CookieManager());
+		
 		userTestHelper = new RESTUtilsUserTestHelper();
-		menuTestHelper = new RESTUtilsMenusTestHelper(utils);
-		cartTestHelper = new RESTUtilsCartTestHelper(utils);
+		menuTestHelper = new RESTUtilsMenusTestHelper();
+		cartTestHelper = new RESTUtilsCartTestHelper();
 	}
 	
 	@Test

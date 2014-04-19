@@ -1,7 +1,5 @@
 package com.arrowfoodcouriers.arrowfood;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,11 +52,6 @@ public class RESTUtils
 	private static final String RESET = "reset";
 	private static final String GEOTAG = "geotag";
 	
-	public RESTUtils()
-	{
-		CookieHandler.setDefault(new CookieManager());
-	}
-	
 	// this will not be implemented by server
 	public static CartItem[] getCartItems() 
 	{
@@ -72,7 +65,7 @@ public class RESTUtils
 		return items;
 	}
 
-	public ResponseEntity<String> getCart() 
+	public static ResponseEntity<String> getCart() 
 	{
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
 	}
@@ -116,7 +109,7 @@ public class RESTUtils
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS));
 	}
 	
-	public ResponseEntity<String> getMenus()
+	public static ResponseEntity<String> getMenus()
 	{
 		// get from /menus
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, MENUS));	
@@ -137,7 +130,7 @@ public class RESTUtils
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, USER));
 	}
 	
-	public ResponseEntity<String> postCart(String restaurantName, String menuName, 
+	public static ResponseEntity<String> postCart(String restaurantName, String menuName, 
 			String itemName, Integer quantity, CartItemOption[] itemOptions)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
@@ -150,7 +143,7 @@ public class RESTUtils
 		return post(URL_5VAR, urlVariables, itemOptions);
 	}
 	
-	public ResponseEntity<String> postCartOrder(Order order)
+	public static ResponseEntity<String> postCartOrder(Order order)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
@@ -166,13 +159,13 @@ public class RESTUtils
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user);
 	}
 	
-	public ResponseEntity<String> logout(User user)
+	public static ResponseEntity<String> logout(User user)
 	{
 		// post to /logout
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT), user);
 	}
 	
-	public ResponseEntity<String> resetPassword(PasswordReset reset, String token)
+	public static ResponseEntity<String> resetPassword(PasswordReset reset, String token)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, USER);
@@ -183,12 +176,12 @@ public class RESTUtils
 		return post(URL_4VAR, urlVariables, reset);
 	}
 	
-	public void deleteCart()
+	public static void deleteCart()
 	{
 		delete(URL_1VAR, Collections.singletonMap(ROUTE, CART));
 	}
 	
-	public void deleteCartItem(String restaurantName, String menuName, String itemName)
+	public static void deleteCartItem(String restaurantName, String menuName, String itemName)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
@@ -199,7 +192,7 @@ public class RESTUtils
 		delete(URL_4VAR, urlVariables);
 	}
 	
-	public void deleteCartItemQuantity(String restaurantName, String menuName, 
+	public static void deleteCartItemQuantity(String restaurantName, String menuName, 
 			String itemName, Integer quantity)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
@@ -212,13 +205,13 @@ public class RESTUtils
 		delete(URL_5VAR, urlVariables);
 	}
 	
-	public ResponseEntity<String> getGeo()
+	public static ResponseEntity<String> getGeo()
 	{
 		// GET from /geotag
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, GEOTAG));
 	}
 	
-	public ResponseEntity<String> postGeo(Geotags tags)
+	public static ResponseEntity<String> postGeo(Geotags tags)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, tags.getLatitude().toString());
@@ -227,7 +220,7 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables);
 	}
 	
-	public ResponseEntity<String> getGeoUser(String username)
+	public static ResponseEntity<String> getGeoUser(String username)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, GEOTAG);
@@ -236,7 +229,7 @@ public class RESTUtils
 		return get(URL_2VAR, urlVariables);
 	}
 	
-	public ResponseEntity<String> getGeoUserLimit(String username, Integer limit)
+	public static ResponseEntity<String> getGeoUserLimit(String username, Integer limit)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, GEOTAG);
@@ -294,7 +287,7 @@ public class RESTUtils
 	 * @param route
 	 * @return
 	 */
-	private <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route)
+	private static <T> ResponseEntity<String> post(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -309,7 +302,7 @@ public class RESTUtils
 		return restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 	}
 	
-	private <T> void delete(String baseUrl, Map<String, String> route)
+	private static <T> void delete(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
