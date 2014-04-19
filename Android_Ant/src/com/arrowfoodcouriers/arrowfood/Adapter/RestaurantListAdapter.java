@@ -25,23 +25,6 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
 		super(context, R.layout.restaurant_list_item, restaurants);
 	}
 
-//    private static final Restaurant[] restaurants = RESTUtils.getRestaurants();
-
-//    public Restaurant getItem(int position) 
-//    {
-//        return restaurants[position];
-//    }
-//
-//    public long getItemId(int position) 
-//    {
-//        return position;
-//    }
-//
-//    public int getCount() 
-//    {
-//        return restaurants.length;
-//    }
-
     public View getView(int position, View view, ViewGroup parent) 
     {
     	Restaurant restaurant = (Restaurant) getItem(position);
@@ -58,9 +41,6 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
         	viewHolder.subtitleView = (TextView) view.findViewById(R.id.restaurant_list_subtitle);
         	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
         	viewHolder.imageView = (ImageView) view.findViewById(R.id.restaurant_list_logo);
-//            view = LayoutInflater.from(parent.getContext()).inflate(
-//                    R.layout.restaurant_list_item,
-//                    parent, false);
         }
         else
         {
