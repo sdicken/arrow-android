@@ -43,7 +43,7 @@ public class LoginDialogFragment extends DialogFragment
         _progressBar = (ProgressBar) dialogView.findViewById(R.id.login_activity_circle);
 
         _alertDialog = builder.setView(dialogView)
-                .setTitle(R.string.dialog_title)
+                .setTitle(R.string.dialog_login_title)
                 .setPositiveButton(R.string.dialog_sign_in, new UnimplementedOnClickListener())
                 .setNegativeButton(R.string.dialog_register, new UnimplementedOnClickListener())
                 .setNeutralButton(R.string.dialog_forgot_password, new UnimplementedOnClickListener())

@@ -3,6 +3,7 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.DialogFragment;
 import android.app.ListFragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
@@ -27,6 +27,10 @@ public class MenuFragment extends ListFragment
 {
 	private final String restaurantName;
 	private final String menuName;
+	private static final String FRAGMENT_TAG_ITEM_OPTIONS = "itemOptions";
+	public static final String BUNDLE_TAG_RESTAURANT_NAME = "restaurantName";
+	public static final String BUNDLE_TAG_MENU_NAME = "menuName";
+	public static final String BUNDLE_TAG_ITEM_NAME = "itemName";
 	MenuAdapter mAdapter;
 
     public MenuFragment(String restaurantName, String menuName) 
@@ -49,7 +53,7 @@ public class MenuFragment extends ListFragment
     	Typeface rokkitt = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Rokkitt-Regular.ttf");
     	
     	TextView menuRestaurantName = (TextView) view.findViewById(R.id.menu_restaurant_name);
-    	menuRestaurantName.setText(this.restaurantName);
+    	menuRestaurantName.setText(restaurantName);
     	menuRestaurantName.setTypeface(rokkitt);
     	
     	List<MenuItem> menuItems = new ArrayList<MenuItem>();
@@ -63,9 +67,18 @@ public class MenuFragment extends ListFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) 
     {
-    	CharSequence itemName = ((TextView) v.findViewById(R.id.menu_list_title)).getText();
-    	Toast.makeText(getActivity(), itemName + " " + getResources().getString(R.string.toast_menu_to_cart), Toast.LENGTH_SHORT).show();;
-    	super.onListItemClick(l, v, position, id);
+    	TextView itemNameView = (TextView) v.findViewById(R.id.menu_list_title);
+    	String itemName = itemNameView.getText().toString();
+//    	CharSequence itemName = ((TextView) v.findViewById(R.id.menu_list_title)).getText();
+//    	Toast.makeText(getActivity(), itemName + " " + getResources().getString(R.string.toast_menu_to_cart), Toast.LENGTH_SHORT).show();
+//    	super.onListItemClick(l, v, position, id);
+    	DialogFragment menuItemOptionsDialog = new MenuItemOptionsDialog();
+    	Bundle args = new Bundle();
+    	args.putString(BUNDLE_TAG_RESTAURANT_NAME, restaurantName);
+    	args.putString(BUNDLE_TAG_MENU_NAME, menuName);
+    	args.putString(BUNDLE_TAG_ITEM_NAME, itemName);
+    	menuItemOptionsDialog.setArguments(args);
+    	menuItemOptionsDialog.show(getFragmentManager(), FRAGMENT_TAG_ITEM_OPTIONS);
     }
     
     private class MenuRequestListener implements RequestListener<List<MenuItem>>

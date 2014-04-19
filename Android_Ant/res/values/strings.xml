@@ -16,7 +16,9 @@
     <string name="areas_served_title">Areas Served</string>
     <string name="about_title">About Us</string>
     <string name="legal_title">Legal Information</string>
-    <string name="dialog_title">Login</string>
+    <string name="dialog_item_options_title">Item Options</string>
+    <string name="dialog_login_title">Login</string>
+    <string name="dialog_continue">Continue</string>
     <string name="dialog_sign_in">Sign in</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_register">Register</string>
@@ -55,7 +57,7 @@
     <string name="cart_items_in_cart_text">Items in cart</string>
     <string name="cart_quantity_text">Quantity</string>
     <string name="cart_delete_button_text">Delete</string>
-    <string name="toast_menu_to_cart"> added to cart</string>
+    <string name="toast_menu_to_cart">added to cart</string>
     <string name="checkout_total_value">$0.00</string>
     <string name="checkout_order_button_text">Place order</string>
 </resources>
