@@ -1,5 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
+import java.util.ArrayList;
+
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -7,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
+import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 
 public class RestaurantFragment extends ListFragment 
 {
@@ -22,30 +26,21 @@ public class RestaurantFragment extends ListFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) 
     {
-
-        mAdapter = new RestaurantListAdapter();
+    	ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+        mAdapter = new RestaurantListAdapter(inflater.getContext(), restaurants);
         setListAdapter(mAdapter);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_restaurant, container, false);
+//        return inflater.inflate(R.layout.fragment_restaurant, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
     
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) 
     {
-    	switch(position)
-    	{
-	    	case QDOBA_POSITION:
-	    	{
-	    		Fragment fragment = new MenuFragment();
-	    		Utils.loadFragment(getFragmentManager(), fragment);
-	    		break;
-	    	}
-	    	case QUILLS_POSITION:
-	    	{
-	    		break;
-	    	}
-    	}
+    	TextView restaurantNameView = (TextView) v.findViewById(R.id.restaurant_list_title);
+    	Fragment fragment = new MenuFragment(restaurantNameView.getText().toString(), "Breakfast");
+		Utils.loadFragment(getFragmentManager(), fragment);
     	super.onListItemClick(l, v, position, id);
     }
     

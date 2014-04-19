@@ -42,6 +42,11 @@ public class Restaurant
 		this.updated = updated;
 		this.orders = orders;
 	}
+	
+	public Restaurant(String name, String description)
+	{
+		this(name, null, null, description, null, null, null, null, null, null, null);
+	}
 
 	public String getName() {
 		return name;

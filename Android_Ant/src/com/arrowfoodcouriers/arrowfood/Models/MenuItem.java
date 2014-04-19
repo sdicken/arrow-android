@@ -36,6 +36,11 @@ public class MenuItem
 		this.created = created;
 		this.orders = orders;
 	}
+	
+	public MenuItem(String name, Double price, MenuItemOption[] itemOptions, String description)
+	{
+		this(name, price, null, null, null, itemOptions, description, null, null);
+	}
 
 	public String getName() {
 		return name;

@@ -21,7 +21,7 @@ public class LoginRequest extends SpringAndroidSpiceRequest<Response>
 	@Override
 	public Response loadDataFromNetwork() throws Exception 
 	{
-		ResponseEntity<String> responseEntity = RESTUtils.login(username, password);
+		ResponseEntity<String> responseEntity = RESTUtils.postLogin(username, password);
 		return RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
 	}
 

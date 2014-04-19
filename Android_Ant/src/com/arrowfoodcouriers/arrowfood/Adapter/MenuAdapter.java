@@ -1,56 +1,61 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
+import java.util.List;
+
+import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 
-public class MenuAdapter extends BaseAdapter 
-{
-	private static final MenuItem[] menus = new RESTUtils().getMenuItems();
-	
-	public int getCount() 
+public class MenuAdapter extends ArrayAdapter<MenuItem>
+{	
+	public MenuAdapter(Context context, List<MenuItem> menuItems)
 	{
-		return menus.length;
-	}
-
-	public Object getItem(int position) 
-	{
-		return menus[position];
-	}
-
-	public long getItemId(int position) 
-	{
-		return position;
+		super(context, R.layout.menu_list_item, menuItems);
 	}
 
 	public View getView(int position, View view, ViewGroup parent) 
 	{
+		MenuItem menuItem = (MenuItem) getItem(position);
+		
+		ViewHolder viewHolder;
+		Typeface rokkitt = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Rokkitt-Regular.ttf");
 		if (view == null) 
         {
-            view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.menu_list_item,
-                    parent, false);
+			viewHolder = new ViewHolder();
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+        	view = inflater.inflate(R.layout.menu_list_item, null);
+        	viewHolder.titleView = (TextView) view.findViewById(R.id.menu_list_title);
+        	viewHolder.titleView.setTypeface(rokkitt);
+        	viewHolder.subtitleView = (TextView) view.findViewById(R.id.menu_list_subtitle);
+        	viewHolder.priceView = (TextView) view.findViewById(R.id.menu_list_price);
+//            view = LayoutInflater.from(parent.getContext()).inflate(
+//                    R.layout.menu_list_item,
+//                    parent, false);
         }
-		
-		Typeface rokkitt = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Rokkitt-Regular.ttf");
+		else
+		{
+			viewHolder = (ViewHolder) view.getTag();
+		}
 
-        TextView titleView = (TextView) view.findViewById(R.id.menu_list_title);
-        titleView.setTypeface(rokkitt);
-        TextView subtitleView = (TextView) view.findViewById(R.id.menu_list_subtitle);
-        TextView priceView = (TextView) view.findViewById(R.id.menu_list_price);
-        MenuItem menuListObject = (MenuItem) getItem(position);
-        titleView.setText(menuListObject.getName());
-        subtitleView.setText(menuListObject.getDescription());
-        priceView.setText("$" + String.valueOf(menuListObject.getPrice()));
+        viewHolder.titleView.setText(menuItem.getName());
+        viewHolder.subtitleView.setText(menuItem.getDescription());
+        viewHolder.priceView.setText("$" + String.valueOf(menuItem.getPrice()));
 
         return view;
 	}
+	
+	private static class ViewHolder
+    {
+    	TextView titleView;
+    	TextView subtitleView;
+    	TextView priceView;
+    }
 
 }

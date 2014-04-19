@@ -129,7 +129,7 @@ public class RESTUtilsUserTestHelper
 	{
 		User user = createUserForLogin();
 		httpStatus = HttpStatus.OK;
-		ResponseEntity<String> responseEntity = RESTUtils.login(user.getUsername(), user.getPassword());
+		ResponseEntity<String> responseEntity = RESTUtils.postLogin(user.getUsername(), user.getPassword());
 		assertTrue(responseEntity.getStatusCode().equals(httpStatus));
 	}
 	
@@ -140,7 +140,7 @@ public class RESTUtilsUserTestHelper
 		httpStatus = HttpStatus.NOT_FOUND;
 		try
 		{
-			RESTUtils.login(user.getUsername(), user.getPassword());
+			RESTUtils.postLogin(user.getUsername(), user.getPassword());
 		}
 		catch(Exception e)
 		{
@@ -155,7 +155,7 @@ public class RESTUtilsUserTestHelper
 		httpStatus = HttpStatus.BAD_REQUEST;
 		try
 		{
-			RESTUtils.login(user.getUsername(), user.getPassword());
+			RESTUtils.postLogin(user.getUsername(), user.getPassword());
 		}
 		catch(Exception e)
 		{

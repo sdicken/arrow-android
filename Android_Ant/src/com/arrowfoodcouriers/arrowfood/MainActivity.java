@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
+import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 import com.arrowfoodcouriers.arrowfood.Fragments.CartFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
@@ -44,10 +45,14 @@ import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
 import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
+import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantRequest;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
 import com.octo.android.robospice.GsonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
 
@@ -164,12 +169,15 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         {
         	registrationDialogFragment = new RegistrationDialogFragment();
         	loginDialogFragment = new LoginDialogFragment();
-
-            // Create fragment here
-            Fragment fragment = new RestaurantFragment();
+            
             FragmentManager fragmentManager = getFragmentManager();
-
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            if(fragmentManager.findFragmentById(android.R.id.content) == null)
+            {
+            	Fragment fragment = new RestaurantFragment();
+            	fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+            RestaurantRequest request = new RestaurantRequest();
+            spiceManager.execute(request, new RestaurantRequestListener());
         }
 
         mTitle = mDrawerTitle = getTitle();
@@ -462,5 +470,26 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
 
             selectItem(selectedFromList.getPosition());
         }
+    }
+    
+    private class RestaurantRequestListener implements RequestListener<List<Restaurant>>
+    {
+
+		@Override
+		public void onRequestFailure(SpiceException e) 
+		{
+			Log.d("spice","fail");			
+		}
+
+		@Override
+		public void onRequestSuccess(List<Restaurant> restaurants) 
+		{
+			Log.d("spice","succeed");
+			ListView listView = (ListView) findViewById(android.R.id.list);
+			RestaurantListAdapter adapter = (RestaurantListAdapter) listView.getAdapter();
+			adapter.clear();
+			adapter.addAll(restaurants);
+		}
+    	
     }
 }

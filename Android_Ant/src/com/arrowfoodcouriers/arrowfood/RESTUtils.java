@@ -1,8 +1,10 @@
 package com.arrowfoodcouriers.arrowfood;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -14,15 +16,13 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
-import com.arrowfoodcouriers.arrowfood.Models.Email;
 import com.arrowfoodcouriers.arrowfood.Models.Geotags;
+import com.arrowfoodcouriers.arrowfood.Models.Menu;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
-import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
@@ -71,29 +71,38 @@ public class RESTUtils
 	}
 		
 	// this will not be implemented by server
-	public MenuItem[] getMenuItems()
+//	public static MenuItem[] getMenuItems()
+	public static List<MenuItem> getMenuItems(String restaurantName, String menuName)
 	{
-		int size = 1;
-		MenuItem[] menuItems = new MenuItem[size];
-		menuItems[0] = new MenuItem("Burrito", 0.99, null, null, null, null, "House special", new Date(), null);
+		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		List<MenuItem> menuItems = new ArrayList<MenuItem>();
+		for(int i = 0; i < menus.length; i++)
+		{
+			Menu menu = menus[i];
+			if(menu.getRestaurant().equals(restaurantName) && menu.getName().equals(menuName))
+			{
+				MenuItem[] items = menu.getItems();
+				for(int j = 0; j < items.length; j++)
+				{
+					menuItems.add(items[j]);
+				}
+			}
+		}
+//		int size = 1;
+//		MenuItem[] menuItems = new MenuItem[size];
+//		menuItems[0] = new MenuItem("Burrito", 0.99, null, null, null, null, "House special", new Date(), null);
 		return menuItems;
 	}
 	
 	// this will not be implemented by server
-	public Restaurant[] getRestaurants()
+	public static List<Restaurant> getRestaurants()
 	{
-		int size = 7;
-		Restaurant[] restaurants = new Restaurant[size];
-		Email[] emails = new Email[] {new Email("Qdoba", "", new Date())};
-		Phone[] phones = new Phone[] {new Phone("Qdoba", "(111) 123 2234", new Date())};
-		Address[] addresses = new Address[] {new Address("111 22nd Street", "", "Louisville", "KY", "40202")};
-		restaurants[0] = new Restaurant("J. Gumbos", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[1] = new Restaurant("Hill Street Fish Fry", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[2] = new Restaurant("Northend Cafe", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[3] = new Restaurant("Smoketown USA", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[4] = new Restaurant("Burger Boy", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[5] = new Restaurant("Comfy Cow", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
-		restaurants[6] = new Restaurant("China Inn", null, null, "Mexican Grill", null, emails, phones, addresses, new Date(), new Date(), null);
+		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		List<Restaurant> restaurants = new ArrayList<Restaurant>();
+		for(int i = 0; i < menus.length; i++)
+		{
+			restaurants.add(new Restaurant(menus[i].getRestaurant(), ""));
+		}
 		return restaurants;
 	}
 	
@@ -152,14 +161,14 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables, order);
 	}
 	
-	public static ResponseEntity<String> login(String username, String password)
+	public static ResponseEntity<String> postLogin(String username, String password)
 	{
 		User user = new User(username, password);
 		// post to /login
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user);
 	}
 	
-	public static ResponseEntity<String> logout(User user)
+	public static ResponseEntity<String> postLogout(User user)
 	{
 		// post to /logout
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT), user);
