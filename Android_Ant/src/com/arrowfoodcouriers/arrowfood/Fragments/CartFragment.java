@@ -1,22 +1,25 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.CartAdapter;
+import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 
 public class CartFragment extends ListFragment 
 {
-	BaseAdapter mAdapter;
+	CartAdapter mAdapter;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +33,8 @@ public class CartFragment extends ListFragment
 		Button checkoutButton = (Button) view.findViewById(R.id.cart_checkout_button);
 		checkoutButton.setOnClickListener(new CartCheckoutButtonListener());
 		
-		mAdapter = new CartAdapter();
+		List<CartItem> cartItems = new ArrayList<CartItem>();
+		mAdapter = new CartAdapter(getActivity(), cartItems);
 		setListAdapter(mAdapter);
 		
 		return view;

@@ -47,6 +47,8 @@ import com.arrowfoodcouriers.arrowfood.Models.Address;
 import com.arrowfoodcouriers.arrowfood.Models.Phone;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantRequest;
 import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
 import com.octo.android.robospice.GsonSpringAndroidSpiceService;
@@ -279,6 +281,8 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         }
         else if(item.getTitle().equals(getResources().getString(R.string.actionbar_cart)))
         {
+        	CartContentsRequest request = new CartContentsRequest();
+        	spiceManager.execute(request, new CartContentsListener(this));
         	Utils.loadFragment(getFragmentManager(), new CartFragment());
         	return true;
         }

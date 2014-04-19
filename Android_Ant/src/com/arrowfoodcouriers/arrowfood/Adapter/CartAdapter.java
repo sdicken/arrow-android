@@ -1,73 +1,77 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
+import java.util.List;
+
+import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 
-public class CartAdapter extends BaseAdapter 
+/**
+ * 
+ * @author Sam
+ * Ideas borrowed by Sam from http://www.christopherbiscardi.com/2014/01/28/android-listfragment-populated-by-robospice/
+ */
+public class CartAdapter extends ArrayAdapter<CartItem> 
 {
-	private static final CartItem[] cart = RESTUtils.getCartItems();
-
-	@Override
-	public int getCount() 
+	public CartAdapter(Context context, List<CartItem> items)
 	{
-		return cart.length;
+		super(context, R.layout.cart_list_item, items);
 	}
-
-	@Override
-	public Object getItem(int position) 
-	{
-		return cart[position];
-	}
-
-	@Override
-	public long getItemId(int position) 
-	{
-		return position;
-	}
-
+	
 	@Override
 	public View getView(int position, View view, ViewGroup parent) 
 	{
+		CartItem cartItem = (CartItem) getItem(position);
+		
+		ViewHolder viewHolder;
+		Typeface rokkitt = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Rokkitt-Regular.ttf");
 		if (view == null) 
         {
-            view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.cart_list_item,
-                    parent, false);
+			viewHolder = new ViewHolder();
+			LayoutInflater inflater = LayoutInflater.from(getContext());
+			view = inflater.inflate(R.layout.cart_list_item, null);
+			viewHolder.titleView = (TextView) view.findViewById(R.id.cart_list_title);
+			viewHolder.titleView.setTypeface(rokkitt);
+			viewHolder.subtitleView = (TextView) view.findViewById(R.id.cart_list_subtitle);
+			viewHolder.priceView = (TextView) view.findViewById(R.id.cart_list_price);
+			viewHolder.quantityView = (TextView) view.findViewById(R.id.cart_list_quantity);
+			viewHolder.quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
+			viewHolder.quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
         }
-		Typeface rokkitt = Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/Rokkitt-Regular.ttf");
-		
-		// set up views
-		TextView titleView = (TextView) view.findViewById(R.id.cart_list_title);
-        titleView.setTypeface(rokkitt);
-        TextView subtitleView = (TextView) view.findViewById(R.id.cart_list_subtitle);
-        TextView priceView = (TextView) view.findViewById(R.id.cart_list_price);
-        TextView quantityView = (TextView) view.findViewById(R.id.cart_list_quantity);
-        ImageView quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
-        ImageView quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
-        
-        // retrieve model
-        CartItem cartItem = (CartItem)getItem(position);
+		else
+		{
+			viewHolder = (ViewHolder) view.getTag();
+		}
         
         // fill out views with model's info
-        titleView.setText(cartItem.getItem());
-        subtitleView.setText(cartItem.getMenu());
-        priceView.setText("$" + String.valueOf(cartItem.getTotal()));
-		quantityView.setText(String.valueOf(cartItem.getQuantity()));
+        viewHolder.titleView.setText(cartItem.getItem());
+        viewHolder.subtitleView.setText(cartItem.getMenu());
+        viewHolder.priceView.setText("$" + String.valueOf(cartItem.getTotal()));
+        viewHolder.quantityView.setText(String.valueOf(cartItem.getQuantity()));
 		
 		// set click listeners for increasing and decreasing quantity of items in cart
-		quantityUpArrow.setOnClickListener(new IncrementQuantityListener(cartItem));
-		quantityDownArrow.setOnClickListener(new DecrementQuantityListener(cartItem));
+        viewHolder.quantityUpArrow.setOnClickListener(new IncrementQuantityListener(cartItem));
+        viewHolder.quantityDownArrow.setOnClickListener(new DecrementQuantityListener(cartItem));
 		
 		return view;
+	}
+	
+	private static class ViewHolder
+	{
+		TextView titleView;
+		TextView subtitleView;
+		TextView priceView;
+		TextView quantityView;
+		ImageView quantityUpArrow;
+		ImageView quantityDownArrow;
 	}
 	
 	private class IncrementQuantityListener implements View.OnClickListener

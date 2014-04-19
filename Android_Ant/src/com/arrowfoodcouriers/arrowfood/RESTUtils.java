@@ -2,7 +2,6 @@ package com.arrowfoodcouriers.arrowfood;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import com.arrowfoodcouriers.arrowfood.Models.Cart;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Geotags;
@@ -53,16 +53,17 @@ public class RESTUtils
 	private static final String GEOTAG = "geotag";
 	
 	// this will not be implemented by server
-	public static CartItem[] getCartItems() 
+//	public static CartItem[] getCartItems()
+	public static List<CartItem> getCartItems()
 	{
-		int size = 2;
-		CartItemOption[] itemOptions = new CartItemOption[size];
-		itemOptions[0] = new CartItemOption("Side", "Select", "Rice");
-		itemOptions[1] = new CartItemOption("Side", "Select", "Beans");
-		CartItem [] items = new CartItem[size];
-		items[0] = new CartItem("Lunch", "Qdoba", "Burrito deluxe", itemOptions, 1, 2.99, new Date(), new Date());
-		items[1] = new CartItem("Breakfast", "Quills", "Small coffee", itemOptions, 1, 2.99, new Date(), new Date());
-		return items;
+		List<CartItem> cartItems = new ArrayList<CartItem>();
+		Cart cart = convertResponseEntityToModel(getCart(), Cart.class);
+		CartItem[] items = cart.getItems();
+		for(int i = 0; i < items.length; i++)
+		{
+			cartItems.add(items[i]);
+		}
+		return cartItems;
 	}
 
 	public static ResponseEntity<String> getCart() 
@@ -88,9 +89,6 @@ public class RESTUtils
 				}
 			}
 		}
-//		int size = 1;
-//		MenuItem[] menuItems = new MenuItem[size];
-//		menuItems[0] = new MenuItem("Burrito", 0.99, null, null, null, null, "House special", new Date(), null);
 		return menuItems;
 	}
 	
