@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,30 +16,20 @@ import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
-import com.arrowfoodcouriers.arrowfood.RESTUtils;
-import com.arrowfoodcouriers.arrowfood.Interfaces.ILoginDialogCallback;
-import com.arrowfoodcouriers.arrowfood.Interfaces.IRegistrationDialogCallback;
+import com.arrowfoodcouriers.arrowfood.Models.Response;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.LoginRequest;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 /**
  * Created by Ryan on 2/17/14.
  */
-public class LoginDialogFragment extends DialogFragment implements ILoginDialogCallback
+public class LoginDialogFragment extends DialogFragment
 {
     ProgressBar _progressBar;
     private Dialog _alertDialog = null;
     private EditText _usernameField;
     private EditText _passwordField;
-    private IRegistrationDialogCallback _registrationDialogCallback;
-    
-    public LoginDialogFragment()
-    {
-    	
-    }
-    
-    public LoginDialogFragment(IRegistrationDialogCallback registrationDialogCallback)
-    {
-    	this._registrationDialogCallback = registrationDialogCallback;
-    }
 
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) 
@@ -64,29 +55,6 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
         return _alertDialog;
     }
 	
-	public void onTaskStart() 
-    {
-        _progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void onTaskCompleted() 
-    {
-        _progressBar.setVisibility(View.GONE);
-    }
-
-	public void onSuccess() 
-	{
-		_alertDialog.dismiss();
-		
-	}
-
-	public void onFailure() 
-	{
-		// TODO: persist dialog, shake animation, display help text
-        TextView retryText = (TextView) _alertDialog.findViewById(R.id.login_auth_retry);
-        retryText.setVisibility(View.VISIBLE);
-	}
-	
 	private class UnimplementedOnClickListener implements DialogInterface.OnClickListener
 	{
 		public void onClick(DialogInterface dialog, int which) 
@@ -96,11 +64,6 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
 	
 	private class LoginShowDialogListener implements DialogInterface.OnShowListener
 	{
-		private RESTUtils utils;
-		public LoginShowDialogListener()
-		{
-			utils = new RESTUtils();
-		}
 		public void onShow(DialogInterface dialogInterface) 
         {
             Button positiveButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -108,9 +71,11 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
             {
                 public void onClick(View view) 
                 {
+                	_progressBar.setVisibility(View.VISIBLE);
                     String username = _usernameField.getText().toString();
                     String password = _passwordField.getText().toString();
-                    utils.login(username, password);
+                    LoginRequest request = new LoginRequest(username, password);
+                    MainActivity.spiceManager.execute(request, new LoginRequestListener());
                 }
             });
             Button negativeButton = ((AlertDialog) _alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -122,7 +87,7 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
                     // TODO: put registration code here
                     _alertDialog.dismiss();
                     FragmentManager fragmentManager = getFragmentManager();
-                    ((RegistrationDialogFragment)_registrationDialogCallback).show(fragmentManager, MainActivity.FRAGMENT_TAG_REGISTER);
+                    new RegistrationDialogFragment().show(fragmentManager, MainActivity.FRAGMENT_TAG_REGISTER);
                 }
             });
             Button neutralButton = ((AlertDialog)_alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
@@ -136,10 +101,25 @@ public class LoginDialogFragment extends DialogFragment implements ILoginDialogC
             });
         }		
 	}
-
-	public void attachRegistrationDialogCallback(
-			IRegistrationDialogCallback registrationDialogCallback) 
+	
+	private class LoginRequestListener implements RequestListener<Response>
 	{
-		this._registrationDialogCallback = registrationDialogCallback;		
+		@Override
+		public void onRequestFailure(SpiceException e) 
+		{
+			Log.d("robospice", "failure");
+			_progressBar.setVisibility(View.GONE);
+			// TODO: persist dialog, shake animation, display help text
+	        TextView retryText = (TextView) _alertDialog.findViewById(R.id.login_auth_retry);
+	        retryText.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		public void onRequestSuccess(Response response) 
+		{
+			Log.d("robospice","success");
+			_progressBar.setVisibility(View.GONE);
+			_alertDialog.dismiss();
+		}
 	}
 }

@@ -26,13 +26,10 @@
     <string name="dialog_hint_password">Password</string>
     <string name="dialog_login_retry_text">Login failed. Re-enter your credentials or press Forgot password.</string>
     <string name="dialog_registration_retry_text">Registration failed.</string>
-    <string name="dialog_register_first_name">First name</string>
-    <string name="dialog_register_last_name">Last name</string>
+    <string name="dialog_register_username">Username</string>
+    <string name="dialog_register_full_name">Full name</string>
     <string name="dialog_register_email">Email</string>
     <string name="dialog_register_telephone">Telephone</string>
-    <string name="dialog_register_fax">Fax</string>
-    <string name="dialog_register_company">Company</string>
-    <string name="dialog_register_companyid">Company ID</string>
     <string name="dialog_register_address1">Address 1</string>
     <string name="dialog_register_address2">Address 2</string>
     <string name="dialog_register_city">City</string>
@@ -41,10 +38,6 @@
     <string name="dialog_register_state">Region / state</string>
     <string name="dialog_register_password">Password</string>
     <string name="dialog_register_confirm_password">Confirm password</string>
-    <string name="dialog_register_newsletter">Subscribe to newsletter</string>
-    <string name="dialog_register_newsletter_subscribe_yes">Yes</string>
-    <string name="dialog_register_newsletter_subscribe_no">No</string>
-    <string name="dialog_register_privacy_policy_agree">I have read and agree to the privacy policy</string>
     <string name="label_eta">ETA: </string>
     <string name="placeholder">placeholder</string>
     <string name="tracking_status_received">Received</string>
