@@ -2,14 +2,14 @@ package com.arrowfoodcouriers.arrowfood;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.res.Configuration;
@@ -26,12 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
-import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 import com.arrowfoodcouriers.arrowfood.Fragments.CartFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
@@ -40,26 +38,18 @@ import com.arrowfoodcouriers.arrowfood.Fragments.ProfileFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RegistrationDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.RestaurantFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.TrackingFragment;
-import com.arrowfoodcouriers.arrowfood.Interfaces.INavigationDrawerCallback;
 import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
 import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
-import com.arrowfoodcouriers.arrowfood.Models.Address;
-import com.arrowfoodcouriers.arrowfood.Models.Phone;
-import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsListener;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsRequest;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantRequest;
-import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
 import com.octo.android.robospice.GsonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
 
 	
-public class MainActivity extends Activity implements INavigationDrawerCallback
+public class MainActivity extends Activity
 {
     private static final int HOME_NAV_DRAWER_POSITION = 0;
     private static final int RESTAURANTS_NAV_DRAWER_POSITION = 1;
@@ -98,44 +88,6 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
     .sandboxUserPassword("passpass");
     
     public static SpiceManager spiceManager = new SpiceManager(GsonSpringAndroidSpiceService.class);
-    
-    private LoaderCallbacks<User> userAccountLoaderListener = new LoaderCallbacks<User>() {
-
-    	@Override
-    	public Loader<User> onCreateLoader(int id, Bundle args) {
-    		return new UserAccountLoader(MainActivity.this);
-    	}
-
-    	@Override
-    	public void onLoadFinished(Loader<User> loader, User data) {
-    		updateNavHeader(data);
-    		
-    	}
-
-    	@Override
-    	public void onLoaderReset(Loader<User> loader) {
-    		resetNavHeader();
-    		
-    	}    	
-    };
-    
-    private LoaderCallbacks<List<DrawerListObject>> drawerValuesLoaderListener = new LoaderCallbacks<List<DrawerListObject>>() {
-
-    	@Override
-    	public Loader<List<DrawerListObject>> onCreateLoader(int id, Bundle args) {
-    		return new DrawerValuesLoader(MainActivity.this);
-    	}
-
-    	@Override
-    	public void onLoadFinished(Loader<List<DrawerListObject>> loader, List<DrawerListObject> data) {
-    		MainActivity.this.mDrawerList.setAdapter(new DrawerListAdapter(data));
-    	}
-
-    	@Override
-    	public void onLoaderReset(Loader<List<DrawerListObject>> loader) {
-    		
-    	}    	
-    };
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -155,11 +107,11 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         startService(intent);
         
         // TODO: Remove because this is for debugging only
-        GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
+//        GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
 //        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
-        int size = 2;
-        User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[]{new Address("123 Fake Address", "", "Louisville", "KY", "40291")}, new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
-        loader.saveData(testUser);
+//        int size = 2;
+//        User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[]{new Address("123 Fake Address", "", "Louisville", "KY", "40291")}, new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
+//        loader.saveData(testUser);
         //-------------------------------------------------
 
         if(savedInstanceState != null)	// scenario where user changing between apps
@@ -178,8 +130,6 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
             	Fragment fragment = new RestaurantFragment();
             	fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
-            RestaurantRequest request = new RestaurantRequest();
-            spiceManager.execute(request, new RestaurantRequestListener());
         }
 
         mTitle = mDrawerTitle = getTitle();
@@ -214,8 +164,8 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getLoaderManager().initLoader(USER_ACCOUNT_LOADER, null, userAccountLoaderListener);
-        getLoaderManager().initLoader(NAV_DRAWER_VALUE_LOADER, null, drawerValuesLoaderListener);
+        getLoaderManager().initLoader(USER_ACCOUNT_LOADER, null, new UserLoaderCallback(this));
+        getLoaderManager().initLoader(NAV_DRAWER_VALUE_LOADER, null, new DrawerValuesLoaderCallback(this));
     }
 
     private boolean loginDialogWasShowingBeforeSave(Bundle savedInstanceState) 
@@ -419,12 +369,6 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public void onNavigationDrawerUpdated() 
-    {
-        ((BaseAdapter)mDrawerList.getAdapter()).notifyDataSetChanged();
-    }
-
-
     public static class PlaceholderFragment extends Fragment 
     {
 
@@ -476,24 +420,57 @@ public class MainActivity extends Activity implements INavigationDrawerCallback
         }
     }
     
-    private class RestaurantRequestListener implements RequestListener<List<Restaurant>>
+    private class UserLoaderCallback implements LoaderManager.LoaderCallbacks<User>
     {
+    	private Context context;
+    	
+    	public UserLoaderCallback(Context context)
+    	{
+    		this.context = context;
+    	}
+    	
+    	@Override
+    	public Loader<User> onCreateLoader(int id, Bundle args) {
+    		return new UserAccountLoader(context);
+    	}
 
-		@Override
-		public void onRequestFailure(SpiceException e) 
-		{
-			Log.d("spice","fail");			
-		}
+    	@Override
+    	public void onLoadFinished(Loader<User> loader, User data) {
+    		updateNavHeader(data);
+    		
+    	}
 
-		@Override
-		public void onRequestSuccess(List<Restaurant> restaurants) 
-		{
-			Log.d("spice","succeed");
-			ListView listView = (ListView) findViewById(android.R.id.list);
-			RestaurantListAdapter adapter = (RestaurantListAdapter) listView.getAdapter();
-			adapter.clear();
-			adapter.addAll(restaurants);
-		}
+    	@Override
+    	public void onLoaderReset(Loader<User> loader) {
+    		resetNavHeader();
+    		
+    	}    	
+    	
+    }
+    
+    private class DrawerValuesLoaderCallback implements LoaderManager.LoaderCallbacks<List<DrawerListObject>>
+    {
+    	private Context context;
+    	
+    	public DrawerValuesLoaderCallback(Context context)
+    	{
+    		this.context = context;
+    	}
+    	
+    	@Override
+    	public Loader<List<DrawerListObject>> onCreateLoader(int id, Bundle args) {
+    		return new DrawerValuesLoader(context);
+    	}
+
+    	@Override
+    	public void onLoadFinished(Loader<List<DrawerListObject>> loader, List<DrawerListObject> data) {
+    		mDrawerList.setAdapter(new DrawerListAdapter(data));
+    	}
+
+    	@Override
+    	public void onLoaderReset(Loader<List<DrawerListObject>> loader) {
+    		
+    	}    	
     	
     }
 }

@@ -40,6 +40,7 @@ public class MenuAdapter extends ArrayAdapter<MenuItem>
         	viewHolder.titleView.setTypeface(rokkitt);
         	viewHolder.subtitleView = (TextView) view.findViewById(R.id.menu_list_subtitle);
         	viewHolder.priceView = (TextView) view.findViewById(R.id.menu_list_price);
+        	view.setTag(viewHolder);
         }
 		else
 		{

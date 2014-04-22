@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,6 +121,11 @@ public class LoginDialogFragment extends DialogFragment
 			Log.d("robospice","success");
 			_progressBar.setVisibility(View.GONE);
 			_alertDialog.dismiss();
+			
+			Intent intent = new Intent();
+			intent.setAction("com.arrowfoodcouriers.arrowfood.ACTION_LOGIN");
+			intent.putExtra("logged_on", true);
+			getActivity().sendBroadcast(intent);
 		}
 	}
 }

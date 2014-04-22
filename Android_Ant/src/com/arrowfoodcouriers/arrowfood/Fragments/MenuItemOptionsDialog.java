@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
+import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequestListener;
 
@@ -48,7 +49,7 @@ public class MenuItemOptionsDialog extends DialogFragment
 		public void onClick(DialogInterface dialog, int which) 
 		{
 			// TODO Auto-generated method stub
-			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, Integer.valueOf(1), null); // TODO: add item options
+			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, Integer.valueOf(1), new CartItemOption[1]); // TODO: add item options
 			MainActivity.spiceManager.execute(request, new CartAddRequestListener(getActivity()));
 		}
 	}

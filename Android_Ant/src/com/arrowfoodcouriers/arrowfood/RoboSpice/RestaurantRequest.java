@@ -1,7 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.RoboSpice;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 
 import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
@@ -18,6 +21,8 @@ public class RestaurantRequest extends SpiceRequest<List<Restaurant>>
 	@Override
 	public List<Restaurant> loadDataFromNetwork() throws Exception 
 	{
-		return RESTUtils.getRestaurants();
+		ResponseEntity<String> responseEntity = RESTUtils.getRestaurants();
+		Restaurant[] restaurantArray = RESTUtils.convertResponseEntityToModel(responseEntity, Restaurant[].class);
+		return Arrays.asList(restaurantArray);
 	}
 }

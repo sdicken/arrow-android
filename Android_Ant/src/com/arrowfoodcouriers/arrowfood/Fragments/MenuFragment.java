@@ -25,27 +25,26 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 public class MenuFragment extends ListFragment
 {
-	private final String restaurantName;
-	private final String menuName;
+	private String restaurantName;
+	private String menuName;
 	private static final String FRAGMENT_TAG_ITEM_OPTIONS = "itemOptions";
 	public static final String BUNDLE_TAG_RESTAURANT_NAME = "restaurantName";
 	public static final String BUNDLE_TAG_MENU_NAME = "menuName";
 	public static final String BUNDLE_TAG_ITEM_NAME = "itemName";
 	MenuAdapter mAdapter;
-
-    public MenuFragment(String restaurantName, String menuName) 
-    {
-		this.restaurantName = restaurantName;
-		this.menuName = menuName;
-		MenuItemRequest request = new MenuItemRequest(restaurantName, menuName);
-		MainActivity.spiceManager.execute(request, new MenuRequestListener());
-	}
-
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) 
     {
     	View view = inflater.inflate(R.layout.fragment_menu, container, false);
+    	
+    	Bundle bundle = getArguments();
+    	restaurantName = bundle.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
+    	menuName = bundle.getString(RestaurantMenuCategoryFragment.MENU_NAME);
+    	
+    	MenuItemRequest request = new MenuItemRequest(restaurantName, menuName);
+		MainActivity.spiceManager.execute(request, new MenuRequestListener());
     	
     	ImageView menuHeaderImage = (ImageView) view.findViewById(R.id.menu_header_image);
     	menuHeaderImage.setImageResource(R.drawable.qdoba_storefront);

@@ -45,6 +45,7 @@ public class CartAdapter extends ArrayAdapter<CartItem>
 			viewHolder.quantityView = (TextView) view.findViewById(R.id.cart_list_quantity);
 			viewHolder.quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
 			viewHolder.quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
+			view.setTag(viewHolder);
         }
 		else
 		{

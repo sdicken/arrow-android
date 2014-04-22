@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ import com.arrowfoodcouriers.arrowfood.Models.Menu;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
-import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,13 +51,16 @@ public class RESTUtils
 	private static final String LOGOUT = "logout";
 	private static final String RESET = "reset";
 	private static final String GEOTAG = "geotag";
+	private static final String RESTAURANTS = "restaurants";
+	private static final String PRICE = "price";
 	
 	// this will not be implemented by server
 //	public static CartItem[] getCartItems()
 	public static List<CartItem> getCartItems()
 	{
 		List<CartItem> cartItems = new ArrayList<CartItem>();
-		Cart cart = convertResponseEntityToModel(getCart(), Cart.class);
+		ResponseEntity<String> responseEntity = getCart();
+		Cart cart = convertResponseEntityToModel(responseEntity, Cart.class);
 		CartItem[] items = cart.getItems();
 		for(int i = 0; i < items.length; i++)
 		{
@@ -69,6 +72,29 @@ public class RESTUtils
 	public static ResponseEntity<String> getCart() 
 	{
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
+	}
+	
+	public static ResponseEntity<String> getCartPrice()
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, CART);
+		urlVariables.put(ROUTE2, PRICE);
+		return get(URL_2VAR, urlVariables);
+	}
+	
+	public static List<String> getMenuCategories(String restaurantName)
+	{
+		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		List<String> menuCategories = new ArrayList<String>();
+		for(int i = 0; i < menus.length; i++)
+		{
+			Menu menu = menus[i];
+			if(menu.getRestaurant().equals(restaurantName))
+			{
+				menuCategories.add(menu.getName());
+			}
+		}
+		return menuCategories;
 	}
 		
 	// this will not be implemented by server
@@ -83,25 +109,27 @@ public class RESTUtils
 			if(menu.getRestaurant().equals(restaurantName) && menu.getName().equals(menuName))
 			{
 				MenuItem[] items = menu.getItems();
-				for(int j = 0; j < items.length; j++)
-				{
-					menuItems.add(items[j]);
-				}
+				return Arrays.asList(items);
+//				for(int j = 0; j < items.length; j++)
+//				{
+//					menuItems.add(items[j]);
+//				}
 			}
 		}
 		return menuItems;
 	}
-	
-	// this will not be implemented by server
-	public static List<Restaurant> getRestaurants()
+
+//	public static List<Restaurant> getRestaurants()
+	public static ResponseEntity<String> getRestaurants()
 	{
-		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
-		List<Restaurant> restaurants = new ArrayList<Restaurant>();
-		for(int i = 0; i < menus.length; i++)
-		{
-			restaurants.add(new Restaurant(menus[i].getRestaurant(), ""));
-		}
-		return restaurants;
+//		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+//		List<Restaurant> restaurants = new ArrayList<Restaurant>();
+//		for(int i = 0; i < menus.length; i++)
+//		{
+//			restaurants.add(new Restaurant(menus[i].getRestaurant(), ""));
+//		}
+//		return restaurants;
+		return get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS));
 	}
 	
 	public static ResponseEntity<String> postUser(User user)
@@ -284,7 +312,7 @@ public class RESTUtils
 		
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		
+	
 		return restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 	}
 	

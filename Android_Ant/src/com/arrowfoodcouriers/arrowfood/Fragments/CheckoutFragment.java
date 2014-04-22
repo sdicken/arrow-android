@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 import org.json.JSONException;
 
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -22,6 +24,7 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 public class CheckoutFragment extends Fragment
 {
+	Double price;
 	private static final String PAYPAL = "paypal";
 
 	@Override
@@ -29,6 +32,13 @@ public class CheckoutFragment extends Fragment
 			Bundle savedInstanceState) 
 	{
 		View view = inflater.inflate(R.layout.fragment_checkout, container, false);
+		
+		Bundle bundle = getArguments();
+		price = bundle.getDouble(CartFragment.SUBTOTAL);
+		
+		NumberFormat format = NumberFormat.getCurrencyInstance();
+		TextView totalTextView = (TextView) view.findViewById(R.id.checkout_value_text);
+		totalTextView.setText(format.format(price));
 		
 		Button checkoutButton = (Button) view.findViewById(R.id.checkout_button);
 		checkoutButton.setOnClickListener(new CheckoutButtonListener());
@@ -41,7 +51,6 @@ public class CheckoutFragment extends Fragment
 		@Override
 		public void onClick(View v) 
 		{
-			Double price = Double.valueOf(7.35);
 			PayPalPayment payment = new PayPalPayment(new BigDecimal(price), "USD", "Arrow Food Couriers", PayPalPayment.PAYMENT_INTENT_SALE);
 			Intent intent = new Intent(getActivity(), PaymentActivity.class);
 			intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);

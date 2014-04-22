@@ -41,6 +41,7 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
         	viewHolder.subtitleView = (TextView) view.findViewById(R.id.restaurant_list_subtitle);
         	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
         	viewHolder.imageView = (ImageView) view.findViewById(R.id.restaurant_list_logo);
+        	view.setTag(viewHolder);
         }
         else
         {
