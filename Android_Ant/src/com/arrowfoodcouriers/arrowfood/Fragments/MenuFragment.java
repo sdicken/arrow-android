@@ -19,7 +19,7 @@ import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Adapter.MenuAdapter;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemsRequest;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -43,8 +43,8 @@ public class MenuFragment extends ListFragment
     	restaurantName = bundle.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
     	menuName = bundle.getString(RestaurantMenuCategoryFragment.MENU_NAME);
     	
-    	MenuItemRequest request = new MenuItemRequest(restaurantName, menuName);
-		MainActivity.spiceManager.execute(request, new MenuRequestListener());
+    	MenuItemsRequest request = new MenuItemsRequest(restaurantName, menuName);
+		MainActivity.spiceManager.execute(request, new MenuItemsRequestListener());
     	
     	ImageView menuHeaderImage = (ImageView) view.findViewById(R.id.menu_header_image);
     	menuHeaderImage.setImageResource(R.drawable.qdoba_storefront);
@@ -68,9 +68,7 @@ public class MenuFragment extends ListFragment
     {
     	TextView itemNameView = (TextView) v.findViewById(R.id.menu_list_title);
     	String itemName = itemNameView.getText().toString();
-//    	CharSequence itemName = ((TextView) v.findViewById(R.id.menu_list_title)).getText();
-//    	Toast.makeText(getActivity(), itemName + " " + getResources().getString(R.string.toast_menu_to_cart), Toast.LENGTH_SHORT).show();
-//    	super.onListItemClick(l, v, position, id);
+    	
     	DialogFragment menuItemOptionsDialog = new MenuItemOptionsDialog();
     	Bundle args = new Bundle();
     	args.putString(BUNDLE_TAG_RESTAURANT_NAME, restaurantName);
@@ -80,7 +78,7 @@ public class MenuFragment extends ListFragment
     	menuItemOptionsDialog.show(getFragmentManager(), FRAGMENT_TAG_ITEM_OPTIONS);
     }
     
-    private class MenuRequestListener implements RequestListener<List<MenuItem>>
+    private class MenuItemsRequestListener implements RequestListener<List<MenuItem>>
     {
 
 		@Override

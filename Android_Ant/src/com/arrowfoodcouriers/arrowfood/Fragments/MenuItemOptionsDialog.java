@@ -3,16 +3,23 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
+import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemRequest;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 public class MenuItemOptionsDialog extends DialogFragment 
 {
@@ -20,6 +27,7 @@ public class MenuItemOptionsDialog extends DialogFragment
 	private String restaurantName;
 	private String menuName;
 	private String itemName;
+	private LinearLayout linearLayout;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
@@ -31,8 +39,13 @@ public class MenuItemOptionsDialog extends DialogFragment
 		menuName = args.getString(MenuFragment.BUNDLE_TAG_MENU_NAME);
 		itemName = args.getString(MenuFragment.BUNDLE_TAG_ITEM_NAME);
 		
+		MenuItemRequest request = new MenuItemRequest(restaurantName, menuName, itemName);
+		MainActivity.spiceManager.execute(request, new MenuItemRequestListener(getActivity()));
+		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.dialog_item_options, null);
+		
+		linearLayout = (LinearLayout) dialogView.findViewById(R.id.dialog_item_options_layout);
 		
 		alertDialog = builder.setView(dialogView)
                 .setTitle(R.string.dialog_item_options_title)
@@ -60,6 +73,30 @@ public class MenuItemOptionsDialog extends DialogFragment
 		public void onClick(DialogInterface dialog, int which) 
 		{
 			// TODO Auto-generated method stub
+		}
+	}
+	
+	private class MenuItemRequestListener implements RequestListener<MenuItem>
+	{
+		private final Context context;
+		
+		public MenuItemRequestListener(Context context)
+		{
+			this.context = context;
+		}
+		
+		@Override
+		public void onRequestFailure(SpiceException e) 
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onRequestSuccess(MenuItem menuItem) 
+		{
+			CheckBox checkBox = new CheckBox(context);
+			linearLayout.addView(checkBox);
 		}
 	}
 }

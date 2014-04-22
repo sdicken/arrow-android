@@ -7,13 +7,13 @@ import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.octo.android.robospice.request.SpiceRequest;
 
-public class MenuItemRequest extends SpiceRequest<List<MenuItem>> 
+public class MenuItemsRequest extends SpiceRequest<List<MenuItem>> 
 {
 	private final String restaurantName;
 	private final String menuName;
 	
 	@SuppressWarnings("unchecked")
-	public MenuItemRequest(String restaurantName, String menuName) 
+	public MenuItemsRequest(String restaurantName, String menuName) 
 	{
 		super((Class<List<MenuItem>>) new ArrayList<MenuItem>().getClass());
 		this.restaurantName = restaurantName;

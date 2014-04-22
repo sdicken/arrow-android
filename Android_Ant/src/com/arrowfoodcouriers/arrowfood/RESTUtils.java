@@ -97,8 +97,6 @@ public class RESTUtils
 		return menuCategories;
 	}
 		
-	// this will not be implemented by server
-//	public static MenuItem[] getMenuItems()
 	public static List<MenuItem> getMenuItems(String restaurantName, String menuName)
 	{
 		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
@@ -110,25 +108,37 @@ public class RESTUtils
 			{
 				MenuItem[] items = menu.getItems();
 				return Arrays.asList(items);
-//				for(int j = 0; j < items.length; j++)
-//				{
-//					menuItems.add(items[j]);
-//				}
 			}
 		}
 		return menuItems;
 	}
+	
+	public static MenuItem getMenuItem(String restaurantName, String menuName, String itemName)
+	{
+		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		MenuItem menuItem = null;
+		for(int i = 0; i < menus.length; i++)
+		{
+			Menu menu = menus[i];
+			if(menu.getRestaurant().equals(restaurantName) && menu.getName().equals(menuName))
+			{
+				MenuItem[] items = menu.getItems();
+				for(int j = 0; j < items.length; j++)
+				{
+					MenuItem item = items[j];
+					if(item.getName().equals(itemName))
+					{
+						return menuItem;
+					}
+				}
+			}
+		}
+		return menuItem;
+	}
 
-//	public static List<Restaurant> getRestaurants()
 	public static ResponseEntity<String> getRestaurants()
 	{
-//		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
-//		List<Restaurant> restaurants = new ArrayList<Restaurant>();
-//		for(int i = 0; i < menus.length; i++)
-//		{
-//			restaurants.add(new Restaurant(menus[i].getRestaurant(), ""));
-//		}
-//		return restaurants;
+		// get from /restaurants
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS));
 	}
 	
