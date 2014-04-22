@@ -6,28 +6,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 
-public class LoginObserver extends BroadcastReceiver {
+public class MenuObserver extends BroadcastReceiver {
 
 	private Loader<?> loader;
 	
-	private boolean loggedOn;
-	
-	public LoginObserver(Loader<?> loader) {
+	public MenuObserver(Loader<?> loader) {
 		this.loader = loader;
-		this.loggedOn = false;
-	
-		IntentFilter filter = new IntentFilter("com.arrowfoodcouriers.arrowfood.LOGIN");
+		
+		IntentFilter filter = new IntentFilter("com.arrowfoodcouriers.arrowfood.MENU_ITEM_CHANGED");
 		this.loader.getContext().registerReceiver(this, filter);
 	}
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		loggedOn = intent.getBooleanExtra("logged_on", false);
+		
 		loader.onContentChanged();
-	}
-
-	public boolean isLoggedOn() {
-		return loggedOn;
+		
 	}
 
 }

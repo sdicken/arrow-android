@@ -1,13 +1,15 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.DialogFragment;
 import android.app.ListFragment;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Loader;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +20,10 @@ import android.widget.TextView;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Adapter.MenuAdapter;
-import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemsRequest;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
+import com.arrowfoodcouriers.arrowfood.Loaders.MenuLoader;
+import com.arrowfoodcouriers.arrowfood.Models.Menu;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuRequestListener;
 
 public class MenuFragment extends ListFragment
 {
@@ -43,8 +45,8 @@ public class MenuFragment extends ListFragment
     	restaurantName = bundle.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
     	menuName = bundle.getString(RestaurantMenuCategoryFragment.MENU_NAME);
     	
-    	MenuItemsRequest request = new MenuItemsRequest(restaurantName, menuName);
-		MainActivity.spiceManager.execute(request, new MenuItemsRequestListener());
+    	MenuRequest request = new MenuRequest();
+		MainActivity.spiceManager.execute(request, new MenuRequestListener(getActivity()));
     	
     	ImageView menuHeaderImage = (ImageView) view.findViewById(R.id.menu_header_image);
     	menuHeaderImage.setImageResource(R.drawable.qdoba_storefront);
@@ -55,10 +57,11 @@ public class MenuFragment extends ListFragment
     	menuRestaurantName.setText(restaurantName);
     	menuRestaurantName.setTypeface(rokkitt);
     	
-    	List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        mAdapter = new MenuAdapter(inflater.getContext(), menuItems);
-        setListAdapter(mAdapter);
+    	//List<MenuItem> menuItems = new ArrayList<MenuItem>();
+        //mAdapter = new MenuAdapter(inflater.getContext(), menuItems);
+        //setListAdapter(mAdapter);
 
+        getLoaderManager().initLoader(3, getArguments(), new MenuLoaderCallback(getActivity()));
         // Inflate the layout for this fragment
         return view;
     }
@@ -78,23 +81,38 @@ public class MenuFragment extends ListFragment
     	menuItemOptionsDialog.show(getFragmentManager(), FRAGMENT_TAG_ITEM_OPTIONS);
     }
     
-    private class MenuItemsRequestListener implements RequestListener<List<MenuItem>>
+    private class MenuLoaderCallback implements LoaderManager.LoaderCallbacks<List<Menu>>
     {
+    	private Context context;
+    	private String restaurantName;
+    	private String menuName;
+    	
+    	public MenuLoaderCallback(Context context)
+    	{
+    		this.context = context;
+    	}
+    	
+    	@Override
+    	public Loader<List<Menu>> onCreateLoader(int id, Bundle args) {
+    		restaurantName = args.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
+        	menuName = args.getString(RestaurantMenuCategoryFragment.MENU_NAME);
+    		return new MenuLoader(context);
+    	}
 
-		@Override
-		public void onRequestFailure(SpiceException e) 
-		{
-			Log.d("menu", "failed");
-		}
+    	@Override
+    	public void onLoadFinished(Loader<List<Menu>> loader, List<Menu> data) {
+    		for(Menu menu : data) {
+    			if (restaurantName.equals(menu.getRestaurant()) &&
+    					menuName.equals(menu.getName())) {
+    				setListAdapter(new MenuAdapter(this.context, Arrays.asList(menu.getItems())));
+    			}
+    		}
+    	}
 
-		@Override
-		public void onRequestSuccess(List<MenuItem> menuItems) 
-		{
-			ListView listView = (ListView) getActivity().findViewById(android.R.id.list);
-			MenuAdapter adapter = (MenuAdapter) listView.getAdapter();
-			adapter.clear();
-			adapter.addAll(menuItems);
-		}
+    	@Override
+    	public void onLoaderReset(Loader<List<Menu>> loader) {
+    		setListAdapter(null);
+    	}    	
     	
     }
 }
