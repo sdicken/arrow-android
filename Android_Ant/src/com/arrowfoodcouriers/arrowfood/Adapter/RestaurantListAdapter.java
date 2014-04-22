@@ -1,6 +1,6 @@
 package com.arrowfoodcouriers.arrowfood.Adapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -20,9 +20,9 @@ import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
  */
 public class RestaurantListAdapter extends ArrayAdapter<Restaurant> 
 {
-	public RestaurantListAdapter(Context context, ArrayList<Restaurant> restaurants)
+	public RestaurantListAdapter(Context context, List<Restaurant> data)
 	{
-		super(context, R.layout.restaurant_list_item, restaurants);
+		super(context, R.layout.restaurant_list_item, data);
 	}
 
     public View getView(int position, View view, ViewGroup parent) 

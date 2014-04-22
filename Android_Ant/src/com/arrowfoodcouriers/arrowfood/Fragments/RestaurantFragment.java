@@ -1,9 +1,12 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantRequestListener;
+import com.arrowfoodcouriers.arrowfood.Loaders.RestaurantLoader;
 import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantRequest;
 
@@ -30,11 +34,9 @@ public class RestaurantFragment extends ListFragment
     {
     	RestaurantRequest request = new RestaurantRequest();
         MainActivity.spiceManager.execute(request, new RestaurantRequestListener(getActivity()));
-        
-    	ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
-        mAdapter = new RestaurantListAdapter(inflater.getContext(), restaurants);
-        setListAdapter(mAdapter);
 
+        getLoaderManager().initLoader(4, null, new RestaurantLoaderCallback(getActivity()));
+        
         // Inflate the layout for this fragment
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -49,6 +51,37 @@ public class RestaurantFragment extends ListFragment
     	fragment.setArguments(args);
 		Utils.loadFragment(getFragmentManager(), fragment);
     	super.onListItemClick(l, v, position, id);
+    }
+    
+    private class RestaurantLoaderCallback implements LoaderManager.LoaderCallbacks<List<Restaurant>>
+    {
+    	private Context context;
+    	
+    	public RestaurantLoaderCallback(Context context)
+    	{
+    		this.context = context;
+    	}
+    	
+    	@Override
+    	public Loader<List<Restaurant>> onCreateLoader(int id, Bundle args) {
+    		return new RestaurantLoader(context);
+    	}
+
+    	@Override
+    	public void onLoadFinished(Loader<List<Restaurant>> loader, List<Restaurant> data) {
+    		if (data != null) {
+    			setListAdapter(new RestaurantListAdapter(context, data));
+    		}
+    		else {
+    			setListAdapter(null);
+    		}
+    	}
+
+    	@Override
+    	public void onLoaderReset(Loader<List<Restaurant>> loader) {
+    		setListAdapter(null);
+    	}    	
+    	
     }
     
 
