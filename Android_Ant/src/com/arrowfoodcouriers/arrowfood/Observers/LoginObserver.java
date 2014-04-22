@@ -16,7 +16,7 @@ public class LoginObserver extends BroadcastReceiver {
 		this.loader = loader;
 		this.loggedOn = false;
 	
-		IntentFilter filter = new IntentFilter("com.arrowfoodcouriers.arrowfood.LOGIN");
+		IntentFilter filter = new IntentFilter("com.arrowfoodcouriers.arrowfood.ACTION_LOGIN");
 		this.loader.getContext().registerReceiver(this, filter);
 	}
 	
