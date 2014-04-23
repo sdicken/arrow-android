@@ -106,7 +106,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.activity_main);
         getActionBar().show();
         
-        CookieHandler.setDefault(new CookieManager());
+        CookieHandler.setDefault(new CookieManager());	// required to store cookies
         
         // PayPal setup
         Intent intent = new Intent(this, PayPalService.class);

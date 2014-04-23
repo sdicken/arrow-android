@@ -1,5 +1,8 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.FilterUtils;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
@@ -65,8 +71,36 @@ public class MenuItemOptionsDialog extends DialogFragment
 		@Override
 		public void onClick(DialogInterface dialog, int which) 
 		{
-			// TODO Auto-generated method stub
-			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, Integer.valueOf(1), new CartItemOption[1]); // TODO: add item options
+			List<CartItemOption> itemOptions = new ArrayList<CartItemOption>();
+			for(int i = 0; i < linearLayout.getChildCount(); i++)
+//			for(View view : childViews)
+			{
+				View view = linearLayout.getChildAt(i);
+				if(view.getTag() instanceof MenuItemOption)
+				{
+					MenuItemOption option = (MenuItemOption) view.getTag();
+					switch(option.getType())
+					{
+						case "select":
+						{
+							RadioGroup radioGroup = (RadioGroup) view;
+							int id = radioGroup.getCheckedRadioButtonId();
+							RadioButton radioButton = (RadioButton) radioGroup.findViewById(id);
+							option.setParam(radioButton.getText().toString());
+							break;
+						}
+						case "checkbox":
+						{
+							CheckBox checkBox = (CheckBox) view;
+							option.setParam(String.valueOf(checkBox.isChecked()));
+							break;
+						}
+					}
+					itemOptions.add(new CartItemOption(option.getName(), option.getType(), option.getParam()));
+				}
+			}
+			CartItemOption[] optionsArray = new CartItemOption[1];
+			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, Integer.valueOf(1), itemOptions.toArray(optionsArray));
 			MainActivity.spiceManager.execute(request, new CartAddRequestListener(getActivity()));
 		}
 	}
@@ -76,7 +110,6 @@ public class MenuItemOptionsDialog extends DialogFragment
 		@Override
 		public void onClick(DialogInterface dialog, int which) 
 		{
-			// TODO Auto-generated method stub
 		}
 	}
 	
@@ -92,7 +125,6 @@ public class MenuItemOptionsDialog extends DialogFragment
 		@Override
 		public void onRequestFailure(SpiceException e) 
 		{
-			// TODO Auto-generated method stub
 			
 		}
 
@@ -101,8 +133,38 @@ public class MenuItemOptionsDialog extends DialogFragment
 		{
 			MenuItem menuItem = FilterUtils.getMenuItem(menus, restaurantName, menuName, itemName);
 			MenuItemOption[] menuItemOptions = menuItem.getItemOptions();
-			CheckBox checkBox = new CheckBox(context);
-			linearLayout.addView(checkBox);
+			for(MenuItemOption menuItemOption : menuItemOptions)
+			{
+				TextView textView = new TextView(context);
+				textView.setText(menuItemOption.getName());
+				linearLayout.addView(textView);
+				switch(menuItemOption.getType())
+				{
+					case "select":
+					{
+						RadioGroup radioGroup = new RadioGroup(context);
+						radioGroup.setTag(menuItemOption);
+						String options = menuItemOption.getParam();
+						String[] optionsSplit = options.split(",");
+						for(String option : optionsSplit)
+						{
+							RadioButton radioButton = new RadioButton(context);
+							radioButton.setText(option);
+							radioGroup.addView(radioButton);
+						}
+						linearLayout.addView(radioGroup);
+						break;
+					}
+					case "checkbox":
+					{
+						CheckBox checkBox = new CheckBox(context);
+						checkBox.setTag(menuItemOption);
+						checkBox.setText(menuItemOption.getDescription());
+						linearLayout.addView(checkBox);
+						break;
+					}
+				}
+			}
 		}
 	}
 }
