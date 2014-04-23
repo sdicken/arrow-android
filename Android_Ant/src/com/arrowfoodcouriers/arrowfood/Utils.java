@@ -6,11 +6,15 @@ import android.app.FragmentTransaction;
 
 public class Utils 
 {
-	public static void loadFragment(FragmentManager fragmentManager, Fragment fragment)
+	public static void loadFragment(FragmentManager fragmentManager, Fragment newFragment)
     {
-    	FragmentTransaction ft = fragmentManager.beginTransaction();
-    	ft.replace(R.id.container, fragment);
-    	ft.addToBackStack(null);
-    	ft.commit();
+		Fragment currentFragment = fragmentManager.findFragmentById(R.id.container);
+		if(currentFragment.getClass() != newFragment.getClass())
+		{
+	    	FragmentTransaction ft = fragmentManager.beginTransaction();
+	    	ft.replace(R.id.container, newFragment);
+	    	ft.addToBackStack(null);
+	    	ft.commit();
+		}
     }	
 }
