@@ -42,10 +42,16 @@ import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.LogoutRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.LogoutRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantsRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.RestaurantsRequestListener;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.UserRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.UserRequestListener;
 import com.octo.android.robospice.GsonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.request.SpiceRequest;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
 
@@ -106,14 +112,12 @@ public class MainActivity extends Activity
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
-        
-        // TODO: Remove because this is for debugging only
-//        GsonDataLoader<User> loader = new GsonDataLoader<User>(this, "user", User.class);
-//        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
-//        int size = 2;
-//        User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[]{new Address("123 Fake Address", "", "Louisville", "KY", "40291")}, new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
-//        loader.saveData(testUser);
-        //-------------------------------------------------
+
+        // make sure there's some initial data stored in cache
+        SpiceRequest<?> request = new MenusRequest();
+        spiceManager.getFromCacheAndLoadFromNetworkIfExpired((MenusRequest)request, ((MenusRequest)request).createCacheKey(), DurationInMillis.ALWAYS_RETURNED, new MenusRequestListener(this));
+        request = new RestaurantsRequest();
+        spiceManager.getFromCacheAndLoadFromNetworkIfExpired((RestaurantsRequest)request, ((RestaurantsRequest)request).createCacheKey(), DurationInMillis.ALWAYS_RETURNED, new RestaurantsRequestListener(this));
 
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
@@ -132,8 +136,17 @@ public class MainActivity extends Activity
             	fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         }
+        
+        configureActionBar();
+        configureNavigationDrawer();
+        
+        getLoaderManager().initLoader(USER_ACCOUNT_LOADER, null, new UserLoaderCallback(this));
+        getLoaderManager().initLoader(NAV_DRAWER_VALUE_LOADER, null, new DrawerValuesLoaderCallback(this));
+    }
 
-        mTitle = mDrawerTitle = getTitle();
+    private void configureNavigationDrawer() 
+    {
+    	mTitle = mDrawerTitle = getTitle();
         
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -142,9 +155,7 @@ public class MainActivity extends Activity
         mDrawerList.addHeaderView(View.inflate(this, R.layout.navdrawer_header, null), null, false);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        configureActionBar();
-
-        mDrawerToggle = new ActionBarDrawerToggle(
+    	mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
                 R.drawable.ic_empty,
@@ -165,11 +176,10 @@ public class MainActivity extends Activity
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getLoaderManager().initLoader(USER_ACCOUNT_LOADER, null, new UserLoaderCallback(this));
-        getLoaderManager().initLoader(NAV_DRAWER_VALUE_LOADER, null, new DrawerValuesLoaderCallback(this));
-    }
+		
+	}
 
-    private boolean loginDialogWasShowingBeforeSave(Bundle savedInstanceState) 
+	private boolean loginDialogWasShowingBeforeSave(Bundle savedInstanceState) 
     {
     	Fragment fragment = (LoginDialogFragment) getFragmentManager().getFragment(savedInstanceState, BUNDLE_TAG_LOGIN_FRAGMENT);
     	return (fragment != null);

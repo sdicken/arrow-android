@@ -15,10 +15,11 @@ import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.MenuCategoryAdapter;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuCategoryListener;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuCategoryRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuCategoryRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusUpdatedRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusUpdatedRequestListener;
 
-public class RestaurantMenuCategoryFragment extends ListFragment
+public class MenuCategoryFragment extends ListFragment
 {
 	MenuCategoryAdapter mAdapter;
 	private String restaurantName;
@@ -32,8 +33,9 @@ public class RestaurantMenuCategoryFragment extends ListFragment
     	Bundle args = getArguments();
     	this.restaurantName = args.getString(RestaurantFragment.RESTAURANT_NAME);
     	
-    	MenuCategoryRequest request = new MenuCategoryRequest(restaurantName);
-    	MainActivity.spiceManager.execute(request, new MenuCategoryListener(getActivity()));
+    	// check to see when menus last updated and tell it what to do with the data it gets from cache or network
+    	MenusUpdatedRequest request = new MenusUpdatedRequest();
+    	MainActivity.spiceManager.execute(request, new MenusUpdatedRequestListener<>(new MenuCategoryRequestListener(getActivity(), restaurantName)));
     		
     	ArrayList<String> categories = new ArrayList<String>();
         mAdapter = new MenuCategoryAdapter(inflater.getContext(), categories);

@@ -3,8 +3,10 @@ package com.arrowfoodcouriers.arrowfood.Models;
 import java.util.Arrays;
 import java.util.Date;
 
+import com.arrowfoodcouriers.arrowfood.Interfaces.IUpdateable;
 
-public class Restaurant 
+
+public class Restaurant implements IUpdateable
 {
 	private String name;
 	private byte[] image;

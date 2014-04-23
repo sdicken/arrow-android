@@ -10,10 +10,11 @@ public class Response
 	private static final String USERNAME_TAKEN = "Username already in use";
 	private static final String EMAIL_TAKEN = "Email already in use";
 	
-	public Response(String error, boolean success)
+	public Response(String error, boolean success, Date updated)
 	{
 		this.error = error;
 		this.success = success;
+		this.updated = updated;
 	}
 
 	public String getError() {

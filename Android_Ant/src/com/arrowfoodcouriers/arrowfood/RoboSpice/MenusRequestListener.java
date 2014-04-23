@@ -1,7 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.RoboSpice;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -11,11 +9,11 @@ import com.arrowfoodcouriers.arrowfood.gson.GsonDataLoader;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
-public class MenuRequestListener implements RequestListener<List<Menu>>
+public class MenusRequestListener implements RequestListener<Menu[]>
 {
 	Context context;
 	
-	public MenuRequestListener(Context context) {
+	public MenusRequestListener(Context context) {
 		this.context = context;
 	}
 
@@ -26,11 +24,11 @@ public class MenuRequestListener implements RequestListener<List<Menu>>
 	}
 
 	@Override
-	public void onRequestSuccess(List<Menu> menus) 
+	public void onRequestSuccess(Menu[] menus) 
 	{
 		Intent intent = new Intent("com.arrowfoodcouriers.arrowfood.MENU_ITEM_CHANGED");
 		GsonDataLoader<Menu[]> gsonLoader = new GsonDataLoader<Menu[]>(context, "menus", Menu[].class);
-		gsonLoader.saveData((Menu[])menus.toArray());
+		gsonLoader.saveData(menus);
 		context.sendBroadcast(intent);
 	}
 	

@@ -1,38 +1,37 @@
 package com.arrowfoodcouriers.arrowfood.RoboSpice;
 
-import java.util.List;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Context;
 import android.widget.ListView;
 
-import com.arrowfoodcouriers.arrowfood.Adapter.MenuCategoryAdapter;
+import com.arrowfoodcouriers.arrowfood.Adapter.RestaurantListAdapter;
+import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
-public class MenuCategoryListener implements RequestListener<List<String>> 
+public class RestaurantsRequestListener implements RequestListener<Restaurant[]>
 {
-	private final Context context;
+	private Context context;
 	
-	public MenuCategoryListener(Context context)
+	public RestaurantsRequestListener(Context context)
 	{
 		this.context = context;
 	}
-	
+
 	@Override
 	public void onRequestFailure(SpiceException e) 
-	{
-		// TODO Auto-generated method stub
-
+	{		
 	}
 
 	@Override
-	public void onRequestSuccess(List<String> categories) 
+	public void onRequestSuccess(Restaurant[] restaurants) 
 	{
 		ListView listView = (ListView) ((Activity) context).findViewById(android.R.id.list);
-		MenuCategoryAdapter adapter = (MenuCategoryAdapter) listView.getAdapter();
+		RestaurantListAdapter adapter = (RestaurantListAdapter) listView.getAdapter();
 		adapter.clear();
-		adapter.addAll(categories);
+		adapter.addAll(Arrays.asList(restaurants));
 	}
-
+	
 }

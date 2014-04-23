@@ -38,8 +38,8 @@ public class UserRequestListener implements RequestListener<User>
 		}
 		else
 		{
-			CartContentsRequest request = new CartContentsRequest();
-        	MainActivity.spiceManager.execute(request, new CartContentsListener(context));
+			CartRequest request = new CartRequest();
+        	MainActivity.spiceManager.execute(request, new CartRequestListener(context));
         	Utils.loadFragment(((Activity) context).getFragmentManager(), new CartFragment());
 		}
 	}

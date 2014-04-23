@@ -11,13 +11,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
+import com.arrowfoodcouriers.arrowfood.FilterUtils;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
+import com.arrowfoodcouriers.arrowfood.Models.Menu;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
+import com.arrowfoodcouriers.arrowfood.Models.MenuItemOption;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartAddRequestListener;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusRequest;
+import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -39,8 +43,8 @@ public class MenuItemOptionsDialog extends DialogFragment
 		menuName = args.getString(MenuFragment.BUNDLE_TAG_MENU_NAME);
 		itemName = args.getString(MenuFragment.BUNDLE_TAG_ITEM_NAME);
 		
-		MenuItemRequest request = new MenuItemRequest(restaurantName, menuName, itemName);
-		MainActivity.spiceManager.execute(request, new MenuItemRequestListener(getActivity()));
+		MenusRequest request = new MenusRequest();
+		MainActivity.spiceManager.getFromCache(Menu[].class, request.createCacheKey(), DurationInMillis.ALWAYS_RETURNED, new MenuItemRequestListener(getActivity()));
 		
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogView = inflater.inflate(R.layout.dialog_item_options, null);
@@ -76,7 +80,7 @@ public class MenuItemOptionsDialog extends DialogFragment
 		}
 	}
 	
-	private class MenuItemRequestListener implements RequestListener<MenuItem>
+	private class MenuItemRequestListener implements RequestListener<Menu[]>
 	{
 		private final Context context;
 		
@@ -93,8 +97,10 @@ public class MenuItemOptionsDialog extends DialogFragment
 		}
 
 		@Override
-		public void onRequestSuccess(MenuItem menuItem) 
+		public void onRequestSuccess(Menu[] menus) 
 		{
+			MenuItem menuItem = FilterUtils.getMenuItem(menus, restaurantName, menuName, itemName);
+			MenuItemOption[] menuItemOptions = menuItem.getItemOptions();
 			CheckBox checkBox = new CheckBox(context);
 			linearLayout.addView(checkBox);
 		}

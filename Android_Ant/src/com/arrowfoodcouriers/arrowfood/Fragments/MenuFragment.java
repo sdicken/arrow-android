@@ -1,13 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.DialogFragment;
 import android.app.ListFragment;
-import android.app.LoaderManager;
-import android.content.Context;
-import android.content.Loader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,10 +17,10 @@ import android.widget.TextView;
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Adapter.MenuAdapter;
-import com.arrowfoodcouriers.arrowfood.Loaders.MenuLoader;
-import com.arrowfoodcouriers.arrowfood.Models.Menu;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuRequest;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuRequestListener;
+import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenuItemsRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusUpdatedRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.MenusUpdatedRequestListener;
 
 public class MenuFragment extends ListFragment
 {
@@ -42,11 +39,11 @@ public class MenuFragment extends ListFragment
     	View view = inflater.inflate(R.layout.fragment_menu, container, false);
     	
     	Bundle bundle = getArguments();
-    	restaurantName = bundle.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
-    	menuName = bundle.getString(RestaurantMenuCategoryFragment.MENU_NAME);
+    	restaurantName = bundle.getString(MenuCategoryFragment.RESTAURANT_NAME);
+    	menuName = bundle.getString(MenuCategoryFragment.MENU_NAME);
     	
-    	MenuRequest request = new MenuRequest();
-		MainActivity.spiceManager.execute(request, new MenuRequestListener(getActivity()));
+    	MenusUpdatedRequest request = new MenusUpdatedRequest();
+    	MainActivity.spiceManager.execute(request, new MenusUpdatedRequestListener<>(new MenuItemsRequestListener(getActivity(), restaurantName, menuName)));
     	
     	ImageView menuHeaderImage = (ImageView) view.findViewById(R.id.menu_header_image);
     	menuHeaderImage.setImageResource(R.drawable.qdoba_storefront);
@@ -57,11 +54,10 @@ public class MenuFragment extends ListFragment
     	menuRestaurantName.setText(restaurantName);
     	menuRestaurantName.setTypeface(rokkitt);
     	
-    	//List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        //mAdapter = new MenuAdapter(inflater.getContext(), menuItems);
-        //setListAdapter(mAdapter);
+    	List<MenuItem> menuItems = new ArrayList<MenuItem>();
+        mAdapter = new MenuAdapter(inflater.getContext(), menuItems);
+        setListAdapter(mAdapter);
 
-        getLoaderManager().initLoader(3, getArguments(), new MenuLoaderCallback(getActivity()));
         // Inflate the layout for this fragment
         return view;
     }
@@ -79,40 +75,5 @@ public class MenuFragment extends ListFragment
     	args.putString(BUNDLE_TAG_ITEM_NAME, itemName);
     	menuItemOptionsDialog.setArguments(args);
     	menuItemOptionsDialog.show(getFragmentManager(), FRAGMENT_TAG_ITEM_OPTIONS);
-    }
-    
-    private class MenuLoaderCallback implements LoaderManager.LoaderCallbacks<List<Menu>>
-    {
-    	private Context context;
-    	private String restaurantName;
-    	private String menuName;
-    	
-    	public MenuLoaderCallback(Context context)
-    	{
-    		this.context = context;
-    	}
-    	
-    	@Override
-    	public Loader<List<Menu>> onCreateLoader(int id, Bundle args) {
-    		restaurantName = args.getString(RestaurantMenuCategoryFragment.RESTAURANT_NAME);
-        	menuName = args.getString(RestaurantMenuCategoryFragment.MENU_NAME);
-    		return new MenuLoader(context);
-    	}
-
-    	@Override
-    	public void onLoadFinished(Loader<List<Menu>> loader, List<Menu> data) {
-    		for(Menu menu : data) {
-    			if (restaurantName.equals(menu.getRestaurant()) &&
-    					menuName.equals(menu.getName())) {
-    				setListAdapter(new MenuAdapter(this.context, Arrays.asList(menu.getItems())));
-    			}
-    		}
-    	}
-
-    	@Override
-    	public void onLoaderReset(Loader<List<Menu>> loader) {
-    		setListAdapter(null);
-    	}    	
-    	
     }
 }

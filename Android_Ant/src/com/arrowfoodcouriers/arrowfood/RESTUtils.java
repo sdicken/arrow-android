@@ -1,10 +1,7 @@
 package com.arrowfoodcouriers.arrowfood;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -17,11 +14,9 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import com.arrowfoodcouriers.arrowfood.Models.Cart;
-import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Geotags;
 import com.arrowfoodcouriers.arrowfood.Models.Menu;
-import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
@@ -57,14 +52,6 @@ public class RESTUtils
 	private static final String PRICE = "price";
 	private static final String UPDATED = "updated";
 	
-	// filter through data in cart
-	public static List<CartItem> getCartItems()
-	{
-		Cart cart = getCart();
-		CartItem[] items = cart.getItems();
-		return Arrays.asList(items);
-	}
-
 	public static Cart getCart() 
 	{
 		// get from /cart
@@ -80,62 +67,6 @@ public class RESTUtils
 		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Cart.class);
 	}
 	
-	// filter through data in menu
-	public static List<String> getMenuCategories(String restaurantName)
-	{
-		Menu[] menus = getMenus();
-		List<String> menuCategories = new ArrayList<String>();
-		for(int i = 0; i < menus.length; i++)
-		{
-			Menu menu = menus[i];
-			if(menu.getRestaurant().equals(restaurantName))
-			{
-				menuCategories.add(menu.getName());
-			}
-		}
-		return menuCategories;
-	}
-	
-	// filter through data in menu
-	public static List<MenuItem> getMenuItems(String restaurantName, String menuName)
-	{
-		Menu[] menus = getMenus();
-		List<MenuItem> menuItems = new ArrayList<MenuItem>();
-		for(int i = 0; i < menus.length; i++)
-		{
-			Menu menu = menus[i];
-			if(menu.getRestaurant().equals(restaurantName) && menu.getName().equals(menuName))
-			{
-				MenuItem[] items = menu.getItems();
-				return Arrays.asList(items);
-			}
-		}
-		return menuItems;
-	}
-	
-	// filter through data in menu
-	public static MenuItem getMenuItem(String restaurantName, String menuName, String itemName)
-	{
-		Menu[] menus = getMenus();
-		MenuItem menuItem = null;
-		for(int i = 0; i < menus.length; i++)
-		{
-			Menu menu = menus[i];
-			if(menu.getRestaurant().equals(restaurantName) && menu.getName().equals(menuName))
-			{
-				MenuItem[] items = menu.getItems();
-				for(int j = 0; j < items.length; j++)
-				{
-					MenuItem item = items[j];
-					if(item.getName().equals(itemName))
-					{
-						return menuItem;
-					}
-				}
-			}
-		}
-		return menuItem;
-	}
 
 	public static Restaurant[] getRestaurants()
 	{
@@ -186,7 +117,8 @@ public class RESTUtils
 		urlVariables.put(ROUTE, MENUS);
 		urlVariables.put(ROUTE2, UPDATED);
 		// get from /menus/updated
-		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
+		ResponseEntity<String> responseEntity = get(URL_2VAR, urlVariables);
+		return convertResponseEntityToModel(responseEntity, Response.class);
 	}
 	
 	public Response postChangePassword(User user)
