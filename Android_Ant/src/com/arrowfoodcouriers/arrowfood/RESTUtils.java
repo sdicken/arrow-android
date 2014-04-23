@@ -54,8 +54,6 @@ public class RESTUtils
 	private static final String RESTAURANTS = "restaurants";
 	private static final String PRICE = "price";
 	
-	// this will not be implemented by server
-//	public static CartItem[] getCartItems()
 	public static List<CartItem> getCartItems()
 	{
 		List<CartItem> cartItems = new ArrayList<CartItem>();
