@@ -384,29 +384,7 @@ public class MainActivity extends Activity
         }
     }
 
-    private void updateNavHeader(User userData) {
-    	
-    	if (userData == null) {
-    		return;
-    	}
-    	
-    	String name = userData.getName();
-    	String fullAddress = userData.getAddresses()[0].getAddress1() + " " + 
-    	userData.getAddresses()[0].getAddress2() + ", " + 
-    			userData.getAddresses()[0].getCity() + ", " + 
-    	userData.getAddresses()[0].getState() + " " + 
-    			userData.getAddresses()[0].getZip();
-    	
-    	TextView nameTextView = (TextView)findViewById(R.id.header_name);
-    	TextView addressTextView = (TextView)findViewById(R.id.header_address);
-    	nameTextView.setText(name);
-    	addressTextView.setText(fullAddress);
-    	
-    }
     
-    private void resetNavHeader() {
-    	
-    }
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         private ListView listView = (ListView)findViewById(R.id.left_drawer);
@@ -445,6 +423,30 @@ public class MainActivity extends Activity
     		
     	}    	
     	
+    	private void updateNavHeader(User userData) {
+        	
+        	if (userData == null) {
+        		return;
+        	}
+        	
+        	String name = userData.getName();
+        	String fullAddress = userData.getAddresses()[0].getAddress1() + " " + 
+        	userData.getAddresses()[0].getAddress2() + ", " + 
+        			userData.getAddresses()[0].getCity() + ", " + 
+        	userData.getAddresses()[0].getState() + " " + 
+        			userData.getAddresses()[0].getZip();
+        	
+        	TextView nameTextView = (TextView)findViewById(R.id.header_name);
+        	TextView addressTextView = (TextView)findViewById(R.id.header_address);
+        	nameTextView.setText(name);
+        	addressTextView.setText(fullAddress);
+        	
+        }
+        
+        private void resetNavHeader() {
+        	
+        }
+    	
     }
     
     private class DrawerValuesLoaderCallback implements LoaderManager.LoaderCallbacks<List<DrawerListObject>>
@@ -470,6 +472,7 @@ public class MainActivity extends Activity
     	public void onLoaderReset(Loader<List<DrawerListObject>> loader) {
     		
     	}    	
+    	
     	
     }
 }
