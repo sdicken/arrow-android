@@ -37,8 +37,7 @@ public class RESTUtilsCartTestHelper
 		itemOptions[0] = new CartItemOption(item1.getItemOptions()[0].getName(), 
 				item1.getItemOptions()[0].getType(),
 				item1.getItemOptions()[0].getParam());
-		responseEntity = RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
-		response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
+		response = RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
 		assertTrue(response.getSuccess());
 		Cart cart = RESTUtils.getCart();
 		assertTrue(cart.getItems()[0].getRestaurant().equals(restaurantName));
@@ -53,8 +52,7 @@ public class RESTUtilsCartTestHelper
 		Address billing = new Address("Test Street", "", "Louisville", "KY", "40202");
 		Address shipping = new Address("Test Avenue", "", "Louisville", "KY", "40205");
 		Order order = new Order(billing, shipping);
-		responseEntity = RESTUtils.postCartOrder(order);
-		response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
+		response = RESTUtils.postCartOrder(order);
 		assertTrue(response.getSuccess());
 	}
 }

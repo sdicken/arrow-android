@@ -1,7 +1,5 @@
 package com.arrowfoodcouriers.arrowfood.RoboSpice;
 
-import org.springframework.http.ResponseEntity;
-
 import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.CartItemOption;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
@@ -29,8 +27,7 @@ public class CartAddRequest extends SpiceRequest<Response>
 	@Override
 	public Response loadDataFromNetwork() throws Exception 
 	{
-		ResponseEntity<String> responseEntity = RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
-		return RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
+		return RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
 	}
 
 }

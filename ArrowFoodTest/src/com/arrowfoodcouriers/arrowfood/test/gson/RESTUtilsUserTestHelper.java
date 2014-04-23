@@ -129,8 +129,7 @@ public class RESTUtilsUserTestHelper
 	{
 		User user = createUserForLogin();
 		httpStatus = HttpStatus.OK;
-		ResponseEntity<String> responseEntity = RESTUtils.postLogin(user.getUsername(), user.getPassword());
-		assertTrue(responseEntity.getStatusCode().equals(httpStatus));
+		RESTUtils.postLogin(user.getUsername(), user.getPassword());
 	}
 	
 	public void testLoginFailure()

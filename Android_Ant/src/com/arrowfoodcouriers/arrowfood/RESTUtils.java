@@ -57,16 +57,12 @@ public class RESTUtils
 	private static final String PRICE = "price";
 	private static final String UPDATED = "updated";
 	
+	// filter through data in cart
 	public static List<CartItem> getCartItems()
 	{
-		List<CartItem> cartItems = new ArrayList<CartItem>();
 		Cart cart = getCart();
 		CartItem[] items = cart.getItems();
-		for(int i = 0; i < items.length; i++)
-		{
-			cartItems.add(items[i]);
-		}
-		return cartItems;
+		return Arrays.asList(items);
 	}
 
 	public static Cart getCart() 
@@ -84,6 +80,7 @@ public class RESTUtils
 		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Cart.class);
 	}
 	
+	// filter through data in menu
 	public static List<String> getMenuCategories(String restaurantName)
 	{
 		Menu[] menus = getMenus();
@@ -98,7 +95,8 @@ public class RESTUtils
 		}
 		return menuCategories;
 	}
-		
+	
+	// filter through data in menu
 	public static List<MenuItem> getMenuItems(String restaurantName, String menuName)
 	{
 		Menu[] menus = getMenus();
@@ -115,6 +113,7 @@ public class RESTUtils
 		return menuItems;
 	}
 	
+	// filter through data in menu
 	public static MenuItem getMenuItem(String restaurantName, String menuName, String itemName)
 	{
 		Menu[] menus = getMenus();
@@ -182,11 +181,11 @@ public class RESTUtils
 	
 	public static User getUser()
 	{
-		// get from /profile
+		// get from /user
 		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, USER)), User.class);
 	}
 	
-	public static ResponseEntity<String> postCart(String restaurantName, String menuName, 
+	public static Response postCart(String restaurantName, String menuName, 
 			String itemName, Integer quantity, CartItemOption[] itemOptions)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
@@ -195,24 +194,24 @@ public class RESTUtils
 		urlVariables.put(ROUTE3, menuName);
 		urlVariables.put(ROUTE4, itemName);
 		urlVariables.put(ROUTE5, quantity.toString());
-		// post to cart/order
-		return post(URL_5VAR, urlVariables, itemOptions);
+		// post to /cart/order
+		return convertResponseEntityToModel(post(URL_5VAR, urlVariables, itemOptions), Response.class);
 	}
 	
-	public static ResponseEntity<String> postCartOrder(Order order)
+	public static Response postCartOrder(Order order)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
 		urlVariables.put(ROUTE2, ORDER);
 		// post to cart/order
-		return post(URL_2VAR, urlVariables, order);
+		return convertResponseEntityToModel(post(URL_2VAR, urlVariables, order), Response.class);
 	}
 	
-	public static ResponseEntity<String> postLogin(String username, String password)
+	public static Response postLogin(String username, String password)
 	{
 		User user = new User(username, password);
 		// post to /login
-		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user);
+		return convertResponseEntityToModel(post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user), Response.class);
 	}
 	
 	public static ResponseEntity<String> postLogout()
