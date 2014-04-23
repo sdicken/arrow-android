@@ -143,6 +143,7 @@ public class RESTUtils
 		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS)), Restaurant[].class);
 	}
 	
+	// could return either User (scenario: updating existing user account) or Response (scenario: creating new user)
 	public static ResponseEntity<String> postUser(User user)
 	{
 		// post to /user
@@ -170,13 +171,13 @@ public class RESTUtils
 		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
 	}
 	
-	public ResponseEntity<String> changePassword(User user)
+	public Response postChangePassword(User user)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, USER);
 		urlVariables.put(ROUTE2, PASSWORD);
 		// post to /user/password
-		return post(URL_2VAR, urlVariables, user);
+		return convertResponseEntityToModel(post(URL_2VAR, urlVariables, user), Response.class);
 	}
 	
 	public static User getUser()
@@ -214,13 +215,13 @@ public class RESTUtils
 		return convertResponseEntityToModel(post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user), Response.class);
 	}
 	
-	public static ResponseEntity<String> postLogout()
+	public static Response postLogout()
 	{
 		// post to /logout
-		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT));
+		return convertResponseEntityToModel(post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT)), Response.class);
 	}
 	
-	public static ResponseEntity<String> resetPassword(PasswordReset reset, String token)
+	public static Response postResetPassword(PasswordReset reset, String token)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, USER);
@@ -228,15 +229,15 @@ public class RESTUtils
 		urlVariables.put(ROUTE3, RESET);
 		urlVariables.put(ROUTE4, token);
 		// post to /user/password/reset/:token
-		return post(URL_4VAR, urlVariables, reset);
+		return convertResponseEntityToModel(post(URL_4VAR, urlVariables, reset), Response.class);
 	}
 	
-	public static void deleteCart()
+	public static Response deleteCart()
 	{
-		delete(URL_1VAR, Collections.singletonMap(ROUTE, CART));
+		return convertResponseEntityToModel(delete(URL_1VAR, Collections.singletonMap(ROUTE, CART)), Response.class);
 	}
 	
-	public static void deleteCartItem(String restaurantName, String menuName, String itemName)
+	public static Response deleteCartItem(String restaurantName, String menuName, String itemName)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
@@ -244,10 +245,10 @@ public class RESTUtils
 		urlVariables.put(ROUTE3, menuName);
 		urlVariables.put(ROUTE4, itemName);
 		// delete from /cart/:restaurant/:menu/:item
-		delete(URL_4VAR, urlVariables);
+		return convertResponseEntityToModel(delete(URL_4VAR, urlVariables), Response.class);
 	}
 	
-	public static void deleteCartItemQuantity(String restaurantName, String menuName, 
+	public static Response deleteCartItemQuantity(String restaurantName, String menuName, 
 			String itemName, Integer quantity)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
@@ -257,41 +258,41 @@ public class RESTUtils
 		urlVariables.put(ROUTE4, itemName);
 		urlVariables.put(ROUTE5, quantity.toString());
 		// delete from /cart/:restaurant/:menu/:item/:quantity
-		delete(URL_5VAR, urlVariables);
+		return convertResponseEntityToModel(delete(URL_5VAR, urlVariables), Response.class);
 	}
 	
-	public static ResponseEntity<String> getGeo()
+	public static Geotags[] getGeo()
 	{
 		// GET from /geotag
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, GEOTAG));
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, GEOTAG)), Geotags[].class);
 	}
 	
-	public static ResponseEntity<String> postGeo(Geotags tags)
+	public static Response postGeo(Geotags tags)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, tags.getLatitude().toString());
 		urlVariables.put(ROUTE2, tags.getLongitude().toString());
 		// POST to /geotag/:latitude/:longitude
-		return post(URL_2VAR, urlVariables);
+		return convertResponseEntityToModel(post(URL_2VAR, urlVariables), Response.class);
 	}
 	
-	public static ResponseEntity<String> getGeoUser(String username)
+	public static Geotags getGeoUser(String username)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, GEOTAG);
 		urlVariables.put(ROUTE2, username);
 		// GET from /geotag/:username
-		return get(URL_2VAR, urlVariables);
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Geotags.class);
 	}
 	
-	public static ResponseEntity<String> getGeoUserLimit(String username, Integer limit)
+	public static Geotags getGeoUserLimit(String username, Integer limit)
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, GEOTAG);
 		urlVariables.put(ROUTE2, username);
 		urlVariables.put(ROUTE3, limit.toString());
 		// GET from /geotag/:username/:limit
-		return get(URL_3VAR, urlVariables);
+		return convertResponseEntityToModel(get(URL_3VAR, urlVariables), Geotags.class);
 	}
 	
 	public static <T> T convertResponseEntityToModel(ResponseEntity<String> responseEntityContainingJSON, Class<T> classOfT)
@@ -357,7 +358,7 @@ public class RESTUtils
 		return restTemplate.exchange(baseUrl, HttpMethod.POST, requestEntity, String.class, route);
 	}
 	
-	private static <T> void delete(String baseUrl, Map<String, String> route)
+	private static <T> ResponseEntity<String> delete(String baseUrl, Map<String, String> route)
 	{
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -368,6 +369,6 @@ public class RESTUtils
 		restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		
-		restTemplate.exchange(baseUrl, HttpMethod.DELETE, requestEntity, String.class, route);
+		return restTemplate.exchange(baseUrl, HttpMethod.DELETE, requestEntity, String.class, route);
 	}
 }
