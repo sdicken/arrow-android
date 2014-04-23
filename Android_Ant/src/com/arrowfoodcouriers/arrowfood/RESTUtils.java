@@ -24,6 +24,7 @@ import com.arrowfoodcouriers.arrowfood.Models.Menu;
 import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
+import com.arrowfoodcouriers.arrowfood.Models.Response;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,6 +54,7 @@ public class RESTUtils
 	private static final String GEOTAG = "geotag";
 	private static final String RESTAURANTS = "restaurants";
 	private static final String PRICE = "price";
+	private static final String UPDATED = "updated";
 	
 	public static List<CartItem> getCartItems()
 	{
@@ -82,7 +84,7 @@ public class RESTUtils
 	
 	public static List<String> getMenuCategories(String restaurantName)
 	{
-		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		Menu[] menus = getMenus();
 		List<String> menuCategories = new ArrayList<String>();
 		for(int i = 0; i < menus.length; i++)
 		{
@@ -97,7 +99,7 @@ public class RESTUtils
 		
 	public static List<MenuItem> getMenuItems(String restaurantName, String menuName)
 	{
-		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		Menu[] menus = getMenus();
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 		for(int i = 0; i < menus.length; i++)
 		{
@@ -113,7 +115,7 @@ public class RESTUtils
 	
 	public static MenuItem getMenuItem(String restaurantName, String menuName, String itemName)
 	{
-		Menu[] menus = convertResponseEntityToModel(getMenus(), Menu[].class);
+		Menu[] menus = getMenus();
 		MenuItem menuItem = null;
 		for(int i = 0; i < menus.length; i++)
 		{
@@ -152,10 +154,19 @@ public class RESTUtils
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS));
 	}
 	
-	public static ResponseEntity<String> getMenus()
+	public static Menu[] getMenus()
 	{
 		// get from /menus
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, MENUS));	
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, MENUS)), Menu[].class);	
+	}
+	
+	public static Response getMenusUpdated()
+	{
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, MENUS);
+		urlVariables.put(ROUTE2, UPDATED);
+		// get from /menus/updated
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
 	}
 	
 	public ResponseEntity<String> changePassword(User user)

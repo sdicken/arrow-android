@@ -27,8 +27,7 @@ public class RESTUtilsCartTestHelper
 	
 	private void testAddToCartSuccess()
 	{
-		responseEntity = RESTUtils.getMenus();
-		Menu[] menus = RESTUtils.convertResponseEntityToModel(responseEntity, Menu[].class);
+		Menu[] menus = RESTUtils.getMenus();
 		menuName = menus[0].getName();
 		restaurantName = menus[0].getRestaurant();
 		item1 = menus[0].getItems()[0];

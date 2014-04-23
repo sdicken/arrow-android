@@ -22,9 +22,7 @@ public class MenuRequest extends SpiceRequest<List<Menu>>
 	@Override
 	public List<Menu> loadDataFromNetwork() throws Exception 
 	{
-		ResponseEntity<String> responseEntity = RESTUtils.getMenus();
-		Menu[] menuArray = RESTUtils.convertResponseEntityToModel(responseEntity, Menu[].class);
-		return Arrays.asList(menuArray);
+		return Arrays.asList(RESTUtils.getMenus());
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
+import java.util.Date;
+
 public class Response 
 {
 	private String error;
 	private boolean success;
+	private Date updated;
 	private static final String USERNAME_TAKEN = "Username already in use";
 	private static final String EMAIL_TAKEN = "Email already in use";
 	
@@ -37,5 +40,13 @@ public class Response
 
 	public void setSuccess(boolean success) {
 		this.success = success;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 }
