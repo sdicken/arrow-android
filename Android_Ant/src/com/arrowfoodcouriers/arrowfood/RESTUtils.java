@@ -143,6 +143,15 @@ public class RESTUtils
 		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS)), Restaurant[].class);
 	}
 	
+	public static Response getRestaurantsUpdated()
+	{
+		// get from /restaurants/updated
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, RESTAURANTS);
+		urlVariables.put(ROUTE2, UPDATED);
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
+	}
+	
 	// could return either User (scenario: updating existing user account) or Response (scenario: creating new user)
 	public static ResponseEntity<String> postUser(User user)
 	{
@@ -154,6 +163,15 @@ public class RESTUtils
 	{
 		// get from /orders
 		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS)), Order[].class);
+	}
+	
+	public static Response getOrdersUpdated()
+	{
+		//get from /orders/updated
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, ORDERS);
+		urlVariables.put(ROUTE2, UPDATED);
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
 	}
 	
 	public static Menu[] getMenus()
@@ -184,6 +202,15 @@ public class RESTUtils
 	{
 		// get from /user
 		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, USER)), User.class);
+	}
+	
+	public static Response getUserUpdated()
+	{
+		// get from /user/updated
+		Map<String, String> urlVariables = new HashMap<String, String>();
+		urlVariables.put(ROUTE, USER);
+		urlVariables.put(ROUTE2, UPDATED);
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Response.class);
 	}
 	
 	public static Response postCart(String restaurantName, String menuName, 
