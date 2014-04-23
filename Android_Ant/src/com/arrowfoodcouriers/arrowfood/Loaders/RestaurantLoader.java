@@ -25,9 +25,9 @@ public class RestaurantLoader extends AsyncTaskLoader<List<Restaurant>> {
 	public List<Restaurant> loadInBackground() {
 		
 		try {
-		List<Restaurant> data = Arrays.asList(dataLoader.loadData());
-		
-		return data;
+			List<Restaurant> data = Arrays.asList(dataLoader.loadData());
+			
+			return data;
 		}
 		catch(Exception e) {
 			return null;

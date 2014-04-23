@@ -118,7 +118,7 @@ public class MainActivity extends Activity
         if(savedInstanceState != null)	// scenario where user changing between apps
         {
             instantiateRegisterCallback(savedInstanceState);
-            instantiateLoginCallback(savedInstanceState, registrationDialogFragment);	// refresh callback in scenario where dialog was already open before state lost
+            instantiateLoginCallback(savedInstanceState);	// refresh callback in scenario where dialog was already open before state lost
         }
         else
         {
@@ -188,8 +188,7 @@ public class MainActivity extends Activity
 	}
 
 	// retrieve existing LoginDialogFragment instance (if available) or create new
-	private void instantiateLoginCallback(Bundle savedInstanceState,
-			RegistrationDialogFragment registrationDialogFragment) 
+	private void instantiateLoginCallback(Bundle savedInstanceState) 
 	{
     	if(loginDialogWasShowingBeforeSave(savedInstanceState))
 		{
@@ -215,7 +214,8 @@ public class MainActivity extends Activity
 	}
 
 	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) 
+	{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
@@ -382,9 +382,7 @@ public class MainActivity extends Activity
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return  rootView;
         }
-    }
-
-    
+    }    
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         private ListView listView = (ListView)findViewById(R.id.left_drawer);
