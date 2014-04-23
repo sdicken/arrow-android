@@ -169,7 +169,7 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables, user);
 	}
 	
-	public ResponseEntity<String> getUser()
+	public static ResponseEntity<String> getUser()
 	{
 		// get from /profile
 		return get(URL_1VAR, Collections.singletonMap(ROUTE, USER));
@@ -204,10 +204,10 @@ public class RESTUtils
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGIN), user);
 	}
 	
-	public static ResponseEntity<String> postLogout(User user)
+	public static ResponseEntity<String> postLogout()
 	{
 		// post to /logout
-		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT), user);
+		return post(URL_1VAR, Collections.singletonMap(ROUTE, LOGOUT));
 	}
 	
 	public static ResponseEntity<String> resetPassword(PasswordReset reset, String token)

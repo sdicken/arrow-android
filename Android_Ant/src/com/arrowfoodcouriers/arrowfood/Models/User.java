@@ -1,6 +1,7 @@
 package com.arrowfoodcouriers.arrowfood.Models;
 
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class User 
@@ -15,14 +16,14 @@ public class User
 	private String[] achievements;
 	private Phone[] phones;
 	private Address[] addresses;
-	private Long created;
-	private Long updated;
+	private Date created;
+	private Date updated;
 	private Integer orders;
 	private Integer deliveries;
 	
 	public User(String username, String password, String role, String email, String name,
 			byte[] image, byte[] icon, String[] achievements, Phone[] phones,
-			Address[] addresses, Long created, Long updated, Integer orders, 
+			Address[] addresses, Date created, Date updated, Integer orders, 
 			Integer deliveries) 
 	{
 		
@@ -153,19 +154,19 @@ public class User
 		this.addresses = addresses;
 	}
 
-	public Long getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Long created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
-	public Long getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Long updated) {
+	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 

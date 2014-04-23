@@ -22,7 +22,7 @@ public class UserLoaderTest
 	{
 		GsonDataLoader<User> loader = new GsonDataLoader<User>(Robolectric.getShadowApplication().getApplicationContext(), "user", User.class);
 		int size = 2;
-		User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[size], new Date().getTime(), new Date().getTime(), Integer.valueOf(2), Integer.valueOf(5));
+		User testUser = new User("test", "pass", "Customer", "test@test.test", "Tester Test", null, null, new String[size], new Phone[size], new Address[size], new Date(), new Date(), Integer.valueOf(2), Integer.valueOf(5));
 //        User testUser = new User("test", "customer", "test@test.test", "Tester Test", "123 Fake Address", "", "Louisville", "KY", "40208", new Date().getTime());
         loader.saveData(testUser);
         User savedUser = loader.loadData();

@@ -31,8 +31,8 @@ public class RESTUtilsUserTestHelper
 	private String[] achievements;
 	private Phone[] phones;
 	private Address[] addresses;
-	private Long created;
-	private Long updated;
+	private Date created;
+	private Date updated;
 	private Integer orders;
 	private Integer deliveries;
 
@@ -68,8 +68,8 @@ public class RESTUtilsUserTestHelper
 		achievements = new String[size];
 		phones = new Phone[size];
 		addresses = new Address[size];
-		created = new Date().getTime();
-		updated = new Date().getTime();
+		created = new Date();
+		updated = new Date();
 		orders = Integer.valueOf(3);
 		deliveries = Integer.valueOf(5);
 		

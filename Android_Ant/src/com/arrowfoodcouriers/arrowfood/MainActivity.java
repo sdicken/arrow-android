@@ -30,7 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.Adapter.DrawerListAdapter;
-import com.arrowfoodcouriers.arrowfood.Fragments.CartFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.FavoriteOrdersFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.LoginDialogFragment;
 import com.arrowfoodcouriers.arrowfood.Fragments.PreviousOrdersFragment;
@@ -41,8 +40,10 @@ import com.arrowfoodcouriers.arrowfood.Fragments.TrackingFragment;
 import com.arrowfoodcouriers.arrowfood.Loaders.DrawerValuesLoader;
 import com.arrowfoodcouriers.arrowfood.Loaders.UserAccountLoader;
 import com.arrowfoodcouriers.arrowfood.Models.User;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsListener;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.CartContentsRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.LogoutRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.LogoutRequestListener;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.UserRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.UserRequestListener;
 import com.octo.android.robospice.GsonSpringAndroidSpiceService;
 import com.octo.android.robospice.SpiceManager;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -68,7 +69,7 @@ public class MainActivity extends Activity
     
     private static final String CLIENT_ID = "ATE_yRBSgW-8LCAH7hcG0Y1EA6Zm-7zPg6zBtk4QC_l5BPMbX_URHCmN-nz_";
     
-    private static final String FRAGMENT_TAG_LOGIN = "login";
+    public static final String FRAGMENT_TAG_LOGIN = "login";
     public static final String FRAGMENT_TAG_REGISTER = "register";
 
     private DrawerLayout mDrawerLayout;
@@ -231,9 +232,9 @@ public class MainActivity extends Activity
         }
         else if(item.getTitle().equals(getResources().getString(R.string.actionbar_cart)))
         {
-        	CartContentsRequest request = new CartContentsRequest();
-        	spiceManager.execute(request, new CartContentsListener(this));
-        	Utils.loadFragment(getFragmentManager(), new CartFragment());
+        	UserRequest request = new UserRequest();
+        	spiceManager.execute(request, new UserRequestListener(this));
+        	
         	return true;
         }
 
@@ -295,66 +296,64 @@ public class MainActivity extends Activity
 
     private void selectItem(int position) 
     {
-        Fragment fragment;
         switch (position) 
         {
             case HOME_NAV_DRAWER_POSITION: 
             {
-                fragment = new RestaurantFragment();
+                Utils.loadFragment(getFragmentManager(), new RestaurantFragment());
                 break;
             }
 
             case RESTAURANTS_NAV_DRAWER_POSITION: 
             {
-                fragment = new RestaurantFragment();
+            	Utils.loadFragment(getFragmentManager(), new RestaurantFragment());
                 break;
             }
 
             case PROFILE_NAV_DRAWER_POSITION: 
             {
-                fragment = new ProfileFragment();
+            	Utils.loadFragment(getFragmentManager(), new ProfileFragment());
                 break;
             }
 
             case PREV_ORDERS_NAV_DRAWER_POSITION: 
             {
-                fragment = new PreviousOrdersFragment();
+            	Utils.loadFragment(getFragmentManager(), new PreviousOrdersFragment());
                 break;
             }
 
             case FAVE_ORDERS_NAV_DRAWER_POSITION: 
             {
-                fragment = new FavoriteOrdersFragment();
+            	Utils.loadFragment(getFragmentManager(), new FavoriteOrdersFragment());
                 break;
             }
 
             case SIGN_OUT_NAV_DRAWER_POSITION: 
             {
-                fragment = new RestaurantFragment();
+            	LogoutRequest request = new LogoutRequest();
+                spiceManager.execute(request, new LogoutRequestListener(this));
+					
                 break;
             }
 
             case LOGIN_NAV_DRAWER_POSITION: 
             {
             	displayLoginDialogFragment();
-                fragment = new RestaurantFragment();
                 break;
             }
             
             case TRACK_NAV_DRAWER_POSITION:
             {
-            	fragment = new TrackingFragment();
+            	Utils.loadFragment(getFragmentManager(), new TrackingFragment());
             	break;
             }
 
             default: 
             {
                 Log.d("DEBUG", "THE POSITION IS " + position);
-                fragment = new RestaurantFragment();
                 break;
             }
         }
-        Utils.loadFragment(getFragmentManager(), fragment);
         mDrawerLayout.closeDrawers();
     }
     
