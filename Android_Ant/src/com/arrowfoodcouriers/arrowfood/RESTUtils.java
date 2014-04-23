@@ -25,6 +25,7 @@ import com.arrowfoodcouriers.arrowfood.Models.MenuItem;
 import com.arrowfoodcouriers.arrowfood.Models.Order;
 import com.arrowfoodcouriers.arrowfood.Models.PasswordReset;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
+import com.arrowfoodcouriers.arrowfood.Models.Restaurant;
 import com.arrowfoodcouriers.arrowfood.Models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,8 +60,7 @@ public class RESTUtils
 	public static List<CartItem> getCartItems()
 	{
 		List<CartItem> cartItems = new ArrayList<CartItem>();
-		ResponseEntity<String> responseEntity = getCart();
-		Cart cart = convertResponseEntityToModel(responseEntity, Cart.class);
+		Cart cart = getCart();
 		CartItem[] items = cart.getItems();
 		for(int i = 0; i < items.length; i++)
 		{
@@ -69,17 +69,19 @@ public class RESTUtils
 		return cartItems;
 	}
 
-	public static ResponseEntity<String> getCart() 
+	public static Cart getCart() 
 	{
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, CART));
+		// get from /cart
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, CART)), Cart.class);
 	}
 	
-	public static ResponseEntity<String> getCartPrice()
+	public static Cart getCartPrice()
 	{
 		Map<String, String> urlVariables = new HashMap<String, String>();
 		urlVariables.put(ROUTE, CART);
 		urlVariables.put(ROUTE2, PRICE);
-		return get(URL_2VAR, urlVariables);
+		// get from /cart/price
+		return convertResponseEntityToModel(get(URL_2VAR, urlVariables), Cart.class);
 	}
 	
 	public static List<String> getMenuCategories(String restaurantName)
@@ -136,10 +138,10 @@ public class RESTUtils
 		return menuItem;
 	}
 
-	public static ResponseEntity<String> getRestaurants()
+	public static Restaurant[] getRestaurants()
 	{
 		// get from /restaurants
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS));
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, RESTAURANTS)), Restaurant[].class);
 	}
 	
 	public static ResponseEntity<String> postUser(User user)
@@ -148,10 +150,10 @@ public class RESTUtils
 		return post(URL_1VAR, Collections.singletonMap(ROUTE, USER), user);
 	}
 	
-	public static ResponseEntity<String> getOrders()
+	public static Order[] getOrders()
 	{
 		// get from /orders
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS));
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, ORDERS)), Order[].class);
 	}
 	
 	public static Menu[] getMenus()
@@ -178,10 +180,10 @@ public class RESTUtils
 		return post(URL_2VAR, urlVariables, user);
 	}
 	
-	public static ResponseEntity<String> getUser()
+	public static User getUser()
 	{
 		// get from /profile
-		return get(URL_1VAR, Collections.singletonMap(ROUTE, USER));
+		return convertResponseEntityToModel(get(URL_1VAR, Collections.singletonMap(ROUTE, USER)), User.class);
 	}
 	
 	public static ResponseEntity<String> postCart(String restaurantName, String menuName, 

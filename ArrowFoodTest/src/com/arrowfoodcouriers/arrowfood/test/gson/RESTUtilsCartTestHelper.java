@@ -40,8 +40,7 @@ public class RESTUtilsCartTestHelper
 		responseEntity = RESTUtils.postCart(restaurantName, menuName, itemName, quantity, itemOptions);
 		response = RESTUtils.convertResponseEntityToModel(responseEntity, Response.class);
 		assertTrue(response.getSuccess());
-		responseEntity = RESTUtils.getCart();
-		Cart cart = RESTUtils.convertResponseEntityToModel(responseEntity, Cart.class);
+		Cart cart = RESTUtils.getCart();
 		assertTrue(cart.getItems()[0].getRestaurant().equals(restaurantName));
 		assertTrue(cart.getItems()[0].getMenu().equals(menuName));
 		assertTrue(cart.getItems()[0].getItem().equals(itemName));

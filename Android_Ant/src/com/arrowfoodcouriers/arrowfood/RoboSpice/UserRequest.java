@@ -1,7 +1,6 @@
 package com.arrowfoodcouriers.arrowfood.RoboSpice;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.arrowfoodcouriers.arrowfood.RESTUtils;
@@ -17,10 +16,10 @@ public class UserRequest extends SpiceRequest<User>
 
 	@Override
 	public User loadDataFromNetwork() throws Exception {
-		ResponseEntity<String> responseEntity = null;
+		User user = null;
 		try
 		{
-			responseEntity = RESTUtils.getUser();
+			user = RESTUtils.getUser();
 		}
 		catch(Exception e)
 		{
@@ -30,6 +29,6 @@ public class UserRequest extends SpiceRequest<User>
 				return null;
 			}
 		}
-		return RESTUtils.convertResponseEntityToModel(responseEntity, User.class);
+		return user;
 	}
 }
