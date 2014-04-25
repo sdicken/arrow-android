@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arrowfoodcouriers.arrowfood.R;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -72,6 +73,7 @@ public class CheckoutFragment extends Fragment
                     // TODO: send 'confirm' to your server for verification.
                     // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
                     // for more details.
+                    Toast.makeText(getActivity(), "Payment accepted.", Toast.LENGTH_LONG).show();;
 
                 } catch (JSONException e) {
                     Log.e(PAYPAL, "an extremely unlikely failure occurred: ", e);
