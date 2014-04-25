@@ -42,8 +42,6 @@ public class CartAdapter extends ArrayAdapter<CartItem>
 			viewHolder.subtitleView = (TextView) view.findViewById(R.id.cart_list_subtitle);
 			viewHolder.priceView = (TextView) view.findViewById(R.id.cart_list_price);
 			viewHolder.quantityView = (TextView) view.findViewById(R.id.cart_list_quantity);
-//			viewHolder.quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
-//			viewHolder.quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
 			view.setTag(viewHolder);
         }
 		else
@@ -57,10 +55,6 @@ public class CartAdapter extends ArrayAdapter<CartItem>
         viewHolder.priceView.setText("$" + String.valueOf(cartItem.getTotal()));
         viewHolder.quantityView.setText(String.valueOf(cartItem.getQuantity()));
 		
-		// set click listeners for increasing and decreasing quantity of items in cart
-//        viewHolder.quantityUpArrow.setOnClickListener(new IncrementQuantityListener(cartItem));
-//        viewHolder.quantityDownArrow.setOnClickListener(new DecrementQuantityListener(cartItem));
-		
 		return view;
 	}
 	
@@ -70,8 +64,6 @@ public class CartAdapter extends ArrayAdapter<CartItem>
 		TextView subtitleView;
 		TextView priceView;
 		TextView quantityView;
-//		ImageView quantityUpArrow;
-//		ImageView quantityDownArrow;
 	}
 
 }
