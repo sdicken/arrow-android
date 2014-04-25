@@ -11,12 +11,14 @@
     <EditText android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:id="@+id/checkout_shipping_address"/>
+        android:id="@+id/checkout_shipping_address"
+        android:hint="Shipping address"/>
     <EditText 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:id="@+id/checkout_billing_address" />
+        android:id="@+id/checkout_billing_address" 
+        android:hint="Billing address"/>
     <Button android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkout_button"
