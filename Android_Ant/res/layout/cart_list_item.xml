@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" 
     android:layout_width="match_parent"
@@ -35,39 +34,16 @@
         style="@style/menu_prices"
         android:text="New text" />
         
-        <Button 
-            android:id="@+id/cart_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cart_delete_button_text"/>"
+   
     </LinearLayout>
 
-    <RelativeLayout 
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
-        <ImageView 
-            android:id="@+id/cart_quantity_up_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_collapse"
-            android:clickable="true"/>
-	    <TextView
-	        android:id="@+id/cart_list_quantity"
-	        android:layout_width="wrap_content"
-	        android:layout_height="fill_parent"
-	        android:layout_below="@id/cart_quantity_up_arrow"
-	        style="@style/menu_prices"
-	        android:layout_marginRight="8dp"
-	        android:layout_marginTop="8dp"
-	        android:text="New text" />
-	    <ImageView 
-            android:id="@+id/cart_quantity_down_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_expand"
-            android:layout_below="@id/cart_list_quantity"
-            android:clickable="true"/>
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/cart_list_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        style="@style/menu_prices"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="New text" />
 
 </LinearLayout>

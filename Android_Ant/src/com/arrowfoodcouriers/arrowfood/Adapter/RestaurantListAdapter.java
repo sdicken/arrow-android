@@ -39,7 +39,7 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
         	viewHolder.titleView = (TextView) view.findViewById(R.id.restaurant_list_title);
         	viewHolder.titleView.setTypeface(rokkitt);
         	viewHolder.subtitleView = (TextView) view.findViewById(R.id.restaurant_list_subtitle);
-        	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
+//        	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
         	viewHolder.imageView = (ImageView) view.findViewById(R.id.restaurant_list_logo);
         	view.setTag(viewHolder);
         }
@@ -60,7 +60,7 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
     {
     	TextView titleView;
     	TextView subtitleView;
-    	TextView detailsView;
+//    	TextView detailsView;
     	ImageView imageView;
     }
 }

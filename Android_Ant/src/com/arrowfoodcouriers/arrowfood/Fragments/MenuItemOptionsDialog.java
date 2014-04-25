@@ -73,7 +73,6 @@ public class MenuItemOptionsDialog extends DialogFragment
 		{
 			List<CartItemOption> itemOptions = new ArrayList<CartItemOption>();
 			for(int i = 0; i < linearLayout.getChildCount(); i++)
-//			for(View view : childViews)
 			{
 				View view = linearLayout.getChildAt(i);
 				if(view.getTag() instanceof MenuItemOption)

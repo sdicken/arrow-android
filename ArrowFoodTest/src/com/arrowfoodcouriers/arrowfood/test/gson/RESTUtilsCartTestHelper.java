@@ -4,7 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.springframework.http.ResponseEntity;
 
 import com.arrowfoodcouriers.arrowfood.RESTUtils;
 import com.arrowfoodcouriers.arrowfood.Models.Address;
@@ -22,7 +21,6 @@ public class RESTUtilsCartTestHelper
 	private String restaurantName;
 	private String itemName;
 	private MenuItem item1;
-	private ResponseEntity<String> responseEntity;
 	private Response response;
 	
 	private void testAddToCartSuccess()

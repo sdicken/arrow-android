@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.R;
@@ -43,8 +42,8 @@ public class CartAdapter extends ArrayAdapter<CartItem>
 			viewHolder.subtitleView = (TextView) view.findViewById(R.id.cart_list_subtitle);
 			viewHolder.priceView = (TextView) view.findViewById(R.id.cart_list_price);
 			viewHolder.quantityView = (TextView) view.findViewById(R.id.cart_list_quantity);
-			viewHolder.quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
-			viewHolder.quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
+//			viewHolder.quantityUpArrow = (ImageView) view.findViewById(R.id.cart_quantity_up_arrow);
+//			viewHolder.quantityDownArrow = (ImageView) view.findViewById(R.id.cart_quantity_down_arrow);
 			view.setTag(viewHolder);
         }
 		else
@@ -59,8 +58,8 @@ public class CartAdapter extends ArrayAdapter<CartItem>
         viewHolder.quantityView.setText(String.valueOf(cartItem.getQuantity()));
 		
 		// set click listeners for increasing and decreasing quantity of items in cart
-        viewHolder.quantityUpArrow.setOnClickListener(new IncrementQuantityListener(cartItem));
-        viewHolder.quantityDownArrow.setOnClickListener(new DecrementQuantityListener(cartItem));
+//        viewHolder.quantityUpArrow.setOnClickListener(new IncrementQuantityListener(cartItem));
+//        viewHolder.quantityDownArrow.setOnClickListener(new DecrementQuantityListener(cartItem));
 		
 		return view;
 	}
@@ -71,47 +70,8 @@ public class CartAdapter extends ArrayAdapter<CartItem>
 		TextView subtitleView;
 		TextView priceView;
 		TextView quantityView;
-		ImageView quantityUpArrow;
-		ImageView quantityDownArrow;
-	}
-	
-	private class IncrementQuantityListener implements View.OnClickListener
-	{
-		private CartItem cartItem;
-		
-		public IncrementQuantityListener(CartItem cartItem)
-		{
-			this.cartItem = cartItem;
-		}
-
-		@Override
-		public void onClick(View v) 
-		{
-			cartItem.setQuantity(cartItem.getQuantity() + 1);
-			notifyDataSetChanged();
-		}
-		
-	}
-	
-	private class DecrementQuantityListener implements View.OnClickListener
-	{
-		private CartItem cartItem;
-		
-		public DecrementQuantityListener(CartItem cartItem)
-		{
-			this.cartItem = cartItem;
-		}
-
-		@Override
-		public void onClick(View v) 
-		{
-			if(cartItem.getQuantity() > 0)
-			{
-				cartItem.setQuantity(cartItem.getQuantity() - 1);
-				notifyDataSetChanged();
-			}
-		}
-		
+//		ImageView quantityUpArrow;
+//		ImageView quantityDownArrow;
 	}
 
 }

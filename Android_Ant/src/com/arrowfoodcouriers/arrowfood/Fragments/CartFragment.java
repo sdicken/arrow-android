@@ -9,7 +9,11 @@ import android.app.Fragment;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -54,6 +58,41 @@ public class CartFragment extends ListFragment
 		setListAdapter(mAdapter);
 		
 		return view;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) 
+	{	
+		super.onActivityCreated(savedInstanceState);
+		registerForContextMenu(this.getListView());
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) 
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		MenuInflater inflater = this.getActivity().getMenuInflater();
+		inflater.inflate(R.menu.cart_item, menu);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) 
+	{
+//		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch(item.getItemId())
+		{
+			case R.id.menu_cart_item_delete:
+			{
+				
+				return true;
+			}
+			default:
+			{
+				return super.onContextItemSelected(item);
+			}
+		}
 	}
 	
 	private class CartCheckoutButtonListener implements OnClickListener
