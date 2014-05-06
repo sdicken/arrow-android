@@ -48,7 +48,7 @@ public class MenuCategoryFragment extends ListFragment
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) 
     {
-    	TextView categoryNameView = (TextView) v.findViewById(R.id.restaurant_list_title);
+    	TextView categoryNameView = (TextView) v.findViewById(R.id.menu_category_name);
     	String menuName = categoryNameView.getText().toString();
     	Fragment fragment = new MenuFragment();
     	Bundle args = new Bundle();

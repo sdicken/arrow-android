@@ -16,7 +16,7 @@ public class MenuCategoryAdapter extends ArrayAdapter<String>
 {
 	public MenuCategoryAdapter(Context context, List<String> categories)
 	{
-		super(context, R.layout.restaurant_list_item, categories);
+		super(context, R.layout.menu_category_list_item, categories);
 	}
 	
 	@Override
@@ -30,12 +30,9 @@ public class MenuCategoryAdapter extends ArrayAdapter<String>
         {
         	viewHolder = new ViewHolder();
         	LayoutInflater inflater = LayoutInflater.from(getContext());
-        	convertView = inflater.inflate(R.layout.restaurant_list_item, null);
-        	viewHolder.titleView = (TextView) convertView.findViewById(R.id.restaurant_list_title);
-        	viewHolder.titleView.setTypeface(rokkitt);
-//        	viewHolder.subtitleView = (TextView) convertView.findViewById(R.id.restaurant_list_subtitle);
-//        	viewHolder.detailsView = (TextView) convertView.findViewById(R.id.restaurant_list_description);
-//        	viewHolder.imageView = (ImageView) convertView.findViewById(R.id.restaurant_list_logo);
+        	convertView = inflater.inflate(R.layout.menu_category_list_item, null);
+        	viewHolder.nameView = (TextView) convertView.findViewById(R.id.menu_category_name);
+        	viewHolder.nameView.setTypeface(rokkitt);
         	convertView.setTag(viewHolder);
         }
         else
@@ -43,19 +40,13 @@ public class MenuCategoryAdapter extends ArrayAdapter<String>
         	viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.titleView.setText(categoryName);
-//        viewHolder.subtitleView.setText(categoryName.getDescription());
-//        viewHolder.detailsView.setText(restaurant.getPhones()[0].getNumber());
-//        viewHolder.imageView.setImageResource(R.drawable.ic_launcher);
+        viewHolder.nameView.setText(categoryName);
 
 		return convertView;
 	}
 	
 	private static class ViewHolder
     {
-    	TextView titleView;
-//    	TextView subtitleView;
-//    	TextView detailsView;
-//    	ImageView imageView;
+    	TextView nameView;
     }
 }
