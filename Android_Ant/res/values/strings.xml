@@ -51,6 +51,8 @@
     <string name="header_delivery_text">DELIVERY</string>
     <string name="header_name_text">Guest User</string>
     <string name="header_address_text"></string>
+    <string name="cart_subtotal_note">Note: subtotal includes delivery charges.</string>
+    <string name="cart_delivery_charge_link_message">Click here to view delivery charges.</string>
     <string name="cart_subtotal_label">Subtotal</string>
     <string name="cart_subtotal_value">$0.00</string>
     <string name="cart_checkout_button_text">Checkout</string>
