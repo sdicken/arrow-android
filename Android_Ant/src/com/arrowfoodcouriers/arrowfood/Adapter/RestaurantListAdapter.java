@@ -39,7 +39,7 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
         	viewHolder.titleView = (TextView) view.findViewById(R.id.restaurant_list_title);
         	viewHolder.titleView.setTypeface(rokkitt);
         	viewHolder.subtitleView = (TextView) view.findViewById(R.id.restaurant_list_subtitle);
-//        	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
+        	viewHolder.detailsView = (TextView) view.findViewById(R.id.restaurant_list_description);
         	viewHolder.imageView = (ImageView) view.findViewById(R.id.restaurant_list_logo);
         	view.setTag(viewHolder);
         }
@@ -50,7 +50,15 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
 
         viewHolder.titleView.setText(restaurant.getName());
         viewHolder.subtitleView.setText(restaurant.getDescription());
-//        viewHolder.detailsView.setText(restaurant.getPhones()[0].getNumber());
+        StringBuilder sb = new StringBuilder();
+        String [] tags = restaurant.getTags();
+        for(String tag : tags)
+        {
+        	sb.append(tag);
+        	sb.append(", ");
+        }
+        sb.delete(sb.toString().length()-2, sb.toString().length()-1);	// remove trailing comma on last item in list
+        viewHolder.detailsView.setText(sb.toString());
         viewHolder.imageView.setImageResource(R.drawable.ic_launcher);
 
         return view;
@@ -60,7 +68,7 @@ public class RestaurantListAdapter extends ArrayAdapter<Restaurant>
     {
     	TextView titleView;
     	TextView subtitleView;
-//    	TextView detailsView;
+    	TextView detailsView;
     	ImageView imageView;
     }
 }
