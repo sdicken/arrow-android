@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- borrowed from https://stackoverflow.com/questions/10990323/android-button-vs-textview-hyperlink-like-behavior -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:color="#FF0000"/> 
+    <item android:color="#0000EE"/> 
+</selector>

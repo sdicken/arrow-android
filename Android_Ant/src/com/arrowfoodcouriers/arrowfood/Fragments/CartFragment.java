@@ -34,9 +34,11 @@ import com.octo.android.robospice.request.listener.RequestListener;
 public class CartFragment extends ListFragment 
 {
 	CartAdapter mAdapter;
-	private TextView subtotalText;
+	private TextView subtotalTextView;
+	private Button deliveryChargesLinkButton;
 	private Button checkoutButton;
 	private Double subtotal;
+	private static final String TAG_DELIVERY_CHARGE_DIALOG = "deliveryCharges";
 	public static final String SUBTOTAL = "subtotal";
 	
 	@Override
@@ -48,7 +50,10 @@ public class CartFragment extends ListFragment
 		
 		View view = inflater.inflate(R.layout.fragment_cart, container, false);
 		
-		subtotalText = (TextView) view.findViewById(R.id.cart_subtotal_value);
+		subtotalTextView = (TextView) view.findViewById(R.id.cart_subtotal_label);
+		
+		deliveryChargesLinkButton = (Button) view.findViewById(R.id.cart_delivery_charge_link);
+		deliveryChargesLinkButton.setOnClickListener(new DeliveryChargesLinkButtonListener());
 		
 		checkoutButton = (Button) view.findViewById(R.id.cart_checkout_button);
 		checkoutButton.setOnClickListener(new CartCheckoutButtonListener());
@@ -95,6 +100,16 @@ public class CartFragment extends ListFragment
 		}
 	}
 	
+	private class DeliveryChargesLinkButtonListener implements OnClickListener
+	{
+
+		@Override
+		public void onClick(View v) 
+		{
+			new DeliveryChargesDialog().show(getFragmentManager(), TAG_DELIVERY_CHARGE_DIALOG);
+		}
+	}
+	
 	private class CartCheckoutButtonListener implements OnClickListener
 	{
 		@Override
@@ -130,7 +145,12 @@ public class CartFragment extends ListFragment
 			subtotal = cart.getTotal();
 			
 			NumberFormat format = NumberFormat.getCurrencyInstance();
-			subtotalText.setText(format.format(subtotal));
+			String subtotalTextWithoutPrice = subtotalTextView.getText().toString();
+			StringBuilder sb = new StringBuilder();
+			sb.append(subtotalTextWithoutPrice);
+			sb.append(": ");
+			sb.append(format.format(subtotal));
+			subtotalTextView.setText(sb.toString());
 			checkoutButton.setEnabled(true);
 			
 			ListView listView = (ListView) ((Activity) context).findViewById(android.R.id.list);

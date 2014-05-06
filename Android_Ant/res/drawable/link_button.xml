@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- borrowed from https://stackoverflow.com/questions/10990323/android-button-vs-textview-hyperlink-like-behavior -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:shape="rectangle">
+    <solid android:color="@color/transparent"/>
+</shape>
