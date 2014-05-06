@@ -2,6 +2,7 @@ package com.arrowfoodcouriers.arrowfood.Fragments;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -145,10 +146,18 @@ public class MenuItemOptionsDialog extends DialogFragment
 						radioGroup.setTag(menuItemOption);
 						String options = menuItemOption.getParam();
 						String[] optionsSplit = options.split(",");
+						boolean firstOption = true;
 						for(String option : optionsSplit)
 						{
 							RadioButton radioButton = new RadioButton(context);
 							radioButton.setText(option);
+							if(firstOption)
+							{
+								radioButton.setChecked(true);
+								radioButton.setId(new Random().nextInt(Integer.MAX_VALUE));
+								radioGroup.check(radioButton.getId());
+								firstOption = false;
+							}
 							radioGroup.addView(radioButton);
 						}
 						linearLayout.addView(radioGroup);
