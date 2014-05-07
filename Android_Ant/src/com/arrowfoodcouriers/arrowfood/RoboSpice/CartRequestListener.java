@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.ListView;
 
 import com.arrowfoodcouriers.arrowfood.FilterUtils;
+import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.Adapter.CartAdapter;
 import com.arrowfoodcouriers.arrowfood.Models.Cart;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -32,7 +33,10 @@ public class CartRequestListener implements RequestListener<Cart>
 		ListView listView = (ListView) ((Activity)context).findViewById(android.R.id.list);
 		CartAdapter adapter = (CartAdapter) listView.getAdapter();
 		adapter.clear();
-		adapter.addAll(FilterUtils.getCartItems(cart));		
+		adapter.addAll(FilterUtils.getCartItems(cart));	// 
+		
+		CartPriceRequest request = new CartPriceRequest();
+		MainActivity.spiceManager.execute(request, new CartPriceRequestListener(context));
 	}
 
 }

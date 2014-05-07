@@ -1,13 +1,10 @@
 package com.arrowfoodcouriers.arrowfood.Fragments;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -17,17 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arrowfoodcouriers.arrowfood.MainActivity;
 import com.arrowfoodcouriers.arrowfood.R;
 import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.CartAdapter;
-import com.arrowfoodcouriers.arrowfood.Models.Cart;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
-import com.arrowfoodcouriers.arrowfood.RoboSpice.CartPriceRequest;
+import com.arrowfoodcouriers.arrowfood.Models.Response;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartDeleteItemRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartRequest;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartRequestListener;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -45,12 +45,12 @@ public class CartFragment extends ListFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) 
 	{
-		CartPriceRequest request = new CartPriceRequest();
-		MainActivity.spiceManager.execute(request, new CartPriceListener(getActivity()));
+//		CartPriceRequest request = new CartPriceRequest();
+//		MainActivity.spiceManager.execute(request, new CartPriceListener(getActivity()));
 		
 		View view = inflater.inflate(R.layout.fragment_cart, container, false);
 		
-		subtotalTextView = (TextView) view.findViewById(R.id.cart_subtotal_label);
+//		subtotalTextView = (TextView) view.findViewById(R.id.cart_subtotal_label);
 		
 		deliveryChargesLinkButton = (Button) view.findViewById(R.id.cart_delivery_charge_link);
 		deliveryChargesLinkButton.setOnClickListener(new DeliveryChargesLinkButtonListener());
@@ -85,12 +85,14 @@ public class CartFragment extends ListFragment
 	@Override
 	public boolean onContextItemSelected(MenuItem item) 
 	{
-//		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId())
 		{
 			case R.id.menu_cart_item_delete:
 			{
-				
+				CartItem cartItem = mAdapter.getItem(info.position);
+				CartDeleteItemRequest request = new CartDeleteItemRequest(cartItem.getRestaurant(), cartItem.getMenu(), cartItem.getItem());
+				MainActivity.spiceManager.execute(request, new CartDeleteItemRequestListener());
 				return true;
 			}
 			default:
@@ -123,40 +125,21 @@ public class CartFragment extends ListFragment
 		}
 	}
 	
-	private class CartPriceListener implements RequestListener<Cart>
+	private class CartDeleteItemRequestListener implements RequestListener<Response>
 	{
-		private final Context context;
-		
-		public CartPriceListener(Context context)
-		{
-			this.context = context;
-		}
-		
+
 		@Override
-		public void onRequestFailure(SpiceException e) 
+		public void onRequestFailure(SpiceException e)
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onRequestSuccess(Cart cart) 
+		public void onRequestSuccess(Response response)
 		{
-			subtotal = cart.getTotal();
-			
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			String subtotalTextWithoutPrice = subtotalTextView.getText().toString();
-			StringBuilder sb = new StringBuilder();
-			sb.append(subtotalTextWithoutPrice);
-			sb.append(": ");
-			sb.append(format.format(subtotal));
-			subtotalTextView.setText(sb.toString());
-			checkoutButton.setEnabled(true);
-			
-			ListView listView = (ListView) ((Activity) context).findViewById(android.R.id.list);
-			CartAdapter adapter = (CartAdapter) listView.getAdapter();
-			adapter.clear();
-			adapter.addAll(cart.getItems());
+			CartRequest request = new CartRequest();
+			MainActivity.spiceManager.execute(request, new CartRequestListener(getActivity()));
 		}
 		
 	}
