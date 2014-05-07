@@ -50,10 +50,5 @@ public class CartPriceRequestListener implements RequestListener<Cart>
 		subtotalTextView.setText(sb.toString());	// add price amount after label string
 		
 		checkoutButton.setEnabled(true);	// allow checkout button to be pressed after price set
-		
-//		ListView listView = (ListView) ((Activity) context).findViewById(android.R.id.list);
-//		CartAdapter adapter = (CartAdapter) listView.getAdapter();
-//		adapter.clear();
-//		adapter.addAll(cart.getItems());	// populate ListView with all items in cart
 	}
 }
