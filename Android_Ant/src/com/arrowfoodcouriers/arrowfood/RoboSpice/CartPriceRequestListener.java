@@ -42,7 +42,7 @@ public class CartPriceRequestListener implements RequestListener<Cart>
 		subtotal = cart.getTotal();
 		
 		NumberFormat format = NumberFormat.getCurrencyInstance();
-		String subtotalTextWithoutPrice = subtotalTextView.getText().toString();
+		String subtotalTextWithoutPrice = context.getResources().getString(R.string.cart_subtotal_label);
 		StringBuilder sb = new StringBuilder();
 		sb.append(subtotalTextWithoutPrice);
 		sb.append(": ");
