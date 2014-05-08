@@ -25,6 +25,7 @@ import com.arrowfoodcouriers.arrowfood.Utils;
 import com.arrowfoodcouriers.arrowfood.Adapter.CartAdapter;
 import com.arrowfoodcouriers.arrowfood.Models.CartItem;
 import com.arrowfoodcouriers.arrowfood.Models.Response;
+import com.arrowfoodcouriers.arrowfood.RoboSpice.CartDeleteItemQuantityRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartDeleteItemRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartRequest;
 import com.arrowfoodcouriers.arrowfood.RoboSpice.CartRequestListener;
@@ -39,7 +40,11 @@ public class CartFragment extends ListFragment
 	private Button checkoutButton;
 	private Double subtotal;
 	private static final String TAG_DELIVERY_CHARGE_DIALOG = "deliveryCharges";
+	private static final String TAG_CART_OPTIONS_DIALOG = "cartOptions";
 	public static final String SUBTOTAL = "subtotal";
+	public static final String BUNDLE_RESTAURANT_NAME = "restaurantName";
+	public static final String BUNDLE_MENU_NAME = "menuName";
+	public static final String BUNDLE_ITEM_NAME = "itemName";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,11 +93,24 @@ public class CartFragment extends ListFragment
 		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId())
 		{
-			case R.id.menu_cart_item_delete:
+			case R.id.menu_cart_single_item_delete:
 			{
 				CartItem cartItem = mAdapter.getItem(info.position);
 				CartDeleteItemRequest request = new CartDeleteItemRequest(cartItem.getRestaurant(), cartItem.getMenu(), cartItem.getItem());
 				MainActivity.spiceManager.execute(request, new CartDeleteItemRequestListener());
+				return true;
+			}
+			case R.id.menu_cart_multiple_item_delete:
+			{
+				CartItem cartItem = mAdapter.getItem(info.position);
+				CartItemOptionsDialog dialog = new CartItemOptionsDialog();
+				Bundle args = new Bundle();
+				args.putString(BUNDLE_RESTAURANT_NAME, cartItem.getRestaurant());
+				args.putString(BUNDLE_MENU_NAME, cartItem.getMenu());
+				args.putString(BUNDLE_ITEM_NAME, cartItem.getItem());
+				dialog.setArguments(args);
+				dialog.show(getFragmentManager(), TAG_CART_OPTIONS_DIALOG);
+				
 				return true;
 			}
 			default:

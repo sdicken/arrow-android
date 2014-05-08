@@ -1,4 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_cart_item_delete"
-        android:title="@string/cart_item_delete" />
+    <item android:id="@+id/menu_cart_single_item_delete"
+        android:title="@string/cart_single_item_delete" />
+    <item android:id="@+id/menu_cart_multiple_item_delete"
+        android:title="@string/cart_multiple_item_delete" />
 </menu>

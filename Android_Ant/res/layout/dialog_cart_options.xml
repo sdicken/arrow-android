@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal">
+    <TextView android:layout_width="0dip"
+		android:layout_height="wrap_content"
+		android:layout_weight="2"
+		android:text="@string/cart_quantity_text"
+	 	android:layout_marginLeft="4dp" />
+    <EditText android:id="@+id/cart_options_quantity_value"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="1"
+        android:inputType="number" />
+</LinearLayout>

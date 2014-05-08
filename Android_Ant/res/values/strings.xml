@@ -18,6 +18,7 @@
     <string name="legal_title">Legal Information</string>
     <string name="dialog_item_options_title">Item Options</string>
     <string name="dialog_delivery_charges_title">Delivery Charges</string>
+    <string name="dialog_cart_options_title">Cart Options</string>
     <string name="dialog_login_title">Login</string>
     <string name="dialog_continue">Continue</string>
     <string name="dialog_sign_in">Sign in</string>
@@ -63,7 +64,8 @@
     <string name="toast_menu_to_cart">added to cart</string>
     <string name="checkout_total_value">$0.00</string>
     <string name="checkout_order_button_text">Place order</string>
-    <string name="cart_item_delete">Delete item</string>
+    <string name="cart_single_item_delete">Delete single item</string>
+    <string name="cart_multiple_item_delete">Delete multiple items</string>
     <string name="delivery_charge1">Order between $5 - $9.99 = $3.99</string>
     <string name="delivery_charge2">Order between $10 - $19.99 = $4.99</string>
     <string name="delivery_charge3">Order between $20 - $39.99 = $5.99</string>
