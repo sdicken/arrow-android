@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -73,6 +74,7 @@ public class MenuItemOptionsDialog extends DialogFragment
 		public void onClick(DialogInterface dialog, int which) 
 		{
 			List<CartItemOption> itemOptions = new ArrayList<CartItemOption>();
+			Integer itemQuantity = 1;
 			for(int i = 0; i < linearLayout.getChildCount(); i++)
 			{
 				View view = linearLayout.getChildAt(i);
@@ -98,9 +100,27 @@ public class MenuItemOptionsDialog extends DialogFragment
 					}
 					itemOptions.add(new CartItemOption(option.getName(), option.getType(), option.getParam()));
 				}
+				else if(view instanceof LinearLayout)
+				{
+					EditText itemQuantityEditText = (EditText) view.findViewById(R.id.item_options_quantity_value);
+					String itemQuantityAsString = itemQuantityEditText.getText().toString();
+					try
+					{
+						itemQuantity = Integer.valueOf(itemQuantityAsString);
+						if(itemQuantity <= 0)
+						{
+							// TODO: display message
+							return;
+						}
+					}
+					catch(NumberFormatException e)
+					{
+						return;
+					}
+				}
 			}
 			CartItemOption[] optionsArray = new CartItemOption[1];
-			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, Integer.valueOf(1), itemOptions.toArray(optionsArray));
+			CartAddRequest request = new CartAddRequest(restaurantName, menuName, itemName, itemQuantity, itemOptions.toArray(optionsArray));
 			MainActivity.spiceManager.execute(request, new CartAddRequestListener(getActivity()));
 		}
 	}
@@ -137,7 +157,9 @@ public class MenuItemOptionsDialog extends DialogFragment
 			{
 				TextView textView = new TextView(context);
 				textView.setText(menuItemOption.getName());
-				linearLayout.addView(textView);
+				LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				layoutParams.setMargins(4, 0, 0, 0);
+				linearLayout.addView(textView, layoutParams);
 				switch(menuItemOption.getType())
 				{
 					case "select":
